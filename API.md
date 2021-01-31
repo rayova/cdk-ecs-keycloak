@@ -5,7 +5,7 @@
 Name|Description
 ----|-----------
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|*No description*
-[KeyCloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|*No description*
+[KeyCloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Extends a task definition by adding a keycloak container to it.
 
 
 **Structs**
@@ -65,7 +65,12 @@ extend(taskDefinition: TaskDefinition): void
 
 ## class KeyCloakContainerExtension  <a id="wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension"></a>
 
+Extends a task definition by adding a keycloak container to it.
 
+To cluster
+your KeyCloak servers, you need to enable service discovery and you must
+call KeyCloakContainerExtension.useService(service) with the ECS service
+so that we can configure the correct DNS query.
 
 __Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
 
@@ -107,6 +112,19 @@ extend(taskDefinition: TaskDefinition): void
 ```
 
 * **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
+
+
+
+
+#### useService(service) <a id="wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension-useservice"></a>
+
+
+
+```ts
+useService(service: BaseService): void
+```
+
+* **service** (<code>[BaseService](#aws-cdk-aws-ecs-baseservice)</code>)  *No description*
 
 
 

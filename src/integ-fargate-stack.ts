@@ -2,6 +2,7 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
 import * as rds from '@aws-cdk/aws-rds';
+import * as discovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
@@ -23,6 +24,11 @@ export class IntegFargateStack extends cdk.Stack {
 
     const cluster = new ecs.Cluster(this, 'Cluster', {
       vpc: vpc,
+      defaultCloudMapNamespace: {
+        name: 'integ-fargate-stack',
+        type: discovery.NamespaceType.DNS_PRIVATE,
+        vpc: vpc,
+      },
     });
 
     const cfnCluster = cluster.node.defaultChild as any as ecs.CfnCluster;
@@ -82,10 +88,20 @@ export class IntegFargateStack extends cdk.Stack {
       healthCheckGracePeriod: cdk.Duration.minutes(5),
       taskDefinition: taskDefinition,
       platformVersion: ecs.FargatePlatformVersion.VERSION1_4,
+      desiredCount: 10,
       taskSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
+      cloudMapOptions: {
+        dnsTtl: cdk.Duration.seconds(10),
+        dnsRecordType: discovery.DnsRecordType.A,
+      },
     });
+
+    // Tasks can connect to themselves for cache access.
+    pattern.service.connections.allowFrom(pattern.service, ec2.Port.allTraffic());
+    // pattern.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.allTraffic());
+    keyCloakWorkloadExtension.useService(pattern.service);
 
     db.connections.allowDefaultPortFrom(pattern.service);
 

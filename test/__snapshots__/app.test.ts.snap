@@ -52,6 +52,15 @@ Object {
     },
   },
   "Resources": Object {
+    "ClusterDefaultServiceDiscoveryNamespaceC336F9B4": Object {
+      "Properties": Object {
+        "Name": "integ-fargate-stack",
+        "Vpc": Object {
+          "Ref": "Vpc8378EB38",
+        },
+      },
+      "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
+    },
     "ClusterEB0386A7": Object {
       "Properties": Object {
         "CapacityProviders": Array [
@@ -237,7 +246,7 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
-        "DesiredCount": 1,
+        "DesiredCount": 10,
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 300,
         "LoadBalancers": Array [
@@ -271,11 +280,50 @@ Object {
           },
         },
         "PlatformVersion": "1.4.0",
+        "ServiceRegistries": Array [
+          Object {
+            "RegistryArn": Object {
+              "Fn::GetAtt": Array [
+                "ServiceCloudmapServiceDE76B29D",
+                "Arn",
+              ],
+            },
+          },
+        ],
         "TaskDefinition": Object {
           "Ref": "integfargateFAC1B48C",
         },
       },
       "Type": "AWS::ECS::Service",
+    },
+    "ServiceCloudmapServiceDE76B29D": Object {
+      "Properties": Object {
+        "DnsConfig": Object {
+          "DnsRecords": Array [
+            Object {
+              "TTL": 10,
+              "Type": "A",
+            },
+          ],
+          "NamespaceId": Object {
+            "Fn::GetAtt": Array [
+              "ClusterDefaultServiceDiscoveryNamespaceC336F9B4",
+              "Id",
+            ],
+          },
+          "RoutingPolicy": "MULTIVALUE",
+        },
+        "HealthCheckCustomConfig": Object {
+          "FailureThreshold": 1,
+        },
+        "NamespaceId": Object {
+          "Fn::GetAtt": Array [
+            "ClusterDefaultServiceDiscoveryNamespaceC336F9B4",
+            "Id",
+          ],
+        },
+      },
+      "Type": "AWS::ServiceDiscovery::Service",
     },
     "ServiceLBE9A1ADBC": Object {
       "DependsOn": Array [
@@ -412,6 +460,25 @@ Object {
           ],
         },
         "ToPort": 8080,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ServiceSecurityGroupfromintegfargateServiceSecurityGroup9EB23104ALLTRAFFIC187E5074": Object {
+      "Properties": Object {
+        "Description": "from integfargateServiceSecurityGroup9EB23104:ALL TRAFFIC",
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "ServiceSecurityGroupEEA09B68",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "ServiceSecurityGroupEEA09B68",
+            "GroupId",
+          ],
+        },
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
@@ -692,6 +759,36 @@ Object {
                 "Name": "DB_NAME",
                 "Value": "keycloak",
               },
+              Object {
+                "Name": "JGROUPS_DISCOVERY_PROTOCOL",
+                "Value": "dns.DNS_PING",
+              },
+              Object {
+                "Name": "JGROUPS_DISCOVERY_PROPERTIES",
+                "Value": Object {
+                  "Fn::Sub": Array [
+                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
+                    Object {
+                      "QueryType": "A",
+                      "ServiceName": Object {
+                        "Fn::GetAtt": Array [
+                          "ServiceCloudmapServiceDE76B29D",
+                          "Name",
+                        ],
+                      },
+                      "ServiceNamespace": "integ-fargate-stack",
+                    },
+                  ],
+                },
+              },
+              Object {
+                "Name": "CACHE_OWNERS_COUNT",
+                "Value": "3",
+              },
+              Object {
+                "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
+                "Value": "3",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",
@@ -711,6 +808,10 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 7600,
                 "Protocol": "tcp",
               },
             ],
@@ -783,10 +884,6 @@ Object {
               Object {
                 "Name": "DB_NAME",
                 "Value": "keycloak",
-              },
-              Object {
-                "Name": "JDBC_PARAMS",
-                "Value": "useSSL=false",
               },
             ],
             "Essential": false,
