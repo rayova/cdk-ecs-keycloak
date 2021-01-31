@@ -40,7 +40,6 @@ export class EnsureMysqlDatabaseExtension implements ecs.ITaskDefinitionExtensio
       ],
       environment: {
         DB_NAME: this.databaseName,
-        JDBC_PARAMS: 'useSSL=false',
       },
       secrets: {
         DB_ADDR: ecs.Secret.fromSecretsManager(this.databaseCredentials, 'host'),
