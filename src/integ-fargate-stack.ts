@@ -88,14 +88,19 @@ export class IntegFargateStack extends cdk.Stack {
       healthCheckGracePeriod: cdk.Duration.minutes(5),
       taskDefinition: taskDefinition,
       platformVersion: ecs.FargatePlatformVersion.VERSION1_4,
+      desiredCount: 10,
       taskSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
       cloudMapOptions: {
-        dnsRecordType: discovery.DnsRecordType.SRV,
+        dnsTtl: cdk.Duration.seconds(10),
+        dnsRecordType: discovery.DnsRecordType.A,
       },
     });
 
+    // Tasks can connect to themselves for cache access.
+    pattern.service.connections.allowFrom(pattern.service, ec2.Port.allTraffic());
+    // pattern.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.allTraffic());
     keyCloakWorkloadExtension.useService(pattern.service);
 
     db.connections.allowDefaultPortFrom(pattern.service);

@@ -246,7 +246,7 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
-        "DesiredCount": 1,
+        "DesiredCount": 10,
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 300,
         "LoadBalancers": Array [
@@ -282,8 +282,6 @@ Object {
         "PlatformVersion": "1.4.0",
         "ServiceRegistries": Array [
           Object {
-            "ContainerName": "keycloak",
-            "ContainerPort": 8080,
             "RegistryArn": Object {
               "Fn::GetAtt": Array [
                 "ServiceCloudmapServiceDE76B29D",
@@ -303,8 +301,8 @@ Object {
         "DnsConfig": Object {
           "DnsRecords": Array [
             Object {
-              "TTL": 60,
-              "Type": "SRV",
+              "TTL": 10,
+              "Type": "A",
             },
           ],
           "NamespaceId": Object {
@@ -462,6 +460,25 @@ Object {
           ],
         },
         "ToPort": 8080,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "ServiceSecurityGroupfromintegfargateServiceSecurityGroup9EB23104ALLTRAFFIC187E5074": Object {
+      "Properties": Object {
+        "Description": "from integfargateServiceSecurityGroup9EB23104:ALL TRAFFIC",
+        "GroupId": Object {
+          "Fn::GetAtt": Array [
+            "ServiceSecurityGroupEEA09B68",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "-1",
+        "SourceSecurityGroupId": Object {
+          "Fn::GetAtt": Array [
+            "ServiceSecurityGroupEEA09B68",
+            "GroupId",
+          ],
+        },
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
@@ -752,7 +769,7 @@ Object {
                   "Fn::Sub": Array [
                     "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
                     Object {
-                      "QueryType": "SRV",
+                      "QueryType": "A",
                       "ServiceName": Object {
                         "Fn::GetAtt": Array [
                           "ServiceCloudmapServiceDE76B29D",
@@ -763,6 +780,14 @@ Object {
                     },
                   ],
                 },
+              },
+              Object {
+                "Name": "CACHE_OWNERS_COUNT",
+                "Value": "3",
+              },
+              Object {
+                "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
+                "Value": "3",
               },
             ],
             "Essential": true,
@@ -783,6 +808,10 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 7600,
                 "Protocol": "tcp",
               },
             ],

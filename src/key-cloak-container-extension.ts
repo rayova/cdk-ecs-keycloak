@@ -83,6 +83,13 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
         DB_NAME: this.databaseName,
         JGROUPS_DISCOVERY_PROTOCOL: 'dns.DNS_PING',
         JGROUPS_DISCOVERY_PROPERTIES: this.getJGroupsDiscoveryProperties(),
+        // keycloak uses a distributed cache by default and only stores cache
+        // keys on one node. I'm using count 2 here to increase the durability
+        // of the caches so that users aren't losing their auth sessions as
+        // often while ECS is moving tasks around or relaunching tasks on
+        // fargate spot tasks.
+        CACHE_OWNERS_COUNT: '3',
+        CACHE_OWNERS_AUTH_SESSIONS_COUNT: '3',
       },
       secrets: keycloakSecrets,
       logging: ecs.LogDriver.awsLogs({
@@ -93,6 +100,9 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
 
     keycloak.addPortMappings({
       containerPort: 8080,
+    });
+    keycloak.addPortMappings({
+      containerPort: 7600,
     });
   }
 
