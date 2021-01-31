@@ -2,6 +2,7 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
 import * as rds from '@aws-cdk/aws-rds';
+import * as discovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
@@ -23,6 +24,11 @@ export class IntegFargateStack extends cdk.Stack {
 
     const cluster = new ecs.Cluster(this, 'Cluster', {
       vpc: vpc,
+      defaultCloudMapNamespace: {
+        name: 'integ-fargate-stack',
+        type: discovery.NamespaceType.DNS_PRIVATE,
+        vpc: vpc,
+      },
     });
 
     const cfnCluster = cluster.node.defaultChild as any as ecs.CfnCluster;
@@ -85,7 +91,12 @@ export class IntegFargateStack extends cdk.Stack {
       taskSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
+      cloudMapOptions: {
+        dnsRecordType: discovery.DnsRecordType.SRV,
+      },
     });
+
+    keyCloakWorkloadExtension.useService(pattern.service);
 
     db.connections.allowDefaultPortFrom(pattern.service);
 

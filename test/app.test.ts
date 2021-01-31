@@ -6,5 +6,6 @@ test('fargate', () => {
   const app = new cdk.App();
   const stack = new IntegFargateStack(app, 'integ-fargate');
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  const actual = SynthUtils.toCloudFormation(stack);
+  expect(actual).toMatchSnapshot();
 });

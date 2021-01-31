@@ -9,6 +9,7 @@ const project = new AwsCdkConstructLibrary({
   repository: 'https://github.com/misterjoshua/cdk-ecs-keycloak.git',
 
   cdkDependencies: [
+    '@aws-cdk/aws-servicediscovery',
     '@aws-cdk/aws-ec2',
     '@aws-cdk/aws-ecs',
     '@aws-cdk/aws-ecs-patterns',

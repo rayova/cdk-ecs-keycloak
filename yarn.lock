@@ -562,7 +562,7 @@
     "@aws-cdk/cx-api" "1.87.1"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-servicediscovery@1.87.1":
+"@aws-cdk/aws-servicediscovery@1.87.1", "@aws-cdk/aws-servicediscovery@^1.73.0":
   version "1.87.1"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-servicediscovery/-/aws-servicediscovery-1.87.1.tgz#ceadcabb440571329bd7ff0597c2a6b892f68992"
   integrity sha512-+6FbgFyXtC6SJANYXmjv5SfMdYi2KB2NI5964TwfcGeAxfPS9LGrtgidpMlXophBKz/nttACMz47ymULUunfYA==
