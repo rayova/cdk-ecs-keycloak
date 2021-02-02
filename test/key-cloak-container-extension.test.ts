@@ -148,6 +148,26 @@ describe('KeyCloakContainerExtension', () => {
     }));
   });
 
+  test('allows custom database name', () => {
+    const stack = new cdk.Stack();
+    const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
+    const addContainerSpy = jest.spyOn(task, 'addContainer');
+    const databaseCredentials = new secrets.Secret(stack, 'Secret');
+    const extension = new KeyCloakContainerExtension({
+      databaseVendor: KeyCloakDatabaseVendor.MYSQL,
+      databaseCredentials: databaseCredentials,
+      databaseName: 'custom',
+    });
+
+    task.addExtension(extension);
+
+    expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+      environment: expect.objectContaining({
+        DB_NAME: 'custom',
+      }),
+    }));
+  });
+
   describe('service discovery', () => {
     test('it defaults to JDBC_PING', () => {
       const stack = new cdk.Stack();
