@@ -115,7 +115,7 @@ describe('KeyCloakContainerExtension', () => {
     expect(extension.cacheOwnersAuthSessionsCount).toEqual(5);
   });
 
-  test('throws when credentials not present for non-h2 databse vendor', () => {
+  test('throws when credentials not present for non-h2 database vendor', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
 
     expect(() => task.addExtension(
