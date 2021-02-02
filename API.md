@@ -5,7 +5,7 @@
 Name|Description
 ----|-----------
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
-[KeycloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Adds a keycloak container to a task definition it.
+[KeycloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Adds a keycloak container to a task definition.
 [KeycloakEc2TaskDefinition](#wheatstalk-cdk-ecs-keycloak-keycloakec2taskdefinition)|The details of a Keycloak task definition running on EC2.
 [KeycloakFargateTaskDefinition](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinition)|The details of a Keycloak task definition running on Fargate.
 
@@ -15,7 +15,7 @@ Name|Description
 Name|Description
 ----|-----------
 [EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)|Props for EnsureMysqlDatabaseExtension.
-[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)|*No description*
+[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)|Configuration for the Keycloak container.
 [KeycloakEc2TaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakec2taskdefinitionprops)|Props for `KeycloakEc2TaskDefinition`.
 [KeycloakFargateTaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinitionprops)|Props for `KeycloakFargateTaskDefinition`.
 
@@ -31,7 +31,7 @@ Name|Description
 
 Name|Description
 ----|-----------
-[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)|*No description*
+[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)|The database vendor.
 
 
 
@@ -79,12 +79,12 @@ extend(taskDefinition: TaskDefinition): void
 
 ## class KeycloakContainerExtension  <a id="wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension"></a>
 
-Adds a keycloak container to a task definition it.
+Adds a keycloak container to a task definition.
 
-To use ECS service
-discovery to locate cluster members, you need to call `useCloudMapService`
-with the CloudMap service so that we can configure the correct DNS query.
-Without CloudMap service discovery, the default will be to use JDBC_ping.
+To use ECS service discovery
+to locate cluster members, you need to call `useCloudMapService` with the
+CloudMap service so that we can configure the correct DNS query. Without
+CloudMap service discovery, the Keycloak will use JDBC_PING.
 
 __Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
 
@@ -118,7 +118,7 @@ Name | Type | Description
 **cacheOwnersCount** | <code>number</code> | The number of distributed cache owners for each key.
 **containerName** | <code>string</code> | Name of the container added to the task definition.
 **databaseName** | <code>string</code> | Name of the Keycloak database.
-**databaseVendor** | <code>string</code> | Database vendor name.
+**databaseVendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | Database vendor.
 **defaultAdminPassword** | <code>string</code> | The default admin user password.
 **defaultAdminUser** | <code>string</code> | The default admin user's name.
 
@@ -264,7 +264,7 @@ Name | Type | Description
 ## struct KeycloakContainerExtensionProps  <a id="wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops"></a>
 
 
-
+Configuration for the Keycloak container.
 
 
 
@@ -323,7 +323,7 @@ Name | Type | Description
 
 ## enum KeycloakDatabaseVendor  <a id="wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor"></a>
 
-
+The database vendor.
 
 Name | Description
 -----|-----

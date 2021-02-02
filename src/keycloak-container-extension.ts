@@ -4,6 +4,9 @@ import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
 import * as cloudmap from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
+/**
+ * The database vendor.
+ */
 export enum KeycloakDatabaseVendor {
   /** H2 In-memory Database (Warning: data deleted when task restarts.) */
   H2 = 'h2',
@@ -19,6 +22,9 @@ export enum KeycloakDatabaseVendor {
   MSSQL = 'mssql',
 }
 
+/**
+ * Configuration for the Keycloak container.
+ */
 export interface KeycloakContainerExtensionProps {
   /**
    * A name for the container added to the task definition.
@@ -72,10 +78,10 @@ export interface KeycloakContainerExtensionProps {
 }
 
 /**
- * Adds a keycloak container to a task definition it. To use ECS service
- * discovery to locate cluster members, you need to call `useCloudMapService`
- * with the CloudMap service so that we can configure the correct DNS query.
- * Without CloudMap service discovery, the default will be to use JDBC_ping.
+ * Adds a keycloak container to a task definition. To use ECS service discovery
+ * to locate cluster members, you need to call `useCloudMapService` with the
+ * CloudMap service so that we can configure the correct DNS query. Without
+ * CloudMap service discovery, the Keycloak will use JDBC_PING.
  */
 export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension {
   /**
@@ -89,9 +95,9 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
   public readonly databaseName: string;
 
   /**
-   * Database vendor name.
+   * Database vendor.
    */
-  public readonly databaseVendor: string;
+  public readonly databaseVendor: KeycloakDatabaseVendor;
 
   /**
    * The number of distributed cache owners for each key.
