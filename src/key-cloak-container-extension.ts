@@ -5,16 +5,23 @@ import * as cloudmap from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
 export enum KeyCloakDatabaseVendor {
+  /** H2 In-memory Database (Warning: data deleted when task restarts.) */
   H2 = 'h2',
+  /** Postgres */
   POSTGRES = 'postgres',
+  /** MySQL */
   MYSQL = 'mysql',
+  /** MariaDB */
   MARIADB = 'mariadb',
+  /** Oracle database */
   ORACLE = 'oracle',
+  /** MSSQL */
   MSSQL = 'mssql',
 }
 
 export interface KeyCloakContainerExtensionProps {
   /**
+   * A name for the container added to the task definition.
    * @default 'keycloak'
    */
   readonly containerName?: string;
@@ -32,6 +39,8 @@ export interface KeyCloakContainerExtensionProps {
   readonly cacheOwnersAuthSessionsCount?: number;
 
   /**
+   * Secrets manager secret containing the RDS database credentials and
+   * connection information in JSON format.
    * @default - none
    */
   readonly databaseCredentials?: secretsmanager.ISecret;
@@ -43,7 +52,8 @@ export interface KeyCloakContainerExtensionProps {
   readonly databaseName?: string;
 
   /**
-   * @default KeyCloakDatabaseVendor.MARIADB
+   * The database vendor.
+   * @default KeyCloakDatabaseVendor.H2
    */
   readonly databaseVendor?: KeyCloakDatabaseVendor;
 
@@ -93,9 +103,17 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
    */
   public readonly cacheOwnersAuthSessionsCount: number;
 
+  /**
+   * The default admin user's name.
+   */
+  public readonly defaultAdminUser: string;
+
+  /**
+   * The default admin user password.
+   */
+  public readonly defaultAdminPassword: string;
+
   private readonly databaseCredentials?: secretsmanager.ISecret;
-  private readonly defaultAdminPassword: string;
-  private readonly defaultAdminUser: string;
   private cloudMapService?: cloudmap.IService;
 
   constructor(props?: KeyCloakContainerExtensionProps) {
@@ -121,7 +139,9 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
     this.cloudMapService = serviceDiscovery;
   }
 
-  // Works for fargate and ec2 task definitions in general.
+  /**
+   * @inheritDoc
+   */
   extend(taskDefinition: ecs.TaskDefinition): void {
     const keycloakSecrets: Record<string, ecs.Secret> = {};
 
@@ -147,11 +167,6 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
         JGROUPS_DISCOVERY_PROPERTIES: cdk.Lazy.string({
           produce: () => this._getJGroupsDiscoveryProperties(),
         }),
-        // keycloak uses a distributed cache by default and only stores cache
-        // keys on one node. I'm using count 2 here to increase the durability
-        // of the caches so that users aren't losing their auth sessions as
-        // often while ECS is moving tasks around or relaunching tasks on
-        // fargate spot tasks.
         CACHE_OWNERS_COUNT: this.cacheOwnersCount.toString(),
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: this.cacheOwnersAuthSessionsCount.toString(),
       },

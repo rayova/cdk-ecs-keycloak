@@ -89,10 +89,10 @@ new KeyCloakContainerExtension(props?: KeyCloakContainerExtensionProps)
 * **props** (<code>[KeyCloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  *No description*
   * **cacheOwnersAuthSessionsCount** (<code>number</code>)  The number of distributed cache owners for authentication sessions. __*Default*__: same as `cacheOwnersCount`
   * **cacheOwnersCount** (<code>number</code>)  The default number of distributed cache owners for each key. __*Default*__: 1
-  * **containerName** (<code>string</code>)  *No description* __*Default*__: 'keycloak'
-  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  *No description* __*Default*__: none
+  * **containerName** (<code>string</code>)  A name for the container added to the task definition. __*Default*__: 'keycloak'
+  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Secrets manager secret containing the RDS database credentials and connection information in JSON format. __*Default*__: none
   * **databaseName** (<code>string</code>)  Database name. __*Default*__: 'keycloak'
-  * **databaseVendor** (<code>[KeyCloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  *No description* __*Default*__: KeyCloakDatabaseVendor.MARIADB
+  * **databaseVendor** (<code>[KeyCloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  The database vendor. __*Default*__: KeyCloakDatabaseVendor.H2
   * **defaultAdminPassword** (<code>string</code>)  Default admin user's password. __*Default*__: 'admin'
   * **defaultAdminUser** (<code>string</code>)  Default admin user. __*Default*__: 'admin'
 
@@ -108,6 +108,8 @@ Name | Type | Description
 **containerName** | <code>string</code> | Name of the container added to the task definition.
 **databaseName** | <code>string</code> | Name of the Keycloak database.
 **databaseVendor** | <code>string</code> | Database vendor name.
+**defaultAdminPassword** | <code>string</code> | The default admin user password.
+**defaultAdminUser** | <code>string</code> | The default admin user's name.
 
 ### Methods
 
@@ -166,10 +168,10 @@ Name | Type | Description
 -----|------|-------------
 **cacheOwnersAuthSessionsCount**? | <code>number</code> | The number of distributed cache owners for authentication sessions.<br/>__*Default*__: same as `cacheOwnersCount`
 **cacheOwnersCount**? | <code>number</code> | The default number of distributed cache owners for each key.<br/>__*Default*__: 1
-**containerName**? | <code>string</code> | __*Default*__: 'keycloak'
-**databaseCredentials**? | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | __*Default*__: none
+**containerName**? | <code>string</code> | A name for the container added to the task definition.<br/>__*Default*__: 'keycloak'
+**databaseCredentials**? | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Secrets manager secret containing the RDS database credentials and connection information in JSON format.<br/>__*Default*__: none
 **databaseName**? | <code>string</code> | Database name.<br/>__*Default*__: 'keycloak'
-**databaseVendor**? | <code>[KeyCloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | __*Default*__: KeyCloakDatabaseVendor.MARIADB
+**databaseVendor**? | <code>[KeyCloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | The database vendor.<br/>__*Default*__: KeyCloakDatabaseVendor.H2
 **defaultAdminPassword**? | <code>string</code> | Default admin user's password.<br/>__*Default*__: 'admin'
 **defaultAdminUser**? | <code>string</code> | Default admin user.<br/>__*Default*__: 'admin'
 
@@ -181,11 +183,11 @@ Name | Type | Description
 
 Name | Description
 -----|-----
-**H2** |
-**POSTGRES** |
-**MYSQL** |
-**MARIADB** |
-**ORACLE** |
-**MSSQL** |
+**H2** |H2 In-memory Database (Warning: data deleted when task restarts.).
+**POSTGRES** |Postgres.
+**MYSQL** |MySQL.
+**MARIADB** |MariaDB.
+**ORACLE** |Oracle database.
+**MSSQL** |MSSQL.
 
 
