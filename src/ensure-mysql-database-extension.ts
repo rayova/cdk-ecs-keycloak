@@ -2,6 +2,9 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as logs from '@aws-cdk/aws-logs';
 import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
 
+/**
+ * Props for EnsureMysqlDatabaseExtension
+ */
 export interface EnsureMysqlDatabaseExtensionProps {
   /**
    * Name of the container to add to do this work.
@@ -15,11 +18,15 @@ export interface EnsureMysqlDatabaseExtensionProps {
   readonly databaseCredentials: secretsmanager.ISecret;
 
   /**
-   * Database to create.
+   * Name of the database to create.
    */
   readonly databaseName: string;
 }
 
+/**
+ * Ensures a MySQL database exists by adding an init container. Makes the default container
+ * depend on the successful completion of this container.
+ */
 export class EnsureMysqlDatabaseExtension implements ecs.ITaskDefinitionExtension {
   private readonly containerName: string;
   private readonly databaseCredentials: secretsmanager.ISecret;

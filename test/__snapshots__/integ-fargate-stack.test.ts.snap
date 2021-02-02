@@ -3,29 +3,6 @@
 exports[`fargate 1`] = `
 Object {
   "Outputs": Object {
-    "RdsEndpoint": Object {
-      "Value": Object {
-        "Fn::GetAtt": Array [
-          "DB4924F778",
-          "Endpoint.Address",
-        ],
-      },
-    },
-    "RdsSecret": Object {
-      "Value": Object {
-        "Fn::Select": Array [
-          6,
-          Object {
-            "Fn::Split": Array [
-              ":",
-              Object {
-                "Ref": "DBSecretB8D1B379",
-              },
-            ],
-          },
-        ],
-      },
-    },
     "ServiceLoadBalancerDNSEC5B149E": Object {
       "Value": Object {
         "Fn::GetAtt": Array [
@@ -54,7 +31,7 @@ Object {
   "Resources": Object {
     "ClusterDefaultServiceDiscoveryNamespaceC336F9B4": Object {
       "Properties": Object {
-        "Name": "integ-fargate-stack",
+        "Name": "integ-fargate",
         "Vpc": Object {
           "Ref": "Vpc8378EB38",
         },
@@ -70,11 +47,11 @@ Object {
         "DefaultCapacityProviderStrategy": Array [
           Object {
             "CapacityProvider": "FARGATE_SPOT",
-            "Weight": 1,
+            "Weight": 100,
           },
           Object {
             "CapacityProvider": "FARGATE",
-            "Weight": 10,
+            "Weight": 1,
           },
         ],
       },
@@ -232,11 +209,11 @@ Object {
         "CapacityProviderStrategy": Array [
           Object {
             "CapacityProvider": "FARGATE_SPOT",
-            "Weight": 1,
+            "Weight": 100,
           },
           Object {
             "CapacityProvider": "FARGATE",
-            "Weight": 10,
+            "Weight": 1,
           },
         ],
         "Cluster": Object {
@@ -244,11 +221,11 @@ Object {
         },
         "DeploymentConfiguration": Object {
           "MaximumPercent": 200,
-          "MinimumHealthyPercent": 50,
+          "MinimumHealthyPercent": 100,
         },
-        "DesiredCount": 10,
+        "DesiredCount": 2,
         "EnableECSManagedTags": false,
-        "HealthCheckGracePeriodSeconds": 300,
+        "HealthCheckGracePeriodSeconds": 600,
         "LoadBalancers": Array [
           Object {
             "ContainerName": "keycloak",
@@ -279,7 +256,6 @@ Object {
             ],
           },
         },
-        "PlatformVersion": "1.4.0",
         "ServiceRegistries": Array [
           Object {
             "RegistryArn": Object {
@@ -776,18 +752,18 @@ Object {
                           "Name",
                         ],
                       },
-                      "ServiceNamespace": "integ-fargate-stack",
+                      "ServiceNamespace": "integ-fargate",
                     },
                   ],
                 },
               },
               Object {
                 "Name": "CACHE_OWNERS_COUNT",
-                "Value": "3",
+                "Value": "2",
               },
               Object {
                 "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
-                "Value": "3",
+                "Value": "2",
               },
             ],
             "Essential": true,

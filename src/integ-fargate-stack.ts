@@ -8,9 +8,15 @@ import * as cdk from '@aws-cdk/core';
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
 import { KeyCloakDatabaseVendor, KeyCloakContainerExtension } from './key-cloak-container-extension';
 
+export interface IntegFargateStackPops {
+  databaseInstanceEngine: rds.IInstanceEngine;
+}
+
 export class IntegFargateStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string) {
+  constructor(scope: cdk.Construct, id: string, props: IntegFargateStackPops) {
     super(scope, id);
+
+    const databaseEngine = props.databaseInstanceEngine;
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
       subnetConfiguration: [
@@ -25,7 +31,7 @@ export class IntegFargateStack extends cdk.Stack {
     const cluster = new ecs.Cluster(this, 'Cluster', {
       vpc: vpc,
       defaultCloudMapNamespace: {
-        name: 'integ-fargate-stack',
+        name: this.stackName,
         type: discovery.NamespaceType.DNS_PRIVATE,
         vpc: vpc,
       },
@@ -36,16 +42,16 @@ export class IntegFargateStack extends cdk.Stack {
     cfnCluster.defaultCapacityProviderStrategy = [
       {
         capacityProvider: 'FARGATE_SPOT',
-        weight: 1,
+        weight: 100,
       },
       {
         capacityProvider: 'FARGATE',
-        weight: 10,
+        weight: 1,
       },
     ];
 
     const db = new rds.DatabaseInstance(this, 'DB', {
-      engine: rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }),
+      engine: databaseEngine,
       instanceType: ec2.InstanceType.of(ec2.InstanceClass.BURSTABLE2, ec2.InstanceSize.MICRO),
       publiclyAccessible: true,
       vpc: vpc,
@@ -58,51 +64,55 @@ export class IntegFargateStack extends cdk.Stack {
       throw new Error('RDS did not provide a secret');
     }
 
-    new cdk.CfnOutput(this, 'RdsEndpoint', {
-      value: db.dbInstanceEndpointAddress,
-    });
-    new cdk.CfnOutput(this, 'RdsSecret', {
-      value: db.secret.secretName,
-    });
-
-    const taskDefinition = new ecs.FargateTaskDefinition(this, id, {
+    const taskDefinition: ecs.TaskDefinition = new ecs.FargateTaskDefinition(this, id, {
       // Minimum
       cpu: 512,
       memoryLimitMiB: 1024,
     });
 
-    // Add the keycloak container
-    const keyCloakWorkloadExtension = new KeyCloakContainerExtension({
+    // Keycloak extension
+    const keyCloakContainerExtension = new KeyCloakContainerExtension({
       databaseCredentials: db.secret,
       databaseVendor: KeyCloakDatabaseVendor.MYSQL,
+      cacheOwnersCount: 2,
     });
-    taskDefinition.addExtension(keyCloakWorkloadExtension);
+
+    // Add the Keycloak container to the task definition
+    taskDefinition.addExtension(keyCloakContainerExtension);
+    // Ensure that the mysql database is created
     taskDefinition.addExtension(new EnsureMysqlDatabaseExtension({
       databaseCredentials: db.secret,
-      databaseName: keyCloakWorkloadExtension.databaseName,
+      databaseName: keyCloakContainerExtension.databaseName,
     }));
 
     const pattern = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'Service', {
       cluster: cluster,
       assignPublicIp: true,
-      healthCheckGracePeriod: cdk.Duration.minutes(5),
+      // For Fargate on 0.5 vCPU / 1GB, startup time is about 80 seconds,
+      // but the service doesn't stabilize for about ten minutes.
+      healthCheckGracePeriod: cdk.Duration.minutes(10),
+      minHealthyPercent: 100,
+      maxHealthyPercent: 200,
       taskDefinition: taskDefinition,
-      platformVersion: ecs.FargatePlatformVersion.VERSION1_4,
-      desiredCount: 10,
+      desiredCount: 2,
       taskSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
-      },
-      cloudMapOptions: {
-        dnsTtl: cdk.Duration.seconds(10),
-        dnsRecordType: discovery.DnsRecordType.A,
       },
     });
 
     // Tasks can connect to themselves for cache access.
     pattern.service.connections.allowFrom(pattern.service, ec2.Port.allTraffic());
+    // Let me in so I can look directly at them
     // pattern.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.allTraffic());
-    keyCloakWorkloadExtension.useService(pattern.service);
 
+    // Enable CloudMap service discovery and inform Keycloak about its mechanism.
+    keyCloakContainerExtension.useCloudMapService(
+      pattern.service.enableCloudMap({
+        dnsRecordType: discovery.DnsRecordType.A,
+        dnsTtl: cdk.Duration.seconds(10),
+      }));
+
+    // Allow the service to connect to the database
     db.connections.allowDefaultPortFrom(pattern.service);
 
     const cfnService = pattern.service.node.findChild('Service') as ecs.CfnService;
@@ -113,4 +123,7 @@ export class IntegFargateStack extends cdk.Stack {
 
 // yarn cdk --app 'ts-node -P tsconfig.jest.json src/integ-fargate-stack' deploy
 const app = new cdk.App();
-new IntegFargateStack(app, 'integ-fargate');
+
+new IntegFargateStack(app, 'integ-fargate', {
+  databaseInstanceEngine: rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }),
+});
