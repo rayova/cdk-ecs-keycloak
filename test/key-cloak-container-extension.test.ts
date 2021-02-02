@@ -89,6 +89,24 @@ describe('KeyCloakContainerExtension', () => {
     }));
   });
 
+  test('allows custom default admin user/password', () => {
+    const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
+    const addContainerSpy = jest.spyOn(task, 'addContainer');
+    const extension = new KeyCloakContainerExtension({
+      defaultAdminUser: 'adminUser',
+      defaultAdminPassword: 'adminPassword',
+    });
+
+    task.addExtension(extension);
+
+    expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+      environment: expect.objectContaining({
+        KEYCLOAK_USER: 'adminUser',
+        KEYCLOAK_PASSWORD: 'adminPassword',
+      }),
+    }));
+  });
+
   test('when unspecified, it sets the auth session count to the provided cache owner count', () => {
     const extension = new KeyCloakContainerExtension({
       cacheOwnersCount: 5,
