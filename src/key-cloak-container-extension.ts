@@ -72,10 +72,10 @@ export interface KeyCloakContainerExtensionProps {
 }
 
 /**
- * Extends a task definition by adding a keycloak container to it. To cluster
- * your KeyCloak servers, you need to enable service discovery and you must
- * call KeyCloakContainerExtension.useService(service) with the ECS service
- * so that we can configure the correct DNS query.
+ * Adds a keycloak container to a task definition it. To use ECS service
+ * discovery to locate cluster members, you need to call `useCloudMapService`
+ * with the CloudMap service so that we can configure the correct DNS query.
+ * Without CloudMap service discovery, the default will be to use JDBC_ping.
  */
 export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension {
   /**
