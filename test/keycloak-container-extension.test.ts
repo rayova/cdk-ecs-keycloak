@@ -4,7 +4,7 @@ import * as ecs from '@aws-cdk/aws-ecs';
 import * as secrets from '@aws-cdk/aws-secretsmanager';
 import * as cloudmap from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
-import { KeyCloakContainerExtension, KeyCloakDatabaseVendor, mapDnsRecordTypeToJGroup } from '../src';
+import { KeycloakContainerExtension, KeycloakDatabaseVendor, mapDnsRecordTypeToJGroup } from '../src';
 
 describe('mapDnsRecordTypeToJGroup', () => {
   test.each([
@@ -19,11 +19,11 @@ describe('mapDnsRecordTypeToJGroup', () => {
   });
 });
 
-describe('KeyCloakContainerExtension', () => {
+describe('KeycloakContainerExtension', () => {
   test('has reasonable default values', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
-    const extension = new KeyCloakContainerExtension();
+    const extension = new KeycloakContainerExtension();
 
     task.addExtension(extension);
 
@@ -44,7 +44,7 @@ describe('KeyCloakContainerExtension', () => {
 
   test('adds a keycloak container', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
-    const extension = new KeyCloakContainerExtension();
+    const extension = new KeycloakContainerExtension();
     const addContainerSpy = jest.spyOn(task, 'addContainer');
 
     task.addExtension(extension);
@@ -57,7 +57,7 @@ describe('KeyCloakContainerExtension', () => {
   test('adds a container by another name', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
-    const extension = new KeyCloakContainerExtension({
+    const extension = new KeycloakContainerExtension({
       containerName: 'foobar',
     });
 
@@ -72,7 +72,7 @@ describe('KeyCloakContainerExtension', () => {
     const taskDefinition = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(taskDefinition, 'addContainer');
 
-    const extension = new KeyCloakContainerExtension({
+    const extension = new KeycloakContainerExtension({
       cacheOwnersCount: 2,
       cacheOwnersAuthSessionsCount: 3,
     });
@@ -92,7 +92,7 @@ describe('KeyCloakContainerExtension', () => {
   test('allows custom default admin user/password', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
-    const extension = new KeyCloakContainerExtension({
+    const extension = new KeycloakContainerExtension({
       defaultAdminUser: 'adminUser',
       defaultAdminPassword: 'adminPassword',
     });
@@ -108,7 +108,7 @@ describe('KeyCloakContainerExtension', () => {
   });
 
   test('when unspecified, it sets the auth session count to the provided cache owner count', () => {
-    const extension = new KeyCloakContainerExtension({
+    const extension = new KeycloakContainerExtension({
       cacheOwnersCount: 5,
     });
 
@@ -119,8 +119,8 @@ describe('KeyCloakContainerExtension', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
 
     expect(() => task.addExtension(
-      new KeyCloakContainerExtension({
-        databaseVendor: KeyCloakDatabaseVendor.MYSQL,
+      new KeycloakContainerExtension({
+        databaseVendor: KeycloakDatabaseVendor.MYSQL,
       })),
     ).toThrow(/requires credentials/i);
   });
@@ -131,8 +131,8 @@ describe('KeyCloakContainerExtension', () => {
     const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
     const addContainerSpy = jest.spyOn(task, 'addContainer');
-    const extension = new KeyCloakContainerExtension({
-      databaseVendor: KeyCloakDatabaseVendor.MYSQL,
+    const extension = new KeycloakContainerExtension({
+      databaseVendor: KeycloakDatabaseVendor.MYSQL,
       databaseCredentials,
     });
 
@@ -153,8 +153,8 @@ describe('KeyCloakContainerExtension', () => {
     const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
     const databaseCredentials = new secrets.Secret(stack, 'Secret');
-    const extension = new KeyCloakContainerExtension({
-      databaseVendor: KeyCloakDatabaseVendor.MYSQL,
+    const extension = new KeycloakContainerExtension({
+      databaseVendor: KeycloakDatabaseVendor.MYSQL,
       databaseCredentials: databaseCredentials,
       databaseName: 'custom',
     });
@@ -173,7 +173,7 @@ describe('KeyCloakContainerExtension', () => {
       const stack = new cdk.Stack();
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeyCloakContainerExtension();
+      const extension = new KeycloakContainerExtension();
       task.addExtension(extension);
 
       const res = SynthUtils.toCloudFormation(stack);
@@ -205,7 +205,7 @@ describe('KeyCloakContainerExtension', () => {
       });
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeyCloakContainerExtension();
+      const extension = new KeycloakContainerExtension();
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 
@@ -247,7 +247,7 @@ describe('KeyCloakContainerExtension', () => {
       });
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeyCloakContainerExtension();
+      const extension = new KeycloakContainerExtension();
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 

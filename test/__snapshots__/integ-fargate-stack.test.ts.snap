@@ -267,7 +267,7 @@ Object {
           },
         ],
         "TaskDefinition": Object {
-          "Ref": "integfargateFAC1B48C",
+          "Ref": "TaskDefinitionB36D86D9",
         },
       },
       "Type": "AWS::ECS::Service",
@@ -458,6 +458,359 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
+    "TaskDefinitionB36D86D9": Object {
+      "Properties": Object {
+        "ContainerDefinitions": Array [
+          Object {
+            "DependsOn": Array [
+              Object {
+                "Condition": "COMPLETE",
+                "ContainerName": "ensure-mysql-database",
+              },
+            ],
+            "Environment": Array [
+              Object {
+                "Name": "KEYCLOAK_USER",
+                "Value": "admin",
+              },
+              Object {
+                "Name": "KEYCLOAK_PASSWORD",
+                "Value": "admin",
+              },
+              Object {
+                "Name": "DB_VENDOR",
+                "Value": "mysql",
+              },
+              Object {
+                "Name": "DB_NAME",
+                "Value": "keycloak",
+              },
+              Object {
+                "Name": "JGROUPS_DISCOVERY_PROTOCOL",
+                "Value": "dns.DNS_PING",
+              },
+              Object {
+                "Name": "JGROUPS_DISCOVERY_PROPERTIES",
+                "Value": Object {
+                  "Fn::Sub": Array [
+                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
+                    Object {
+                      "QueryType": "A",
+                      "ServiceName": Object {
+                        "Fn::GetAtt": Array [
+                          "ServiceCloudmapServiceDE76B29D",
+                          "Name",
+                        ],
+                      },
+                      "ServiceNamespace": "integ-fargate",
+                    },
+                  ],
+                },
+              },
+              Object {
+                "Name": "CACHE_OWNERS_COUNT",
+                "Value": "2",
+              },
+              Object {
+                "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
+                "Value": "2",
+              },
+            ],
+            "Essential": true,
+            "Image": "jboss/keycloak",
+            "LogConfiguration": Object {
+              "LogDriver": "awslogs",
+              "Options": Object {
+                "awslogs-group": Object {
+                  "Ref": "TaskDefinitionkeycloakLogGroup66419D9A",
+                },
+                "awslogs-region": Object {
+                  "Ref": "AWS::Region",
+                },
+                "awslogs-stream-prefix": "/cdk-ecs-keycloak",
+              },
+            },
+            "Name": "keycloak",
+            "PortMappings": Array [
+              Object {
+                "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 7600,
+                "Protocol": "tcp",
+              },
+            ],
+            "Secrets": Array [
+              Object {
+                "Name": "DB_ADDR",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":host::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_PORT",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":port::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_USER",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":username::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_PASSWORD",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":password::",
+                    ],
+                  ],
+                },
+              },
+            ],
+          },
+          Object {
+            "Command": Array [
+              "sh",
+              "-c",
+              "mysql -u\\"$DB_USER\\" -p\\"$DB_PASSWORD\\" -h\\"$DB_ADDR\\" -e \\"CREATE DATABASE IF NOT EXISTS $DB_NAME\\"",
+            ],
+            "Environment": Array [
+              Object {
+                "Name": "DB_NAME",
+                "Value": "keycloak",
+              },
+            ],
+            "Essential": false,
+            "Image": "mysql",
+            "LogConfiguration": Object {
+              "LogDriver": "awslogs",
+              "Options": Object {
+                "awslogs-group": Object {
+                  "Ref": "TaskDefinitionensuremysqldatabaseLogGroupA3DB2A4C",
+                },
+                "awslogs-region": Object {
+                  "Ref": "AWS::Region",
+                },
+                "awslogs-stream-prefix": "/cdk-ecs-keycloak",
+              },
+            },
+            "Name": "ensure-mysql-database",
+            "Secrets": Array [
+              Object {
+                "Name": "DB_ADDR",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":host::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_PORT",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":port::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_USER",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":username::",
+                    ],
+                  ],
+                },
+              },
+              Object {
+                "Name": "DB_PASSWORD",
+                "ValueFrom": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Ref": "DBSecretAttachment1CF7DE47",
+                      },
+                      ":password::",
+                    ],
+                  ],
+                },
+              },
+            ],
+          },
+        ],
+        "Cpu": "512",
+        "ExecutionRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "TaskDefinitionExecutionRole8D61C2FB",
+            "Arn",
+          ],
+        },
+        "Family": "integfargateTaskDefinitionBE0DB7C0",
+        "Memory": "1024",
+        "NetworkMode": "awsvpc",
+        "RequiresCompatibilities": Array [
+          "FARGATE",
+        ],
+        "TaskRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "TaskDefinitionTaskRoleFD40A61D",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ECS::TaskDefinition",
+    },
+    "TaskDefinitionExecutionRole8D61C2FB": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TaskDefinitionExecutionRoleDefaultPolicy1F3406F5": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "TaskDefinitionkeycloakLogGroup66419D9A",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "secretsmanager:GetSecretValue",
+                "secretsmanager:DescribeSecret",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "DBSecretAttachment1CF7DE47",
+              },
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "TaskDefinitionensuremysqldatabaseLogGroupA3DB2A4C",
+                  "Arn",
+                ],
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "TaskDefinitionExecutionRoleDefaultPolicy1F3406F5",
+        "Roles": Array [
+          Object {
+            "Ref": "TaskDefinitionExecutionRole8D61C2FB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "TaskDefinitionTaskRoleFD40A61D": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "ecs-tasks.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "TaskDefinitionensuremysqldatabaseLogGroupA3DB2A4C": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "TaskDefinitionkeycloakLogGroup66419D9A": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "RetentionInDays": 30,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Retain",
+    },
     "Vpc8378EB38": Object {
       "Properties": Object {
         "CidrBlock": "10.0.0.0/16",
@@ -638,359 +991,6 @@ Object {
         },
       },
       "Type": "AWS::EC2::Subnet",
-    },
-    "integfargateExecutionRoleC3F3F2D0": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "ecs-tasks.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "integfargateExecutionRoleDefaultPolicyCB89173B": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "integfargatekeycloakLogGroup9E142BE1",
-                  "Arn",
-                ],
-              },
-            },
-            Object {
-              "Action": Array [
-                "secretsmanager:GetSecretValue",
-                "secretsmanager:DescribeSecret",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Ref": "DBSecretAttachment1CF7DE47",
-              },
-            },
-            Object {
-              "Action": Array [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-              ],
-              "Effect": "Allow",
-              "Resource": Object {
-                "Fn::GetAtt": Array [
-                  "integfargateensuremysqldatabaseLogGroup2172258A",
-                  "Arn",
-                ],
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "integfargateExecutionRoleDefaultPolicyCB89173B",
-        "Roles": Array [
-          Object {
-            "Ref": "integfargateExecutionRoleC3F3F2D0",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "integfargateFAC1B48C": Object {
-      "Properties": Object {
-        "ContainerDefinitions": Array [
-          Object {
-            "DependsOn": Array [
-              Object {
-                "Condition": "COMPLETE",
-                "ContainerName": "ensure-mysql-database",
-              },
-            ],
-            "Environment": Array [
-              Object {
-                "Name": "KEYCLOAK_USER",
-                "Value": "admin",
-              },
-              Object {
-                "Name": "KEYCLOAK_PASSWORD",
-                "Value": "admin",
-              },
-              Object {
-                "Name": "DB_VENDOR",
-                "Value": "mysql",
-              },
-              Object {
-                "Name": "DB_NAME",
-                "Value": "keycloak",
-              },
-              Object {
-                "Name": "JGROUPS_DISCOVERY_PROTOCOL",
-                "Value": "dns.DNS_PING",
-              },
-              Object {
-                "Name": "JGROUPS_DISCOVERY_PROPERTIES",
-                "Value": Object {
-                  "Fn::Sub": Array [
-                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
-                    Object {
-                      "QueryType": "A",
-                      "ServiceName": Object {
-                        "Fn::GetAtt": Array [
-                          "ServiceCloudmapServiceDE76B29D",
-                          "Name",
-                        ],
-                      },
-                      "ServiceNamespace": "integ-fargate",
-                    },
-                  ],
-                },
-              },
-              Object {
-                "Name": "CACHE_OWNERS_COUNT",
-                "Value": "2",
-              },
-              Object {
-                "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
-                "Value": "2",
-              },
-            ],
-            "Essential": true,
-            "Image": "jboss/keycloak",
-            "LogConfiguration": Object {
-              "LogDriver": "awslogs",
-              "Options": Object {
-                "awslogs-group": Object {
-                  "Ref": "integfargatekeycloakLogGroup9E142BE1",
-                },
-                "awslogs-region": Object {
-                  "Ref": "AWS::Region",
-                },
-                "awslogs-stream-prefix": "/cdk-ecs-keycloak",
-              },
-            },
-            "Name": "keycloak",
-            "PortMappings": Array [
-              Object {
-                "ContainerPort": 8080,
-                "Protocol": "tcp",
-              },
-              Object {
-                "ContainerPort": 7600,
-                "Protocol": "tcp",
-              },
-            ],
-            "Secrets": Array [
-              Object {
-                "Name": "DB_ADDR",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":host::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_PORT",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":port::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_USER",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":username::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_PASSWORD",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":password::",
-                    ],
-                  ],
-                },
-              },
-            ],
-          },
-          Object {
-            "Command": Array [
-              "sh",
-              "-c",
-              "mysql -u\\"$DB_USER\\" -p\\"$DB_PASSWORD\\" -h\\"$DB_ADDR\\" -e \\"CREATE DATABASE IF NOT EXISTS $DB_NAME\\"",
-            ],
-            "Environment": Array [
-              Object {
-                "Name": "DB_NAME",
-                "Value": "keycloak",
-              },
-            ],
-            "Essential": false,
-            "Image": "mysql",
-            "LogConfiguration": Object {
-              "LogDriver": "awslogs",
-              "Options": Object {
-                "awslogs-group": Object {
-                  "Ref": "integfargateensuremysqldatabaseLogGroup2172258A",
-                },
-                "awslogs-region": Object {
-                  "Ref": "AWS::Region",
-                },
-                "awslogs-stream-prefix": "/cdk-ecs-keycloak",
-              },
-            },
-            "Name": "ensure-mysql-database",
-            "Secrets": Array [
-              Object {
-                "Name": "DB_ADDR",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":host::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_PORT",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":port::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_USER",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":username::",
-                    ],
-                  ],
-                },
-              },
-              Object {
-                "Name": "DB_PASSWORD",
-                "ValueFrom": Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Ref": "DBSecretAttachment1CF7DE47",
-                      },
-                      ":password::",
-                    ],
-                  ],
-                },
-              },
-            ],
-          },
-        ],
-        "Cpu": "512",
-        "ExecutionRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "integfargateExecutionRoleC3F3F2D0",
-            "Arn",
-          ],
-        },
-        "Family": "integfargateE6A3C0D3",
-        "Memory": "1024",
-        "NetworkMode": "awsvpc",
-        "RequiresCompatibilities": Array [
-          "FARGATE",
-        ],
-        "TaskRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "integfargateTaskRole75607805",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::ECS::TaskDefinition",
-    },
-    "integfargateTaskRole75607805": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "ecs-tasks.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "integfargateensuremysqldatabaseLogGroup2172258A": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "RetentionInDays": 30,
-      },
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "integfargatekeycloakLogGroup9E142BE1": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "RetentionInDays": 30,
-      },
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Retain",
     },
   },
 }

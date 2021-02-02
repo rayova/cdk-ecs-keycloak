@@ -5,8 +5,8 @@ import * as rds from '@aws-cdk/aws-rds';
 import * as discovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
-import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
-import { KeyCloakDatabaseVendor, KeyCloakContainerExtension } from './key-cloak-container-extension';
+import { KeycloakDatabaseVendor } from './keycloak-container-extension';
+import { KeycloakFargateTaskDefinition } from './keycloak-task-definition';
 
 export interface IntegFargateStackPops {
   databaseInstanceEngine: rds.IInstanceEngine;
@@ -64,26 +64,16 @@ export class IntegFargateStack extends cdk.Stack {
       throw new Error('RDS did not provide a secret');
     }
 
-    const taskDefinition: ecs.TaskDefinition = new ecs.FargateTaskDefinition(this, id, {
+    const taskDefinition = new KeycloakFargateTaskDefinition(this, 'TaskDefinition', {
       // Minimum
       cpu: 512,
       memoryLimitMiB: 1024,
+      keycloak: {
+        databaseCredentials: db.secret,
+        databaseVendor: KeycloakDatabaseVendor.MYSQL,
+        cacheOwnersCount: 2,
+      },
     });
-
-    // Keycloak extension
-    const keyCloakContainerExtension = new KeyCloakContainerExtension({
-      databaseCredentials: db.secret,
-      databaseVendor: KeyCloakDatabaseVendor.MYSQL,
-      cacheOwnersCount: 2,
-    });
-
-    // Add the Keycloak container to the task definition
-    taskDefinition.addExtension(keyCloakContainerExtension);
-    // Ensure that the mysql database is created
-    taskDefinition.addExtension(new EnsureMysqlDatabaseExtension({
-      databaseCredentials: db.secret,
-      databaseName: keyCloakContainerExtension.databaseName,
-    }));
 
     const pattern = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'Service', {
       cluster: cluster,
@@ -106,7 +96,7 @@ export class IntegFargateStack extends cdk.Stack {
     // pattern.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.allTraffic());
 
     // Enable CloudMap service discovery and inform Keycloak about its mechanism.
-    keyCloakContainerExtension.useCloudMapService(
+    taskDefinition.keycloakContainerExtension.useCloudMapService(
       pattern.service.enableCloudMap({
         dnsRecordType: discovery.DnsRecordType.A,
         dnsTtl: cdk.Duration.seconds(10),

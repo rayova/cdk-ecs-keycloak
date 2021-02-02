@@ -1,2 +1,3 @@
 export * from './ensure-mysql-database-extension';
-export * from './key-cloak-container-extension';
+export * from './keycloak-container-extension';
+export * from './keycloak-task-definition';

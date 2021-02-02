@@ -4,7 +4,7 @@ import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
 import * as cloudmap from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
-export enum KeyCloakDatabaseVendor {
+export enum KeycloakDatabaseVendor {
   /** H2 In-memory Database (Warning: data deleted when task restarts.) */
   H2 = 'h2',
   /** Postgres */
@@ -19,7 +19,7 @@ export enum KeyCloakDatabaseVendor {
   MSSQL = 'mssql',
 }
 
-export interface KeyCloakContainerExtensionProps {
+export interface KeycloakContainerExtensionProps {
   /**
    * A name for the container added to the task definition.
    * @default 'keycloak'
@@ -53,9 +53,9 @@ export interface KeyCloakContainerExtensionProps {
 
   /**
    * The database vendor.
-   * @default KeyCloakDatabaseVendor.H2
+   * @default KeycloakDatabaseVendor.H2
    */
-  readonly databaseVendor?: KeyCloakDatabaseVendor;
+  readonly databaseVendor?: KeycloakDatabaseVendor;
 
   /**
    * Default admin user. This user is created in the master realm if it doesn't exist.
@@ -77,7 +77,7 @@ export interface KeyCloakContainerExtensionProps {
  * with the CloudMap service so that we can configure the correct DNS query.
  * Without CloudMap service discovery, the default will be to use JDBC_ping.
  */
-export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension {
+export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension {
   /**
    * Name of the container added to the task definition.
    */
@@ -116,18 +116,18 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
   private readonly databaseCredentials?: secretsmanager.ISecret;
   private cloudMapService?: cloudmap.IService;
 
-  constructor(props?: KeyCloakContainerExtensionProps) {
+  constructor(props?: KeycloakContainerExtensionProps) {
     this.cacheOwnersCount = props?.cacheOwnersCount ?? 1;
     this.cacheOwnersAuthSessionsCount = props?.cacheOwnersAuthSessionsCount ?? this.cacheOwnersCount;
 
     this.containerName = props?.containerName ?? 'keycloak';
-    this.databaseVendor = props?.databaseVendor ?? KeyCloakDatabaseVendor.H2;
+    this.databaseVendor = props?.databaseVendor ?? KeycloakDatabaseVendor.H2;
     this.databaseName = props?.databaseName ?? 'keycloak';
     this.databaseCredentials = props?.databaseCredentials;
     this.defaultAdminUser = props?.defaultAdminUser ?? 'admin';
     this.defaultAdminPassword = props?.defaultAdminPassword ?? 'admin';
 
-    if (!this.databaseCredentials && this.databaseVendor !== KeyCloakDatabaseVendor.H2) {
+    if (!this.databaseCredentials && this.databaseVendor !== KeycloakDatabaseVendor.H2) {
       throw new Error(`The ${this.databaseVendor} database vendor requires credentials`);
     }
   }
@@ -145,7 +145,7 @@ export class KeyCloakContainerExtension implements ecs.ITaskDefinitionExtension 
   extend(taskDefinition: ecs.TaskDefinition): void {
     const keycloakSecrets: Record<string, ecs.Secret> = {};
 
-    const databaseNameForVendor = this.databaseVendor != KeyCloakDatabaseVendor.H2 ? this.databaseName : '';
+    const databaseNameForVendor = this.databaseVendor != KeycloakDatabaseVendor.H2 ? this.databaseName : '';
 
     if (this.databaseCredentials) {
       keycloakSecrets.DB_ADDR = ecs.Secret.fromSecretsManager(this.databaseCredentials, 'host');
