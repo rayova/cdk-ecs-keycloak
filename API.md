@@ -5,7 +5,7 @@
 Name|Description
 ----|-----------
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
-[KeyCloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Extends a task definition by adding a keycloak container to it.
+[KeyCloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Adds a keycloak container to a task definition it.
 
 
 **Structs**
@@ -68,12 +68,12 @@ extend(taskDefinition: TaskDefinition): void
 
 ## class KeyCloakContainerExtension  <a id="wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension"></a>
 
-Extends a task definition by adding a keycloak container to it.
+Adds a keycloak container to a task definition it.
 
-To cluster
-your KeyCloak servers, you need to enable service discovery and you must
-call KeyCloakContainerExtension.useService(service) with the ECS service
-so that we can configure the correct DNS query.
+To use ECS service
+discovery to locate cluster members, you need to call `useCloudMapService`
+with the CloudMap service so that we can configure the correct DNS query.
+Without CloudMap service discovery, the default will be to use JDBC_ping.
 
 __Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
 
