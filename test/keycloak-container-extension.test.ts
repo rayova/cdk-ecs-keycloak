@@ -172,6 +172,16 @@ describe('KeycloakContainerExtension', () => {
     ).toThrow(/requires credentials/i);
   });
 
+  test('throws when using an unsupported database', () => {
+    const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
+
+    expect(() => task.addExtension(
+      new KeycloakContainerExtension({
+        databaseVendor: KeycloakDatabaseVendor.ORACLE,
+      })),
+    ).toThrow(/supported/i);
+  });
+
   test('adds credentials for mysql database', () => {
     const stack = new cdk.Stack();
     const databaseCredentials = new secrets.Secret(stack, 'Secret');
