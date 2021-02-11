@@ -20,7 +20,7 @@ describe('mapDnsRecordTypeToJGroup', () => {
 });
 
 describe('KeycloakContainerExtension', () => {
-  test('has reasonable default values', () => {
+  test('has consistent default values', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
     const extension = new KeycloakContainerExtension();
@@ -40,6 +40,53 @@ describe('KeycloakContainerExtension', () => {
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: '1',
       }),
     }));
+  });
+
+  describe('default memory limits', () => {
+    test('uses user-provided values', () => {
+      const task = new ecs.Ec2TaskDefinition(new cdk.Stack(), 'TaskDefinition');
+      const addContainerSpy = jest.spyOn(task, 'addContainer');
+      const extension = new KeycloakContainerExtension({
+        memoryLimitMiB: 10_000,
+        memoryReservationMiB: 9_000,
+      });
+
+      task.addExtension(extension);
+
+      expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+        memoryLimitMiB: 10_000,
+        memoryReservationMiB: 9_000,
+      }));
+    });
+
+    test('gets from task definition if available', () => {
+      const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition', {
+        cpu: 512,
+        memoryLimitMiB: 4096,
+      });
+      const addContainerSpy = jest.spyOn(task, 'addContainer');
+      const extension = new KeycloakContainerExtension();
+
+      task.addExtension(extension);
+
+      expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+        memoryLimitMiB: 4096,
+        memoryReservationMiB: Math.round(0.8*4096),
+      }));
+    });
+
+    test('512MB unless specified', () => {
+      const task = new ecs.Ec2TaskDefinition(new cdk.Stack(), 'TaskDefinition');
+      const addContainerSpy = jest.spyOn(task, 'addContainer');
+      const extension = new KeycloakContainerExtension();
+
+      task.addExtension(extension);
+
+      expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+        memoryLimitMiB: 512,
+        memoryReservationMiB: Math.round(0.8*512),
+      }));
+    });
   });
 
   test('adds a keycloak container', () => {

@@ -21,6 +21,11 @@ export interface EnsureMysqlDatabaseExtensionProps {
    * Name of the database to create.
    */
   readonly databaseName: string;
+
+  /**
+   * Logging driver.
+   */
+  readonly logging?: ecs.LogDriver;
 }
 
 /**
@@ -31,11 +36,16 @@ export class EnsureMysqlDatabaseExtension implements ecs.ITaskDefinitionExtensio
   private readonly containerName: string;
   private readonly databaseCredentials: secretsmanager.ISecret;
   private readonly databaseName: string;
+  private readonly logging: ecs.LogDriver;
 
   constructor(props: EnsureMysqlDatabaseExtensionProps) {
     this.containerName = props.containerName ?? 'ensure-mysql-database';
     this.databaseCredentials = props.databaseCredentials;
     this.databaseName = props.databaseName;
+    this.logging = props.logging ?? ecs.LogDriver.awsLogs({
+      streamPrefix: '/cdk-ecs-keycloak',
+      logRetention: logs.RetentionDays.ONE_MONTH,
+    });
   }
 
   extend(taskDefinition: ecs.TaskDefinition) {
@@ -55,10 +65,9 @@ export class EnsureMysqlDatabaseExtension implements ecs.ITaskDefinitionExtensio
         DB_PASSWORD: ecs.Secret.fromSecretsManager(this.databaseCredentials, 'password'),
       },
       essential: false,
-      logging: ecs.LogDriver.awsLogs({
-        streamPrefix: '/cdk-ecs-keycloak',
-        logRetention: logs.RetentionDays.ONE_MONTH,
-      }),
+      logging: this.logging,
+      memoryReservationMiB: 32,
+      memoryLimitMiB: 128,
     });
 
     if (taskDefinition.defaultContainer) {

@@ -13,6 +13,7 @@ const project = new AwsCdkConstructLibrary({
     '@aws-cdk/aws-ec2',
     '@aws-cdk/aws-ecs',
     '@aws-cdk/aws-ecs-patterns',
+    '@aws-cdk/aws-iam',
     '@aws-cdk/aws-logs',
     '@aws-cdk/aws-rds',
     '@aws-cdk/aws-secretsmanager',
