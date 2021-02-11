@@ -10,16 +10,16 @@ import * as cdk from '@aws-cdk/core';
 export enum KeycloakDatabaseVendor {
   /** H2 In-memory Database (Warning: data deleted when task restarts.) */
   H2 = 'h2',
-  /** Postgres */
-  POSTGRES = 'postgres',
   /** MySQL */
   MYSQL = 'mysql',
   /** MariaDB */
   MARIADB = 'mariadb',
-  /** Oracle database */
-  ORACLE = 'oracle',
-  /** MSSQL */
+  /** MSSQL (not yet supported, please submit a PR) */
   MSSQL = 'mssql',
+  /** Oracle database (not yet supported, please submit a PR) */
+  ORACLE = 'oracle',
+  /** Postgres (not yet supported, please submit a PR) */
+  POSTGRES = 'postgres',
 }
 
 /**
@@ -75,6 +75,24 @@ export interface KeycloakContainerExtensionProps {
    * @default 'admin'
    */
   readonly defaultAdminPassword?: string;
+
+  /**
+   * Memory limit of the keycloak task.
+   * @default 1024
+   */
+  readonly memoryLimitMiB?: number;
+
+  /**
+   * Memory reservation size for the keycloak task.
+   * @default - 80% of memoryLimitMiB
+   */
+  readonly memoryReservationMiB?: number;
+
+  /**
+   * Log driver for the task.
+   * @default - cloudwatch with one month retention
+   */
+  readonly logging?: ecs.LogDriver;
 }
 
 /**
@@ -119,8 +137,12 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    */
   public readonly defaultAdminPassword: string;
 
-  private readonly databaseCredentials?: secretsmanager.ISecret;
-  private cloudMapService?: cloudmap.IService;
+  // Privates
+  private readonly _memoryLimitMiB?: number;
+  private readonly _memoryReservationMiB?: number;
+  private readonly _logging: ecs.LogDriver;
+  private readonly _databaseCredentials?: secretsmanager.ISecret;
+  private _cloudMapService?: cloudmap.IService;
 
   constructor(props?: KeycloakContainerExtensionProps) {
     this.cacheOwnersCount = props?.cacheOwnersCount ?? 1;
@@ -129,11 +151,23 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
     this.containerName = props?.containerName ?? 'keycloak';
     this.databaseVendor = props?.databaseVendor ?? KeycloakDatabaseVendor.H2;
     this.databaseName = props?.databaseName ?? 'keycloak';
-    this.databaseCredentials = props?.databaseCredentials;
+    this._databaseCredentials = props?.databaseCredentials;
     this.defaultAdminUser = props?.defaultAdminUser ?? 'admin';
     this.defaultAdminPassword = props?.defaultAdminPassword ?? 'admin';
 
-    if (!this.databaseCredentials && this.databaseVendor !== KeycloakDatabaseVendor.H2) {
+    this._memoryLimitMiB = props?.memoryLimitMiB;
+    this._memoryReservationMiB = props?.memoryReservationMiB;
+
+    this._logging = props?.logging ?? ecs.LogDriver.awsLogs({
+      streamPrefix: '/cdk-ecs-keycloak',
+      logRetention: logs.RetentionDays.ONE_MONTH,
+    });
+
+    if (!isSupportedDatabaseVendor(this.databaseVendor)) {
+      throw new Error(`The ${this.databaseVendor} is not yet tested and fully supported. Please submit a PR.`);
+    }
+
+    if (!this._databaseCredentials && this.databaseVendor !== KeycloakDatabaseVendor.H2) {
       throw new Error(`The ${this.databaseVendor} database vendor requires credentials`);
     }
   }
@@ -142,7 +176,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    * Inform Keycloak of a CloudMap service discovery mechanism.
    */
   useCloudMapService(serviceDiscovery: cloudmap.IService) {
-    this.cloudMapService = serviceDiscovery;
+    this._cloudMapService = serviceDiscovery;
   }
 
   /**
@@ -153,11 +187,24 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
 
     const databaseNameForVendor = this.databaseVendor != KeycloakDatabaseVendor.H2 ? this.databaseName : '';
 
-    if (this.databaseCredentials) {
-      keycloakSecrets.DB_ADDR = ecs.Secret.fromSecretsManager(this.databaseCredentials, 'host');
-      keycloakSecrets.DB_PORT = ecs.Secret.fromSecretsManager(this.databaseCredentials, 'port');
-      keycloakSecrets.DB_USER = ecs.Secret.fromSecretsManager(this.databaseCredentials, 'username');
-      keycloakSecrets.DB_PASSWORD = ecs.Secret.fromSecretsManager(this.databaseCredentials, 'password');
+    let keycloakMemoryLimit: number;
+    if (this._memoryLimitMiB) {
+      keycloakMemoryLimit = this._memoryLimitMiB;
+    } else if (taskDefinition.isFargateCompatible && !this._memoryLimitMiB) {
+      const cfnTaskDefinition = taskDefinition.node.defaultChild as ecs.CfnTaskDefinition;
+      keycloakMemoryLimit = parseInt(cfnTaskDefinition.memory!);
+    } else {
+      keycloakMemoryLimit = 512;
+    }
+
+    // User-specified memory reservation, otherwise 80% of the memory limit.
+    let keycloakMemoryReservation = this._memoryReservationMiB ?? Math.round(keycloakMemoryLimit * 0.8);
+
+    if (this._databaseCredentials) {
+      keycloakSecrets.DB_ADDR = ecs.Secret.fromSecretsManager(this._databaseCredentials, 'host');
+      keycloakSecrets.DB_PORT = ecs.Secret.fromSecretsManager(this._databaseCredentials, 'port');
+      keycloakSecrets.DB_USER = ecs.Secret.fromSecretsManager(this._databaseCredentials, 'username');
+      keycloakSecrets.DB_PASSWORD = ecs.Secret.fromSecretsManager(this._databaseCredentials, 'password');
     }
 
     const keycloak = taskDefinition.addContainer(this.containerName, {
@@ -177,21 +224,24 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: this.cacheOwnersAuthSessionsCount.toString(),
       },
       secrets: keycloakSecrets,
-      logging: ecs.LogDriver.awsLogs({
-        streamPrefix: '/cdk-ecs-keycloak',
-        logRetention: logs.RetentionDays.ONE_MONTH,
-      }),
+      logging: this._logging,
+      memoryLimitMiB: keycloakMemoryLimit,
+      memoryReservationMiB: keycloakMemoryReservation,
     });
 
-    keycloak.addPortMappings({ containerPort: 8080 });
-    keycloak.addPortMappings({ containerPort: 7600 });
+
+    keycloak.addPortMappings({ containerPort: 8080 }); // Web port
+    keycloak.addPortMappings({ containerPort: 7600 }); // jgroups-tcp
+    keycloak.addPortMappings({ containerPort: 57600 }); // jgroups-tcp-fd
+    keycloak.addPortMappings({ containerPort: 55200, protocol: ecs.Protocol.UDP }); // jgroups-udp
+    keycloak.addPortMappings({ containerPort: 54200, protocol: ecs.Protocol.UDP }); // jgroups-udp-fd
   }
 
   /**
    * @internal
    */
   public _getJGroupsDiscoveryProtocol() {
-    if (!this.cloudMapService) {
+    if (!this._cloudMapService) {
       return 'JDBC_PING';
     } else {
       return 'dns.DNS_PING';
@@ -202,18 +252,45 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    * @internal
    */
   public _getJGroupsDiscoveryProperties() {
-    if (!this.cloudMapService) {
+    if (!this._cloudMapService) {
       return '';
     }
 
+    // Note: SRV-based discovery isn't enough to handle bridged-mode networking.
+    // - Keycloak wants two ports for clustering in either stack mode
+    // - CloudMap currently supports only one service registry per ecs service
+    //
+    // To the reader: Got any suggestions? Open a PR. I'd love to run this on
+    // EC2 with bridged networking so that keycloak can be run in containers on
+    // bursting instance types where vpc trunking is not available.
     return cdk.Fn.sub('dns_query=${ServiceName}.${ServiceNamespace},dns_record_type=${QueryType}', {
-      ServiceName: this.cloudMapService.serviceName,
-      ServiceNamespace: this.cloudMapService.namespace.namespaceName,
-      QueryType: mapDnsRecordTypeToJGroup(this.cloudMapService.dnsRecordType),
+      ServiceName: this._cloudMapService.serviceName,
+      ServiceNamespace: this._cloudMapService.namespace.namespaceName,
+      QueryType: mapDnsRecordTypeToJGroup(this._cloudMapService.dnsRecordType),
     });
   }
 }
 
+/**
+ * Checks if the given database vendor is supported by this construct.
+ * @internal
+ */
+export function isSupportedDatabaseVendor(databaseVendor: KeycloakDatabaseVendor) {
+  switch (databaseVendor) {
+    case KeycloakDatabaseVendor.H2:
+    case KeycloakDatabaseVendor.MARIADB:
+    case KeycloakDatabaseVendor.MYSQL:
+      return true;
+
+    default:
+      return false;
+  }
+}
+
+/**
+ * Maps a cloudmap dns record type to a name recognized by the Keycloak container.
+ * @internal
+ */
 export function mapDnsRecordTypeToJGroup(dnsRecordType: cloudmap.DnsRecordType): string {
   switch (dnsRecordType) {
     case cloudmap.DnsRecordType.A: return 'A';

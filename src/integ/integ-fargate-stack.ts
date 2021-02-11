@@ -5,13 +5,16 @@ import * as rds from '@aws-cdk/aws-rds';
 import * as discovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 
-import { KeycloakDatabaseVendor } from './keycloak-container-extension';
-import { KeycloakFargateTaskDefinition } from './keycloak-task-definition';
+import { KeycloakDatabaseVendor, KeycloakFargateTaskDefinition } from '../index';
 
 export interface IntegFargateStackPops {
   databaseInstanceEngine: rds.IInstanceEngine;
 }
 
+/**
+ * Integration test. This lives in the src directory so we can run it.
+ * @internal
+ */
 export class IntegFargateStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props: IntegFargateStackPops) {
     super(scope, id);
@@ -37,6 +40,7 @@ export class IntegFargateStack extends cdk.Stack {
       },
     });
 
+    // For messing around, I'm using fargate spot.
     const cfnCluster = cluster.node.defaultChild as any as ecs.CfnCluster;
     cfnCluster.capacityProviders = ['FARGATE', 'FARGATE_SPOT'];
     cfnCluster.defaultCapacityProviderStrategy = [
@@ -71,24 +75,30 @@ export class IntegFargateStack extends cdk.Stack {
       keycloak: {
         databaseCredentials: db.secret,
         databaseVendor: KeycloakDatabaseVendor.MYSQL,
-        cacheOwnersCount: 2,
+        cacheOwnersCount: 3,
       },
     });
 
     const pattern = new ecs_patterns.ApplicationLoadBalancedFargateService(this, 'Service', {
       cluster: cluster,
       assignPublicIp: true,
-      // For Fargate on 0.5 vCPU / 1GB, startup time is about 80 seconds,
-      // but the service doesn't stabilize for about ten minutes.
+      // This can take a while, while the cluster synchronizes.
       healthCheckGracePeriod: cdk.Duration.minutes(10),
       minHealthyPercent: 100,
-      maxHealthyPercent: 200,
+      maxHealthyPercent: 300,
       taskDefinition: taskDefinition,
       desiredCount: 2,
       taskSubnets: {
         subnetType: ec2.SubnetType.PUBLIC,
       },
     });
+
+    pattern.targetGroup.configureHealthCheck({
+      path: '/auth/realms/master',
+      enabled: true,
+    });
+
+    pattern.targetGroup.setAttribute('deregistration_delay.timeout_seconds', '5');
 
     // Tasks can connect to themselves for cache access.
     pattern.service.connections.allowFrom(pattern.service, ec2.Port.allTraffic());
@@ -111,9 +121,7 @@ export class IntegFargateStack extends cdk.Stack {
   }
 }
 
-// yarn cdk --app 'ts-node -P tsconfig.jest.json src/integ-fargate-stack' deploy
 const app = new cdk.App();
-
-new IntegFargateStack(app, 'integ-fargate', {
+new IntegFargateStack(app, 'integ-fargate-stack', {
   databaseInstanceEngine: rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }),
 });

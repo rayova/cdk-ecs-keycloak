@@ -38,7 +38,7 @@ export class KeycloakFargateTaskDefinition extends ecs.FargateTaskDefinition imp
 /**
  * Props for `KeycloakEc2TaskDefinition`
  */
-export interface KeycloakEc2TaskDefinitionProps extends ecs.FargateTaskDefinitionProps {
+export interface KeycloakEc2TaskDefinitionProps extends ecs.Ec2TaskDefinitionProps {
   /** Keycloak configuration */
   readonly keycloak?: KeycloakContainerExtensionProps;
 }
@@ -50,6 +50,10 @@ export class KeycloakEc2TaskDefinition extends ecs.Ec2TaskDefinition implements 
   public readonly keycloakContainerExtension: KeycloakContainerExtension;
 
   constructor(scope: cdk.Construct, id: string, props: KeycloakEc2TaskDefinitionProps) {
+    if (props.networkMode !== ecs.NetworkMode.AWS_VPC) {
+      throw new Error('Only VPC networking mode is supported at the moment.');
+    }
+
     super(scope, id, props);
     this.keycloakContainerExtension = configureKeyCloak(this, props.keycloak);
   }

@@ -28,10 +28,16 @@ Object {
       },
     },
   },
+  "Parameters": Object {
+    "SsmParameterValueawsserviceecsoptimizedamiamazonlinux2recommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter": Object {
+      "Default": "/aws/service/ecs/optimized-ami/amazon-linux-2/recommended/image_id",
+      "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+    },
+  },
   "Resources": Object {
     "ClusterDefaultServiceDiscoveryNamespaceC336F9B4": Object {
       "Properties": Object {
-        "Name": "integ-fargate",
+        "Name": "integ-ec2",
         "Vpc": Object {
           "Ref": "Vpc8378EB38",
         },
@@ -39,23 +45,591 @@ Object {
       "Type": "AWS::ServiceDiscovery::PrivateDnsNamespace",
     },
     "ClusterEB0386A7": Object {
+      "Type": "AWS::ECS::Cluster",
+    },
+    "ClustercapacityASG73C65867": Object {
       "Properties": Object {
-        "CapacityProviders": Array [
-          "FARGATE",
-          "FARGATE_SPOT",
-        ],
-        "DefaultCapacityProviderStrategy": Array [
+        "DesiredCapacity": "4",
+        "LaunchConfigurationName": Object {
+          "Ref": "ClustercapacityLaunchConfig5AF4EF2A",
+        },
+        "MaxSize": "4",
+        "MinSize": "1",
+        "Tags": Array [
           Object {
-            "CapacityProvider": "FARGATE_SPOT",
-            "Weight": 100,
+            "Key": "Name",
+            "PropagateAtLaunch": true,
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+        "VPCZoneIdentifier": Array [
+          Object {
+            "Ref": "VpcpublicSubnet1Subnet2BB74ED7",
           },
           Object {
-            "CapacityProvider": "FARGATE",
-            "Weight": 1,
+            "Ref": "VpcpublicSubnet2SubnetE34B022A",
           },
         ],
       },
-      "Type": "AWS::ECS::Cluster",
+      "Type": "AWS::AutoScaling::AutoScalingGroup",
+      "UpdatePolicy": Object {
+        "AutoScalingReplacingUpdate": Object {
+          "WillReplace": true,
+        },
+        "AutoScalingScheduledAction": Object {
+          "IgnoreUnmodifiedGroupSizeProperties": true,
+        },
+      },
+    },
+    "ClustercapacityDrainECSHookFunction0E828EC6": Object {
+      "DependsOn": Array [
+        "ClustercapacityDrainECSHookFunctionServiceRoleDefaultPolicyB4C76CBC",
+        "ClustercapacityDrainECSHookFunctionServiceRole6B7C7732",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "ZipFile": "import boto3, json, os, time
+
+ecs = boto3.client('ecs')
+autoscaling = boto3.client('autoscaling')
+
+
+def lambda_handler(event, context):
+  print(json.dumps(event))
+  cluster = os.environ['CLUSTER']
+  snsTopicArn = event['Records'][0]['Sns']['TopicArn']
+  lifecycle_event = json.loads(event['Records'][0]['Sns']['Message'])
+  instance_id = lifecycle_event.get('EC2InstanceId')
+  if not instance_id:
+    print('Got event without EC2InstanceId: %s', json.dumps(event))
+    return
+
+  instance_arn = container_instance_arn(cluster, instance_id)
+  print('Instance %s has container instance ARN %s' % (lifecycle_event['EC2InstanceId'], instance_arn))
+
+  if not instance_arn:
+    return
+
+  while has_tasks(cluster, instance_arn):
+    time.sleep(10)
+
+  try:
+    print('Terminating instance %s' % instance_id)
+    autoscaling.complete_lifecycle_action(
+        LifecycleActionResult='CONTINUE',
+        **pick(lifecycle_event, 'LifecycleHookName', 'LifecycleActionToken', 'AutoScalingGroupName'))
+  except Exception as e:
+    # Lifecycle action may have already completed.
+    print(str(e))
+
+
+def container_instance_arn(cluster, instance_id):
+  \\"\\"\\"Turn an instance ID into a container instance ARN.\\"\\"\\"
+  arns = ecs.list_container_instances(cluster=cluster, filter='ec2InstanceId==' + instance_id)['containerInstanceArns']
+  if not arns:
+    return None
+  return arns[0]
+
+
+def has_tasks(cluster, instance_arn):
+  \\"\\"\\"Return True if the instance is running tasks for the given cluster.\\"\\"\\"
+  instances = ecs.describe_container_instances(cluster=cluster, containerInstances=[instance_arn])['containerInstances']
+  if not instances:
+    return False
+  instance = instances[0]
+
+  if instance['status'] == 'ACTIVE':
+    # Start draining, then try again later
+    set_container_instance_to_draining(cluster, instance_arn)
+    return True
+
+  tasks = instance['runningTasksCount'] + instance['pendingTasksCount']
+  print('Instance %s has %s tasks' % (instance_arn, tasks))
+
+  return tasks > 0
+
+
+def set_container_instance_to_draining(cluster, instance_arn):
+  ecs.update_container_instances_state(
+      cluster=cluster,
+      containerInstances=[instance_arn], status='DRAINING')
+
+
+def pick(dct, *keys):
+  \\"\\"\\"Pick a subset of a dict.\\"\\"\\"
+  return {k: v for k, v in dct.items() if k in keys}
+",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "CLUSTER": Object {
+              "Ref": "ClusterEB0386A7",
+            },
+          },
+        },
+        "Handler": "index.lambda_handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "ClustercapacityDrainECSHookFunctionServiceRole6B7C7732",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.6",
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+        "Timeout": 310,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "ClustercapacityDrainECSHookFunctionAllowInvokeintegec2ClustercapacityLifecycleHookDrainHookTopic10321016D907DBF6": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "ClustercapacityDrainECSHookFunction0E828EC6",
+            "Arn",
+          ],
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": Object {
+          "Ref": "ClustercapacityLifecycleHookDrainHookTopic4134582C",
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "ClustercapacityDrainECSHookFunctionServiceRole6B7C7732": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ClustercapacityDrainECSHookFunctionServiceRoleDefaultPolicyB4C76CBC": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ec2:DescribeInstances",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeHosts",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": "autoscaling:CompleteLifecycleAction",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::Join": Array [
+                  "",
+                  Array [
+                    "arn:",
+                    Object {
+                      "Ref": "AWS::Partition",
+                    },
+                    ":autoscaling:",
+                    Object {
+                      "Ref": "AWS::Region",
+                    },
+                    ":",
+                    Object {
+                      "Ref": "AWS::AccountId",
+                    },
+                    ":autoScalingGroup:*:autoScalingGroupName/",
+                    Object {
+                      "Ref": "ClustercapacityASG73C65867",
+                    },
+                  ],
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ecs:DescribeContainerInstances",
+                "ecs:DescribeTasks",
+              ],
+              "Condition": Object {
+                "ArnEquals": Object {
+                  "ecs:cluster": Object {
+                    "Fn::GetAtt": Array [
+                      "ClusterEB0386A7",
+                      "Arn",
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "ecs:ListContainerInstances",
+                "ecs:SubmitContainerStateChange",
+                "ecs:SubmitTaskStateChange",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "ClusterEB0386A7",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ecs:UpdateContainerInstancesState",
+                "ecs:ListTasks",
+              ],
+              "Condition": Object {
+                "ArnEquals": Object {
+                  "ecs:cluster": Object {
+                    "Fn::GetAtt": Array [
+                      "ClusterEB0386A7",
+                      "Arn",
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ClustercapacityDrainECSHookFunctionServiceRoleDefaultPolicyB4C76CBC",
+        "Roles": Array [
+          Object {
+            "Ref": "ClustercapacityDrainECSHookFunctionServiceRole6B7C7732",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ClustercapacityDrainECSHookFunctionTopic8FD3D61E": Object {
+      "Properties": Object {
+        "Endpoint": Object {
+          "Fn::GetAtt": Array [
+            "ClustercapacityDrainECSHookFunction0E828EC6",
+            "Arn",
+          ],
+        },
+        "Protocol": "lambda",
+        "TopicArn": Object {
+          "Ref": "ClustercapacityLifecycleHookDrainHookTopic4134582C",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "ClustercapacityInstanceProfileA6D88AB0": Object {
+      "Properties": Object {
+        "Roles": Array [
+          Object {
+            "Ref": "ClustercapacityInstanceRoleC67C613F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "ClustercapacityInstanceRoleC67C613F": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      "ec2.",
+                      Object {
+                        "Ref": "AWS::URLSuffix",
+                      },
+                    ],
+                  ],
+                },
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonSSMManagedInstanceCore",
+              ],
+            ],
+          },
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/AmazonS3FullAccess",
+              ],
+            ],
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ClustercapacityInstanceRoleDefaultPolicy71F95536": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "ecs:DeregisterContainerInstance",
+                "ecs:RegisterContainerInstance",
+                "ecs:Submit*",
+              ],
+              "Effect": "Allow",
+              "Resource": Object {
+                "Fn::GetAtt": Array [
+                  "ClusterEB0386A7",
+                  "Arn",
+                ],
+              },
+            },
+            Object {
+              "Action": Array [
+                "ecs:Poll",
+                "ecs:StartTelemetrySession",
+              ],
+              "Condition": Object {
+                "ArnEquals": Object {
+                  "ecs:cluster": Object {
+                    "Fn::GetAtt": Array [
+                      "ClusterEB0386A7",
+                      "Arn",
+                    ],
+                  },
+                },
+              },
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "ecs:DiscoverPollEndpoint",
+                "ecr:GetAuthorizationToken",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ClustercapacityInstanceRoleDefaultPolicy71F95536",
+        "Roles": Array [
+          Object {
+            "Ref": "ClustercapacityInstanceRoleC67C613F",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ClustercapacityInstanceSecurityGroup8FC426EA": Object {
+      "Properties": Object {
+        "GroupDescription": "integ-ec2/Cluster/capacity/InstanceSecurityGroup",
+        "SecurityGroupEgress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+        "VpcId": Object {
+          "Ref": "Vpc8378EB38",
+        },
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "ClustercapacityLaunchConfig5AF4EF2A": Object {
+      "DependsOn": Array [
+        "ClustercapacityInstanceRoleDefaultPolicy71F95536",
+        "ClustercapacityInstanceRoleC67C613F",
+      ],
+      "Properties": Object {
+        "IamInstanceProfile": Object {
+          "Ref": "ClustercapacityInstanceProfileA6D88AB0",
+        },
+        "ImageId": Object {
+          "Ref": "SsmParameterValueawsserviceecsoptimizedamiamazonlinux2recommendedimageidC96584B6F00A464EAD1953AFF4B05118Parameter",
+        },
+        "InstanceType": "t3.small",
+        "SecurityGroups": Array [
+          Object {
+            "Fn::GetAtt": Array [
+              "ClustercapacityInstanceSecurityGroup8FC426EA",
+              "GroupId",
+            ],
+          },
+        ],
+        "UserData": Object {
+          "Fn::Base64": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "#!/bin/bash
+echo ECS_CLUSTER=",
+                Object {
+                  "Ref": "ClusterEB0386A7",
+                },
+                " >> /etc/ecs/ecs.config
+sudo iptables --insert FORWARD 1 --in-interface docker+ --destination 169.254.169.254/32 --jump DROP
+sudo service iptables save
+echo ECS_AWSVPC_BLOCK_IMDS=true >> /etc/ecs/ecs.config
+yum install -y https://s3.region.amazonaws.com/amazon-ssm-region/latest/linux_arm64/amazon-ssm-agent.rpm
+systemctl enable amazon-ssm-agent
+systemctl start amazon-ssm-agent",
+              ],
+            ],
+          },
+        },
+      },
+      "Type": "AWS::AutoScaling::LaunchConfiguration",
+    },
+    "ClustercapacityLifecycleHookDrainHook44441A0C": Object {
+      "DependsOn": Array [
+        "ClustercapacityLifecycleHookDrainHookRoleDefaultPolicyA6C71A04",
+        "ClustercapacityLifecycleHookDrainHookRole1794CC7A",
+      ],
+      "Properties": Object {
+        "AutoScalingGroupName": Object {
+          "Ref": "ClustercapacityASG73C65867",
+        },
+        "DefaultResult": "CONTINUE",
+        "HeartbeatTimeout": 300,
+        "LifecycleTransition": "autoscaling:EC2_INSTANCE_TERMINATING",
+        "NotificationTargetARN": Object {
+          "Ref": "ClustercapacityLifecycleHookDrainHookTopic4134582C",
+        },
+        "RoleARN": Object {
+          "Fn::GetAtt": Array [
+            "ClustercapacityLifecycleHookDrainHookRole1794CC7A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::AutoScaling::LifecycleHook",
+    },
+    "ClustercapacityLifecycleHookDrainHookRole1794CC7A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "autoscaling.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "ClustercapacityLifecycleHookDrainHookRoleDefaultPolicyA6C71A04": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sns:Publish",
+              "Effect": "Allow",
+              "Resource": Object {
+                "Ref": "ClustercapacityLifecycleHookDrainHookTopic4134582C",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "ClustercapacityLifecycleHookDrainHookRoleDefaultPolicyA6C71A04",
+        "Roles": Array [
+          Object {
+            "Ref": "ClustercapacityLifecycleHookDrainHookRole1794CC7A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "ClustercapacityLifecycleHookDrainHookTopic4134582C": Object {
+      "Properties": Object {
+        "Tags": Array [
+          Object {
+            "Key": "Name",
+            "Value": "integ-ec2/Cluster/capacity",
+          },
+        ],
+      },
+      "Type": "AWS::SNS::Topic",
     },
     "DB4924F778": Object {
       "Properties": Object {
@@ -155,9 +729,9 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "DBSecurityGroupfromintegfargateServiceSecurityGroup9EB23104IndirectPort6B16E572": Object {
+    "DBSecurityGroupfromintegec2ServiceSecurityGroupE281D2EDIndirectPortFA393162": Object {
       "Properties": Object {
-        "Description": "from integfargateServiceSecurityGroup9EB23104:{IndirectPort}",
+        "Description": "from integec2ServiceSecurityGroupE281D2ED:{IndirectPort}",
         "FromPort": Object {
           "Fn::GetAtt": Array [
             "DB4924F778",
@@ -206,26 +780,17 @@ Object {
         "ServiceLBPublicListener46709EAA",
       ],
       "Properties": Object {
-        "CapacityProviderStrategy": Array [
-          Object {
-            "CapacityProvider": "FARGATE_SPOT",
-            "Weight": 100,
-          },
-          Object {
-            "CapacityProvider": "FARGATE",
-            "Weight": 1,
-          },
-        ],
         "Cluster": Object {
           "Ref": "ClusterEB0386A7",
         },
         "DeploymentConfiguration": Object {
-          "MaximumPercent": 300,
+          "MaximumPercent": 200,
           "MinimumHealthyPercent": 100,
         },
-        "DesiredCount": 2,
+        "DesiredCount": 4,
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 600,
+        "LaunchType": "EC2",
         "LoadBalancers": Array [
           Object {
             "ContainerName": "keycloak",
@@ -237,7 +802,7 @@ Object {
         ],
         "NetworkConfiguration": Object {
           "AwsvpcConfiguration": Object {
-            "AssignPublicIp": "ENABLED",
+            "AssignPublicIp": "DISABLED",
             "SecurityGroups": Array [
               Object {
                 "Fn::GetAtt": Array [
@@ -256,8 +821,11 @@ Object {
             ],
           },
         },
+        "SchedulingStrategy": "REPLICA",
         "ServiceRegistries": Array [
           Object {
+            "ContainerName": "keycloak",
+            "ContainerPort": 55200,
             "RegistryArn": Object {
               "Fn::GetAtt": Array [
                 "ServiceCloudmapServiceDE76B29D",
@@ -292,6 +860,7 @@ Object {
         "HealthCheckCustomConfig": Object {
           "FailureThreshold": 1,
         },
+        "Name": "foobar",
         "NamespaceId": Object {
           "Fn::GetAtt": Array [
             "ClusterDefaultServiceDiscoveryNamespaceC336F9B4",
@@ -354,16 +923,8 @@ Object {
     },
     "ServiceLBPublicListenerECSGroup0CC8688C": Object {
       "Properties": Object {
-        "HealthCheckEnabled": true,
-        "HealthCheckPath": "/auth/realms/master",
         "Port": 80,
         "Protocol": "HTTP",
-        "TargetGroupAttributes": Array [
-          Object {
-            "Key": "deregistration_delay.timeout_seconds",
-            "Value": "5",
-          },
-        ],
         "TargetType": "ip",
         "VpcId": Object {
           "Ref": "Vpc8378EB38",
@@ -373,7 +934,7 @@ Object {
     },
     "ServiceLBSecurityGroupF7435A5C": Object {
       "Properties": Object {
-        "GroupDescription": "Automatically created Security Group for ELB integfargateServiceLB84FABA5B",
+        "GroupDescription": "Automatically created Security Group for ELB integec2ServiceLB0B25F552",
         "SecurityGroupIngress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -389,7 +950,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "ServiceLBSecurityGrouptointegfargateServiceSecurityGroup9EB231048080EDAD8D04": Object {
+    "ServiceLBSecurityGrouptointegec2ServiceSecurityGroupE281D2ED80805687C386": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": Object {
@@ -412,7 +973,7 @@ Object {
     },
     "ServiceSecurityGroupEEA09B68": Object {
       "Properties": Object {
-        "GroupDescription": "integ-fargate/Service/Service/SecurityGroup",
+        "GroupDescription": "integ-ec2/Service/Service/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -426,7 +987,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "ServiceSecurityGroupfromintegfargateServiceLBSecurityGroupC37D3C318080548BC1ED": Object {
+    "ServiceSecurityGroupfromintegec2ServiceLBSecurityGroup492EF4838080A283E10A": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "FromPort": 8080,
@@ -447,9 +1008,9 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
-    "ServiceSecurityGroupfromintegfargateServiceSecurityGroup9EB23104ALLTRAFFIC187E5074": Object {
+    "ServiceSecurityGroupfromintegec2ServiceSecurityGroupE281D2EDALLTRAFFICCB9D774F": Object {
       "Properties": Object {
-        "Description": "from integfargateServiceSecurityGroup9EB23104:ALL TRAFFIC",
+        "Description": "from integec2ServiceSecurityGroupE281D2ED:ALL TRAFFIC",
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "ServiceSecurityGroupEEA09B68",
@@ -510,18 +1071,18 @@ Object {
                           "Name",
                         ],
                       },
-                      "ServiceNamespace": "integ-fargate",
+                      "ServiceNamespace": "integ-ec2",
                     },
                   ],
                 },
               },
               Object {
                 "Name": "CACHE_OWNERS_COUNT",
-                "Value": "3",
+                "Value": "2",
               },
               Object {
                 "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
-                "Value": "3",
+                "Value": "2",
               },
             ],
             "Essential": true,
@@ -538,8 +1099,8 @@ Object {
                 "awslogs-stream-prefix": "/cdk-ecs-keycloak",
               },
             },
-            "Memory": 1024,
-            "MemoryReservation": 819,
+            "Memory": 512,
+            "MemoryReservation": 410,
             "Name": "keycloak",
             "PortMappings": Array [
               Object {
@@ -711,18 +1272,16 @@ Object {
             ],
           },
         ],
-        "Cpu": "512",
         "ExecutionRoleArn": Object {
           "Fn::GetAtt": Array [
             "TaskDefinitionExecutionRole8D61C2FB",
             "Arn",
           ],
         },
-        "Family": "integfargateTaskDefinitionBE0DB7C0",
-        "Memory": "1024",
+        "Family": "integec2TaskDefinitionAEAFB7CA",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": Array [
-          "FARGATE",
+          "EC2",
         ],
         "TaskRoleArn": Object {
           "Fn::GetAtt": Array [
@@ -844,7 +1403,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc",
+            "Value": "integ-ec2/Vpc",
           },
         ],
       },
@@ -855,7 +1414,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc",
+            "Value": "integ-ec2/Vpc",
           },
         ],
       },
@@ -892,7 +1451,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc/publicSubnet1",
+            "Value": "integ-ec2/Vpc/publicSubnet1",
           },
         ],
         "VpcId": Object {
@@ -935,7 +1494,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc/publicSubnet1",
+            "Value": "integ-ec2/Vpc/publicSubnet1",
           },
         ],
         "VpcId": Object {
@@ -975,7 +1534,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc/publicSubnet2",
+            "Value": "integ-ec2/Vpc/publicSubnet2",
           },
         ],
         "VpcId": Object {
@@ -1007,7 +1566,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-fargate/Vpc/publicSubnet2",
+            "Value": "integ-ec2/Vpc/publicSubnet2",
           },
         ],
         "VpcId": Object {
