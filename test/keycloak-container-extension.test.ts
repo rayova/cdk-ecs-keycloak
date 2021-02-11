@@ -71,7 +71,7 @@ describe('KeycloakContainerExtension', () => {
 
       expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
         memoryLimitMiB: 4096,
-        memoryReservationMiB: Math.round(0.8*4096),
+        memoryReservationMiB: Math.round(0.8 * 4096),
       }));
     });
 
@@ -84,7 +84,7 @@ describe('KeycloakContainerExtension', () => {
 
       expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
         memoryLimitMiB: 512,
-        memoryReservationMiB: Math.round(0.8*512),
+        memoryReservationMiB: Math.round(0.8 * 512),
       }));
     });
   });
@@ -162,6 +162,20 @@ describe('KeycloakContainerExtension', () => {
     expect(extension.cacheOwnersAuthSessionsCount).toEqual(5);
   });
 
+  test('accepts a custom logging driver', () => {
+    const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
+
+    task.addExtension(
+      new KeycloakContainerExtension({
+        logging: new ecs.SplunkLogDriver({
+          token: cdk.SecretValue.plainText('secret'),
+          url: 'someurl',
+        }),
+      }));
+
+    expect(task.defaultContainer?.logDriverConfig?.logDriver).toEqual('splunk');
+  });
+
   test('throws when credentials not present for non-h2 database vendor', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
 
@@ -170,6 +184,16 @@ describe('KeycloakContainerExtension', () => {
         databaseVendor: KeycloakDatabaseVendor.MYSQL,
       })),
     ).toThrow(/requires credentials/i);
+  });
+
+  test('throws when using an unsupported database', () => {
+    const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
+
+    expect(() => task.addExtension(
+      new KeycloakContainerExtension({
+        databaseVendor: KeycloakDatabaseVendor.ORACLE,
+      })),
+    ).toThrow(/supported/i);
   });
 
   test('adds credentials for mysql database', () => {
