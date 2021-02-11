@@ -29,9 +29,9 @@ export interface KeycloakFargateTaskDefinitionProps extends ecs.FargateTaskDefin
 export class KeycloakFargateTaskDefinition extends ecs.FargateTaskDefinition implements IKeycloakTaskDefinition {
   public readonly keycloakContainerExtension: KeycloakContainerExtension;
 
-  constructor(scope: cdk.Construct, id: string, props: KeycloakFargateTaskDefinitionProps) {
+  constructor(scope: cdk.Construct, id: string, props?: KeycloakFargateTaskDefinitionProps) {
     super(scope, id, props);
-    this.keycloakContainerExtension = configureKeyCloak(this, props.keycloak);
+    this.keycloakContainerExtension = configureKeyCloak(this, props?.keycloak);
   }
 }
 
@@ -49,17 +49,27 @@ export interface KeycloakEc2TaskDefinitionProps extends ecs.Ec2TaskDefinitionPro
 export class KeycloakEc2TaskDefinition extends ecs.Ec2TaskDefinition implements IKeycloakTaskDefinition {
   public readonly keycloakContainerExtension: KeycloakContainerExtension;
 
-  constructor(scope: cdk.Construct, id: string, props: KeycloakEc2TaskDefinitionProps) {
-    if (props.networkMode !== ecs.NetworkMode.AWS_VPC) {
+  constructor(scope: cdk.Construct, id: string, props?: KeycloakEc2TaskDefinitionProps) {
+    const networkMode = props?.networkMode ?? ecs.NetworkMode.AWS_VPC;
+
+    if (networkMode !== ecs.NetworkMode.AWS_VPC) {
       throw new Error('Only VPC networking mode is supported at the moment.');
     }
 
-    super(scope, id, props);
-    this.keycloakContainerExtension = configureKeyCloak(this, props.keycloak);
+    super(scope, id, {
+      ...props,
+      networkMode,
+    });
+
+    this.keycloakContainerExtension = configureKeyCloak(this, props?.keycloak);
   }
 }
 
-function configureKeyCloak(task: ecs.TaskDefinition, keycloak?: KeycloakContainerExtensionProps) {
+/**
+ * Configures keycloak on a task definition.
+ * @internal
+ */
+export function configureKeyCloak(task: ecs.TaskDefinition, keycloak?: KeycloakContainerExtensionProps) {
   const extension = new KeycloakContainerExtension(keycloak);
   task.addExtension(extension);
 
