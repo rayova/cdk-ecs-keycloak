@@ -38,6 +38,7 @@ yarn-error.log*
 !/.github/workflows/build.yml
 !/.github/workflows/rebuild-bot.yml
 !/.github/workflows/release.yml
+!/.github/workflows/yarn-upgrade.yml
 !/.mergify.yml
 !/.npmignore
 !/.projen/deps.json
