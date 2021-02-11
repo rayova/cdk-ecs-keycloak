@@ -170,7 +170,7 @@ __Extends__: [Ec2TaskDefinition](#aws-cdk-aws-ecs-ec2taskdefinition)
 
 
 ```ts
-new KeycloakEc2TaskDefinition(scope: Construct, id: string, props: KeycloakEc2TaskDefinitionProps)
+new KeycloakEc2TaskDefinition(scope: Construct, id: string, props?: KeycloakEc2TaskDefinitionProps)
 ```
 
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
@@ -211,7 +211,7 @@ __Extends__: [FargateTaskDefinition](#aws-cdk-aws-ecs-fargatetaskdefinition)
 
 
 ```ts
-new KeycloakFargateTaskDefinition(scope: Construct, id: string, props: KeycloakFargateTaskDefinitionProps)
+new KeycloakFargateTaskDefinition(scope: Construct, id: string, props?: KeycloakFargateTaskDefinitionProps)
 ```
 
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
