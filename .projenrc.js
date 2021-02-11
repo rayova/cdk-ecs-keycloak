@@ -1,4 +1,4 @@
-const { AwsCdkConstructLibrary, GithubWorkflow } = require('projen');
+const { AwsCdkConstructLibrary } = require('projen');
 
 const project = new AwsCdkConstructLibrary({
   author: 'Josh Kellendonk',
@@ -152,6 +152,7 @@ yarnUp.addJobs({
           'title': 'chore: automatic yarn upgrade',
           'commit-message': 'chore: automatic yarn upgrade',
           'token': '${{ secrets.YARN_UPGRADE_TOKEN }}',
+          'labels': 'auto-merge',
         },
       },
     ],

@@ -21,3 +21,4 @@ jobs:
           title: "chore: automatic yarn upgrade"
           commit-message: "chore: automatic yarn upgrade"
           token: ${{ secrets.YARN_UPGRADE_TOKEN }}
+          labels: auto-merge
