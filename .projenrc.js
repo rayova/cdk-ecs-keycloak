@@ -131,7 +131,7 @@ const project = new AwsCdkConstructLibrary({
 const yarnUp = project.github.addWorkflow('yarn-upgrade');
 
 yarnUp.on({
-  schedule: [{ cron: '0 6 * * *' }],
+  schedule: [{ cron: '0 4 * * *' }],
   workflow_dispatch: {},
 });
 
