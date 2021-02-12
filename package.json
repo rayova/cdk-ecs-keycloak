@@ -53,24 +53,30 @@
     "typescript": "^3.9.5"
   },
   "peerDependencies": {
+    "@aws-cdk/aws-certificatemanager": "^1.73.0",
     "@aws-cdk/aws-ec2": "^1.73.0",
     "@aws-cdk/aws-ecs": "^1.73.0",
     "@aws-cdk/aws-ecs-patterns": "^1.73.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "^1.73.0",
     "@aws-cdk/aws-iam": "^1.73.0",
     "@aws-cdk/aws-logs": "^1.73.0",
     "@aws-cdk/aws-rds": "^1.73.0",
+    "@aws-cdk/aws-route53": "^1.73.0",
     "@aws-cdk/aws-secretsmanager": "^1.73.0",
     "@aws-cdk/aws-servicediscovery": "^1.73.0",
     "@aws-cdk/core": "^1.73.0",
     "constructs": "^3.2.27"
   },
   "dependencies": {
+    "@aws-cdk/aws-certificatemanager": "^1.73.0",
     "@aws-cdk/aws-ec2": "^1.73.0",
     "@aws-cdk/aws-ecs": "^1.73.0",
     "@aws-cdk/aws-ecs-patterns": "^1.73.0",
+    "@aws-cdk/aws-elasticloadbalancingv2": "^1.73.0",
     "@aws-cdk/aws-iam": "^1.73.0",
     "@aws-cdk/aws-logs": "^1.73.0",
     "@aws-cdk/aws-rds": "^1.73.0",
+    "@aws-cdk/aws-route53": "^1.73.0",
     "@aws-cdk/aws-secretsmanager": "^1.73.0",
     "@aws-cdk/aws-servicediscovery": "^1.73.0",
     "@aws-cdk/core": "^1.73.0"

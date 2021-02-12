@@ -1,4 +1,5 @@
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as logs from '@aws-cdk/aws-logs';
 import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
 import * as cloudmap from '@aws-cdk/aws-servicediscovery';
@@ -222,6 +223,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
         }),
         CACHE_OWNERS_COUNT: this.cacheOwnersCount.toString(),
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: this.cacheOwnersAuthSessionsCount.toString(),
+        JDBC_PARAMS: 'useSSL=false',
       },
       secrets: keycloakSecrets,
       logging: this._logging,
@@ -267,6 +269,17 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
       ServiceName: this._cloudMapService.serviceName,
       ServiceNamespace: this._cloudMapService.namespace.namespaceName,
       QueryType: mapDnsRecordTypeToJGroup(this._cloudMapService.dnsRecordType),
+    });
+  }
+
+  /**
+   * Configure health checks on the target group.
+   * @param targetGroup
+   */
+  public configureHealthCheck(targetGroup: elbv2.ApplicationTargetGroup) {
+    targetGroup.configureHealthCheck({
+      path: '/auth/realms/master',
+      enabled: true,
     });
   }
 }

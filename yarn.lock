@@ -117,7 +117,7 @@
     "@aws-cdk/core" "1.89.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-certificatemanager@1.89.0":
+"@aws-cdk/aws-certificatemanager@1.89.0", "@aws-cdk/aws-certificatemanager@^1.73.0":
   version "1.89.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-certificatemanager/-/aws-certificatemanager-1.89.0.tgz#b105b7bc9b20856524929803936b790fbfbf6601"
   integrity sha512-b7fwr5HXBOuGiBd8SNQzVTyJyX1BsHtLgu5eUQI6tVHmqlSCe4QlmHZArywzn7Y4RCfikZEhL+u41fC5DEPTfQ==
@@ -346,7 +346,7 @@
     "@aws-cdk/core" "1.89.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-elasticloadbalancingv2@1.89.0":
+"@aws-cdk/aws-elasticloadbalancingv2@1.89.0", "@aws-cdk/aws-elasticloadbalancingv2@^1.73.0":
   version "1.89.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticloadbalancingv2/-/aws-elasticloadbalancingv2-1.89.0.tgz#83b8c140f5bd237be25caeb331269664d6d7286a"
   integrity sha512-2EV4SgK825wivWnK53RVrKiy6kdjgI/p0fwkqWnW/gCkhlHjix+++cPHfj6kFmvPwyA4wvsxFWTRTu46EnrAKA==
@@ -504,7 +504,7 @@
     "@aws-cdk/region-info" "1.89.0"
     constructs "^3.2.0"
 
-"@aws-cdk/aws-route53@1.89.0":
+"@aws-cdk/aws-route53@1.89.0", "@aws-cdk/aws-route53@^1.73.0":
   version "1.89.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-route53/-/aws-route53-1.89.0.tgz#6556f0fe35cffa92a9fd8e3eee3afb94a4184f51"
   integrity sha512-dJGIIczaJYmNyIUxZHYhdUJQ39H5mttW8V5TzSLj1hDm9IK1bgfQapj4jZgOlUNADb8z6/zKAiFSOvtqfthKcQ==

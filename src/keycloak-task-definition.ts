@@ -1,4 +1,6 @@
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
+import * as servicediscovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
 import {
@@ -13,6 +15,16 @@ import {
 export interface IKeycloakTaskDefinition {
   /** The Keycloak container extension */
   readonly keycloakContainerExtension: KeycloakContainerExtension;
+
+  /**
+   * Register the task definition with a cloudmap service.
+   */
+  useCloudMapService(cloudMapService: servicediscovery.IService): void;
+
+  /**
+   * Configures the health check of the application target group.
+   */
+  configureHealthCheck(targetGroup: elbv2.ApplicationTargetGroup): void;
 }
 
 /**
@@ -32,6 +44,16 @@ export class KeycloakFargateTaskDefinition extends ecs.FargateTaskDefinition imp
   constructor(scope: cdk.Construct, id: string, props?: KeycloakFargateTaskDefinitionProps) {
     super(scope, id, props);
     this.keycloakContainerExtension = configureKeyCloak(this, props?.keycloak);
+  }
+
+  /** @inheritDoc */
+  public useCloudMapService(cloudMapService: servicediscovery.IService): void {
+    this.keycloakContainerExtension.useCloudMapService(cloudMapService);
+  }
+
+  /** @inheritDoc */
+  public configureHealthCheck(targetGroup: elbv2.ApplicationTargetGroup): void {
+    this.keycloakContainerExtension.configureHealthCheck(targetGroup);
   }
 }
 
@@ -62,6 +84,16 @@ export class KeycloakEc2TaskDefinition extends ecs.Ec2TaskDefinition implements 
     });
 
     this.keycloakContainerExtension = configureKeyCloak(this, props?.keycloak);
+  }
+
+  /** @inheritDoc */
+  public useCloudMapService(cloudMapService: servicediscovery.IService): void {
+    this.keycloakContainerExtension.useCloudMapService(cloudMapService);
+  }
+
+  /** @inheritDoc */
+  public configureHealthCheck(targetGroup: elbv2.ApplicationTargetGroup): void {
+    this.keycloakContainerExtension.configureHealthCheck(targetGroup);
   }
 }
 

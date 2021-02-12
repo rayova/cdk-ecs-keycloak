@@ -523,6 +523,10 @@ Object {
                 "Name": "CACHE_OWNERS_AUTH_SESSIONS_COUNT",
                 "Value": "3",
               },
+              Object {
+                "Name": "JDBC_PARAMS",
+                "Value": "useSSL=false",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",

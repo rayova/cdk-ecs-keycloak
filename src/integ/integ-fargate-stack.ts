@@ -93,17 +93,11 @@ export class IntegFargateStack extends cdk.Stack {
       },
     });
 
-    pattern.targetGroup.configureHealthCheck({
-      path: '/auth/realms/master',
-      enabled: true,
-    });
-
+    taskDefinition.configureHealthCheck(pattern.targetGroup);
     pattern.targetGroup.setAttribute('deregistration_delay.timeout_seconds', '5');
 
     // Tasks can connect to themselves for cache access.
     pattern.service.connections.allowFrom(pattern.service, ec2.Port.allTraffic());
-    // Let me in so I can look directly at them
-    // pattern.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.allTraffic());
 
     // Enable CloudMap service discovery and inform Keycloak about its mechanism.
     taskDefinition.keycloakContainerExtension.useCloudMapService(
