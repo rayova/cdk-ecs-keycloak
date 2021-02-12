@@ -8,6 +8,12 @@ const project = new AwsCdkConstructLibrary({
   name: '@wheatstalk/cdk-ecs-keycloak',
   repository: 'https://github.com/misterjoshua/cdk-ecs-keycloak.git',
 
+  keywords: [
+    'ecs',
+    'fargate',
+    'keycloak',
+  ],
+
   cdkDependencies: [
     '@aws-cdk/aws-certificatemanager',
     '@aws-cdk/aws-ec2',
