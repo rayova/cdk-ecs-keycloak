@@ -31,6 +31,8 @@ const project = new AwsCdkConstructLibrary({
   releaseEveryCommit: true,
   releaseToNpm: true,
 
+  gitpod: true,
+
   /* AwsCdkConstructLibraryOptions */
   // cdkAssert: true,                                                          /* Install the @aws-cdk/assert library? */
   // cdkDependencies: undefined,                                               /* Which AWS CDK modules (those that start with "@aws-cdk/") does this library require when consumed? */
