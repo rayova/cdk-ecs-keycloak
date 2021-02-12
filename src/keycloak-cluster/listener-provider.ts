@@ -3,16 +3,29 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as cdk from '@aws-cdk/core';
 
+/**
+ * Provides ListenerInfo once the VPC is available.
+ */
 export interface IListenerInfoProvider {
+  /**
+   * Binds resources to the parent scope and provides ListenerInfo once the
+   * VPC is available.
+   */
   bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo;
 }
 
+/**
+ * Information about how to register with a load balancer.
+ */
 export interface ListenerInfo {
   readonly listener: elbv2.IApplicationListener;
   readonly conditions?: elbv2.ListenerCondition[];
   readonly priority?: number;
 }
 
+/**
+ * Convenience interface for providing ListenerInfo to the cluster.
+ */
 export abstract class ListenerProvider {
   /**
    * Use an already-existing listener
@@ -38,7 +51,9 @@ export abstract class ListenerProvider {
   }
 }
 
-/** @internal */
+/**
+ * Creates a load balancer and an HTTP load balancer.
+ */
 export class HttpListenerProvider implements IListenerInfoProvider {
   public bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
@@ -72,7 +87,10 @@ export interface HttpsListenerProviderProps {
   readonly certificates: acm.ICertificate[];
 }
 
-/** @internal */
+/**
+ * Creates an application load balancer and an HTTPS listener with the given
+ * ACM certificates.
+ */
 export class HttpsListenerProvider implements IListenerInfoProvider {
   private readonly certificates: acm.ICertificate[];
 

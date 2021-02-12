@@ -10,10 +10,10 @@ This CDK construct allows you spin up a HA Keycloak cluster on AWS ECS. You may 
 
 ```ts
 // Simplest example with all-defaults. Creates all of these:
-// - Vpc (public and private subnet with nat gateways)
-// - Internet-facing load balancer serving HTTP (not HTTPS) traffic
-// - ECS cluster with keycloak running on it
-// - An Aurora Servless MySQL cluster
+// - A Vpc (public and private subnet with nat gateways)
+// - An Internet-facing load balancer serving HTTP (not HTTPS) traffic
+// - An ECS cluster with Keycloak running on it
+// - An Aurora Serverless MySQL cluster
 new keycloak.KeycloakCluster(this, 'Keycloak');
 ```
 

@@ -126,7 +126,7 @@ export class KeycloakCluster extends cdk.Construct {
     const healthCheckGracePeriod = props?.healthCheckGracePeriod ?? cdk.Duration.minutes(10);
 
     // Let the user provide
-    const vpcInfoProvider = props?.vpcProvider ?? VpcProvider.vpc();
+    const vpcInfoProvider = props?.vpcProvider ?? VpcProvider.ingressAndPrivateVpc();
     const { vpc } = vpcInfoProvider.bind(this);
 
     const databaseInfoProvider = props?.databaseProvider ?? DatabaseProvider.serverlessAuroraCluster();
