@@ -1,6 +1,6 @@
 # Keycloak Cluster Construct
 
-This CDK construct allows you spin up a HA Keycloak cluster on AWS ECS. You may use either Fargate or EC2 Capacity.
+This CDK construct allows you spin up a HA Keycloak cluster on AWS ECS.
 
 > Note: For EC2 capacity, the ECS tasks require VPC networking.
 
@@ -29,10 +29,10 @@ const keycloakCluster = new keycloak.KeycloakCluster(this, 'Keycloak', {
   minHealthyPercent: 50,
   maxHealthyPercent: 200,
   keycloak: {
-    // Replicated inficaches have two owners
+    // Set replicated inficaches owners to two
     cacheOwnersCount: 2,
   },
-  // Listen on ECS
+  // Listen on HTTPS
   listenerProvider: keycloak.ListenerProvider.https({
     certificates: [certificate],
   }),
@@ -46,8 +46,8 @@ const autoScaling = keycloakCluster.service.autoScaleTaskCount({
 
 autoScaling.scaleOnCpuUtilization('Target40', {
   targetUtilizationPercent: 40,
-  scaleInCooldown: cdk.Duration.minutes(10),
-  scaleOutCooldown: cdk.Duration.minutes(30),
+  scaleInCooldown: cdk.Duration.minutes(30),
+  scaleOutCooldown: cdk.Duration.minutes(10),
 });
 ```
 
