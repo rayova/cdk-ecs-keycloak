@@ -4,17 +4,21 @@
 
 Name|Description
 ----|-----------
-[CloudMapNamespaceProvider](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider)|*No description*
-[ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider)|*No description*
-[DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider)|*No description*
-[DefaultVpcNetworkProvider](#wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider)|*No description*
-[EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|*No description*
+[CloudMapNamespaceProvider](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider)|A convenience interface for creating a CloudMap namespace.
+[ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider)|Convenience interface for providing ClusterInfo to the cluster construct.
+[DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider)|Provides a very basic RDS database instance.
+[DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider)|Convenience interface for providing DatabaseInfo to the cluster.
+[EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|Provides a very basic ECS cluster in the given VPC.
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
+[HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider)|Creates a load balancer and an HTTP load balancer.
+[HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider)|Creates an application load balancer and an HTTPS listener with the given ACM certificates.
+[IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider)|Provides a VPC with both private and public subnets.
 [KeycloakCluster](#wheatstalk-cdk-ecs-keycloak-keycloakcluster)|A complete Keycloak cluster in a box.
 [KeycloakContainerExtension](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextension)|Adds a keycloak container to a task definition.
 [KeycloakEc2TaskDefinition](#wheatstalk-cdk-ecs-keycloak-keycloakec2taskdefinition)|The details of a Keycloak task definition running on EC2.
 [KeycloakFargateTaskDefinition](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinition)|The details of a Keycloak task definition running on Fargate.
-[ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider)|*No description*
+[ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider)|Convenience interface for providing ListenerInfo to the cluster.
+[ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider)|Provides a serverless Aurora database cluster.
 [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider)|*No description*
 
 
@@ -22,31 +26,32 @@ Name|Description
 
 Name|Description
 ----|-----------
-[CloudMapNamespaceInfo](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceinfo)|*No description*
-[ClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterinfo)|*No description*
-[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)|*No description*
+[CloudMapNamespaceInfo](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceinfo)|Information about the CloudMap namespace for service discovery.
+[ClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterinfo)|Information about the ecs cluster.
+[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)|Information about needed to connect to the database.
+[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)|Basic props for creating a database instance.
 [EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)|Props for EnsureMysqlDatabaseExtension.
 [HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)|Properties for a new HTTPS-listening load balancer.
 [KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)|Props for `KeycloakCluster`.
 [KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)|Configuration for the Keycloak container.
 [KeycloakEc2TaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakec2taskdefinitionprops)|Props for `KeycloakEc2TaskDefinition`.
 [KeycloakFargateTaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinitionprops)|Props for `KeycloakFargateTaskDefinition`.
-[ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)|*No description*
-[PrivateDnsNamespaceProviderProps](#wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops)|*No description*
-[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)|*No description*
+[ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)|Information about how to register with a load balancer.
+[PrivateDnsNamespaceProviderProps](#wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops)|Props for creating a private Dns Namespace.
+[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)|Basic props for creating a serverless Aurora database cluster.
+[VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)|Information about the VPC other providers may opt to privde their resources in.
 
 
 **Interfaces**
 
 Name|Description
 ----|-----------
-[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)|*No description*
-[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)|*No description*
-[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)|*No description*
+[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)|Provides CloudMapNamespaceInfo once the VPC is available.
+[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)|Provides ClusterInfo after the VPC is available.
+[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)|Provides DatabaseInfo after the VPC is available.
 [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)|A Keycloak task definition.
-[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)|*No description*
-[IVpcInfo](#wheatstalk-cdk-ecs-keycloak-ivpcinfo)|*No description*
-[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)|*No description*
+[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)|Provides ListenerInfo once the VPC is available.
+[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)|Provides VpcInfo.
 
 
 **Enums**
@@ -59,7 +64,7 @@ Name|Description
 
 ## class CloudMapNamespaceProvider  <a id="wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider"></a>
 
-
+A convenience interface for creating a CloudMap namespace.
 
 
 ### Initializer
@@ -78,14 +83,14 @@ new CloudMapNamespaceProvider()
 
 #### *static* privateDns(props?) <a id="wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider-privatedns"></a>
 
-
+Create a CloudMap namespaces from a private dns zone.
 
 ```ts
 static privateDns(props?: PrivateDnsNamespaceProviderProps): ICloudMapNamespaceInfoProvider
 ```
 
 * **props** (<code>[PrivateDnsNamespaceProviderProps](#wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops)</code>)  *No description*
-  * **name** (<code>string</code>)  *No description* __*Optional*__
+  * **name** (<code>string</code>)  The globally unique name for the namespace. __*Default*__: 'keycloak-service-discovery'
 
 __Returns__:
 * <code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code>
@@ -94,7 +99,7 @@ __Returns__:
 
 ## class ClusterProvider  <a id="wheatstalk-cdk-ecs-keycloak-clusterprovider"></a>
 
-
+Convenience interface for providing ClusterInfo to the cluster construct.
 
 
 ### Initializer
@@ -113,7 +118,7 @@ new ClusterProvider()
 
 #### *static* cluster() <a id="wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster"></a>
 
-
+Create an ECS cluster.
 
 ```ts
 static cluster(): IClusterInfoProvider
@@ -123,11 +128,64 @@ static cluster(): IClusterInfoProvider
 __Returns__:
 * <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>
 
+#### *static* fromClusterInfo(clusterInfo) <a id="wheatstalk-cdk-ecs-keycloak-clusterprovider-fromclusterinfo"></a>
+
+Provide raw clusterInfo.
+
+```ts
+static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider
+```
+
+* **clusterInfo** (<code>[ClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterinfo)</code>)  *No description*
+  * **cluster** (<code>[ICluster](#aws-cdk-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
+
+__Returns__:
+* <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>
+
+
+
+## class DatabaseInstanceProvider  <a id="wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider"></a>
+
+Provides a very basic RDS database instance.
+
+__Implements__: [IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new DatabaseInstanceProvider(props?: DatabaseInstanceProviderProps)
+```
+
+* **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
+  * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
+  * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+
+
+### Methods
+
+
+#### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider-bind"></a>
+
+Bind any new resources to the parent scope with access to the vpc.
+
+```ts
+bind(scope: Construct, vpc: IVpc): DatabaseInfo
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+
+__Returns__:
+* <code>[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)</code>
+
 
 
 ## class DatabaseProvider  <a id="wheatstalk-cdk-ecs-keycloak-databaseprovider"></a>
 
-
+Convenience interface for providing DatabaseInfo to the cluster.
 
 
 ### Initializer
@@ -144,78 +202,58 @@ new DatabaseProvider()
 ### Methods
 
 
+#### *static* databaseInstance(props?) <a id="wheatstalk-cdk-ecs-keycloak-databaseprovider-databaseinstance"></a>
+
+Provide a new database instance.
+
+```ts
+static databaseInstance(props?: DatabaseInstanceProviderProps): DatabaseInstanceProvider
+```
+
+* **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
+  * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
+  * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+
+__Returns__:
+* <code>[DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider)</code>
+
 #### *static* fromDatabaseInfo(props) <a id="wheatstalk-cdk-ecs-keycloak-databaseprovider-fromdatabaseinfo"></a>
 
-
+Provide raw DatabaseInfo.
 
 ```ts
 static fromDatabaseInfo(props: DatabaseInfo): IDatabaseInfoProvider
 ```
 
 * **props** (<code>[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)</code>)  *No description*
-  * **credentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  *No description* 
-  * **vendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  *No description* 
-  * **connectable** (<code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code>)  *No description* __*Optional*__
+  * **credentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
+  * **vendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  Database vendor. 
+  * **connectable** (<code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
 
 __Returns__:
 * <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>
 
 #### *static* serverlessAuroraCluster(props?) <a id="wheatstalk-cdk-ecs-keycloak-databaseprovider-serverlessauroracluster"></a>
 
-
+Provide a new serverless aurora cluster.
 
 ```ts
 static serverlessAuroraCluster(props?: ServerlessAuroraDatabaseProviderProps): IDatabaseInfoProvider
 ```
 
 * **props** (<code>[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)</code>)  *No description*
-  * **engine** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  *No description* __*Optional*__
-  * **scaling** (<code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code>)  *No description* __*Optional*__
-  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  *No description* __*Optional*__
+  * **engine** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+  * **scaling** (<code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
 
 __Returns__:
 * <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>
 
 
 
-## class DefaultVpcNetworkProvider  <a id="wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider"></a>
-
-
-
-__Implements__: [IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)
-
-### Initializer
-
-
-
-
-```ts
-new DefaultVpcNetworkProvider()
-```
-
-
-
-### Methods
-
-
-#### bind(scope) <a id="wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider-bind"></a>
-
-
-
-```ts
-bind(scope: Construct): IVpcInfo
-```
-
-* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
-
-__Returns__:
-* <code>[IVpcInfo](#wheatstalk-cdk-ecs-keycloak-ivpcinfo)</code>
-
-
-
 ## class EcsClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider"></a>
 
-
+Provides a very basic ECS cluster in the given VPC.
 
 __Implements__: [IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)
 
@@ -235,7 +273,7 @@ new EcsClusterInfoProvider()
 
 #### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider-bind"></a>
 
-
+Bind any new resources to the parent scope with access to the vpc.
 
 ```ts
 bind(scope: Construct, vpc: IVpc): ClusterInfo
@@ -289,6 +327,115 @@ extend(taskDefinition: TaskDefinition): void
 
 
 
+
+
+
+## class HttpListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-httplistenerprovider"></a>
+
+Creates a load balancer and an HTTP load balancer.
+
+__Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new HttpListenerProvider()
+```
+
+
+
+### Methods
+
+
+#### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-httplistenerprovider-bind"></a>
+
+Binds resources to the parent scope and provides ListenerInfo once the VPC is available.
+
+```ts
+bind(scope: Construct, vpc: IVpc): ListenerInfo
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+
+__Returns__:
+* <code>[ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)</code>
+
+
+
+## class HttpsListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerprovider"></a>
+
+Creates an application load balancer and an HTTPS listener with the given ACM certificates.
+
+__Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new HttpsListenerProvider(props: HttpsListenerProviderProps)
+```
+
+* **props** (<code>[HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)</code>)  *No description*
+  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+
+
+### Methods
+
+
+#### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerprovider-bind"></a>
+
+Binds resources to the parent scope and provides ListenerInfo once the VPC is available.
+
+```ts
+bind(scope: Construct, vpc: IVpc): ListenerInfo
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+
+__Returns__:
+* <code>[ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)</code>
+
+
+
+## class IngressAndPrivateVpcProvider  <a id="wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider"></a>
+
+Provides a VPC with both private and public subnets.
+
+__Implements__: [IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new IngressAndPrivateVpcProvider()
+```
+
+
+
+### Methods
+
+
+#### bind(scope) <a id="wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider-bind"></a>
+
+Binds resources to the parent scope and provides VpcInfo.
+
+```ts
+bind(scope: Construct): VpcInfo
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+
+__Returns__:
+* <code>[VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)</code>
 
 
 
@@ -571,7 +718,7 @@ useCloudMapService(cloudMapService: IService): void
 
 ## class ListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider"></a>
 
-
+Convenience interface for providing ListenerInfo to the cluster.
 
 
 ### Initializer
@@ -632,6 +779,46 @@ __Returns__:
 
 
 
+## class ServerlessAuroraDatabaseProvider  <a id="wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider"></a>
+
+Provides a serverless Aurora database cluster.
+
+__Implements__: [IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new ServerlessAuroraDatabaseProvider(props?: ServerlessAuroraDatabaseProviderProps)
+```
+
+* **props** (<code>[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)</code>)  *No description*
+  * **engine** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+  * **scaling** (<code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
+
+
+### Methods
+
+
+#### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider-bind"></a>
+
+Bind any new resources to the parent scope with access to the vpc.
+
+```ts
+bind(scope: Construct, vpc: IVpc): DatabaseInfo
+```
+
+* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+
+__Returns__:
+* <code>[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)</code>
+
+
+
 ## class VpcProvider  <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider"></a>
 
 
@@ -653,7 +840,7 @@ new VpcProvider()
 
 #### *static* fromExistingVpc(vpc) <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc"></a>
 
-
+Provides an already-existing vpc.
 
 ```ts
 static fromExistingVpc(vpc: IVpc): IVpcInfoProvider
@@ -664,12 +851,12 @@ static fromExistingVpc(vpc: IVpc): IVpcInfoProvider
 __Returns__:
 * <code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code>
 
-#### *static* vpc() <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-vpc"></a>
+#### *static* ingressAndPrivateVpc() <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-ingressandprivatevpc"></a>
 
-
+Provides a VPC with a public subnet and private subnet config.
 
 ```ts
-static vpc(): IVpcInfoProvider
+static ingressAndPrivateVpc(): IVpcInfoProvider
 ```
 
 
@@ -681,13 +868,13 @@ __Returns__:
 ## struct CloudMapNamespaceInfo  <a id="wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceinfo"></a>
 
 
-
+Information about the CloudMap namespace for service discovery.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**cloudMapNamespace** | <code>[INamespace](#aws-cdk-aws-servicediscovery-inamespace)</code> | <span></span>
+**cloudMapNamespace** | <code>[INamespace](#aws-cdk-aws-servicediscovery-inamespace)</code> | The CloudMap namespace to use for service discovery.
 
 
 
@@ -695,28 +882,43 @@ Name | Type | Description
 
 __Obtainable from__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider).[bind](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider-bind)()
 
-
+Information about the ecs cluster.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**cluster** | <code>[ICluster](#aws-cdk-aws-ecs-icluster)</code> | <span></span>
+**cluster** | <code>[ICluster](#aws-cdk-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
 
 
 
 ## struct DatabaseInfo  <a id="wheatstalk-cdk-ecs-keycloak-databaseinfo"></a>
 
+__Obtainable from__: [DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider).[bind](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider-bind)(), [ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider).[bind](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider-bind)()
 
-
+Information about needed to connect to the database.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**credentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | <span></span>
-**vendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | <span></span>
-**connectable**? | <code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code> | __*Optional*__
+**credentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
+**vendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | Database vendor.
+**connectable**? | <code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
+
+
+
+## struct DatabaseInstanceProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops"></a>
+
+
+Basic props for creating a database instance.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**engine**? | <code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code> | Instance database engine.<br/>__*Default*__: mysql 8.0
+**instanceType**? | <code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code> | Instance type.<br/>__*Default*__: t2.micro
 
 
 
@@ -753,13 +955,13 @@ Name | Type | Description
 
 __Obtainable from__: [CloudMapNamespaceProvider](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider).[privateDns](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider-privatedns)()
 
-
+Provides CloudMapNamespaceInfo once the VPC is available.
 ### Methods
 
 
 #### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider-bind"></a>
 
-
+Binds resources to the parent scope with the VPC and provides CloudMapNamespaceInfo.
 
 ```ts
 bind(scope: Construct, vpc: IVpc): CloudMapNamespaceInfo
@@ -776,15 +978,15 @@ __Returns__:
 ## interface IClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider"></a>
 
 __Implemented by__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)
-__Obtainable from__: [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[cluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster)()
+__Obtainable from__: [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[cluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster)(), [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[fromClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-fromclusterinfo)()
 
-
+Provides ClusterInfo after the VPC is available.
 ### Methods
 
 
 #### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider-bind"></a>
 
-
+Bind any new resources to the parent scope with access to the vpc.
 
 ```ts
 bind(scope: Construct, vpc: IVpc): ClusterInfo
@@ -800,15 +1002,16 @@ __Returns__:
 
 ## interface IDatabaseInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider"></a>
 
+__Implemented by__: [DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider), [ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider)
 __Obtainable from__: [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider).[fromDatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseprovider#wheatstalk-cdk-ecs-keycloak-databaseprovider-fromdatabaseinfo)(), [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider).[serverlessAuroraCluster](#wheatstalk-cdk-ecs-keycloak-databaseprovider#wheatstalk-cdk-ecs-keycloak-databaseprovider-serverlessauroracluster)()
 
-
+Provides DatabaseInfo after the VPC is available.
 ### Methods
 
 
 #### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider-bind"></a>
 
-
+Bind any new resources to the parent scope with access to the vpc.
 
 ```ts
 bind(scope: Construct, vpc: IVpc): DatabaseInfo
@@ -868,15 +1071,16 @@ useCloudMapService(cloudMapService: IService): void
 
 ## interface IListenerInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider"></a>
 
+__Implemented by__: [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider), [HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider)
 __Obtainable from__: [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[fromListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-fromlistenerinfo)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[http](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-http)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[https](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-https)()
 
-
+Provides ListenerInfo once the VPC is available.
 ### Methods
 
 
 #### bind(scope, vpc) <a id="wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider-bind"></a>
 
-
+Binds resources to the parent scope and provides ListenerInfo once the VPC is available.
 
 ```ts
 bind(scope: Construct, vpc: IVpc): ListenerInfo
@@ -890,44 +1094,27 @@ __Returns__:
 
 
 
-## interface IVpcInfo  <a id="wheatstalk-cdk-ecs-keycloak-ivpcinfo"></a>
-
-__Obtainable from__: [DefaultVpcNetworkProvider](#wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider).[bind](#wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider#wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider-bind)()
-
-
-
-### Properties
-
-
-Name | Type | Description 
------|------|-------------
-**vpc** | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | <span></span>
-**rdsSubnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | __*Optional*__
-**taskSubnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | __*Optional*__
-
-
-
 ## interface IVpcInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider"></a>
 
-__Implemented by__: [DefaultVpcNetworkProvider](#wheatstalk-cdk-ecs-keycloak-defaultvpcnetworkprovider)
-__Obtainable from__: [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[fromExistingVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc)(), [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[vpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-vpc)()
+__Implemented by__: [IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider)
+__Obtainable from__: [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[fromExistingVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc)(), [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[ingressAndPrivateVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-ingressandprivatevpc)()
 
-
+Provides VpcInfo.
 ### Methods
 
 
 #### bind(scope) <a id="wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider-bind"></a>
 
-
+Binds resources to the parent scope and provides VpcInfo.
 
 ```ts
-bind(scope: Construct): IVpcInfo
+bind(scope: Construct): VpcInfo
 ```
 
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
 
 __Returns__:
-* <code>[IVpcInfo](#wheatstalk-cdk-ecs-keycloak-ivpcinfo)</code>
+* <code>[VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)</code>
 
 
 
@@ -1025,8 +1212,9 @@ Name | Type | Description
 
 ## struct ListenerInfo  <a id="wheatstalk-cdk-ecs-keycloak-listenerinfo"></a>
 
+__Obtainable from__: [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider).[bind](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider#wheatstalk-cdk-ecs-keycloak-httplistenerprovider-bind)(), [HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider).[bind](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider-bind)()
 
-
+Information about how to register with a load balancer.
 
 
 
@@ -1041,28 +1229,42 @@ Name | Type | Description
 ## struct PrivateDnsNamespaceProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops"></a>
 
 
-
+Props for creating a private Dns Namespace.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**name**? | <code>string</code> | __*Optional*__
+**name**? | <code>string</code> | The globally unique name for the namespace.<br/>__*Default*__: 'keycloak-service-discovery'
 
 
 
 ## struct ServerlessAuroraDatabaseProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops"></a>
 
 
-
+Basic props for creating a serverless Aurora database cluster.
 
 
 
 Name | Type | Description 
 -----|------|-------------
-**engine**? | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | __*Optional*__
-**scaling**? | <code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code> | __*Optional*__
-**subnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | __*Optional*__
+**engine**? | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | Cluster engine.<br/>__*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+**scaling**? | <code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code> | Scaling options.<br/>__*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+**subnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | Select subnets to register the database cluster in.<br/>__*Optional*__
+
+
+
+## struct VpcInfo  <a id="wheatstalk-cdk-ecs-keycloak-vpcinfo"></a>
+
+__Obtainable from__: [IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider).[bind](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider-bind)()
+
+Information about the VPC other providers may opt to privde their resources in.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**vpc** | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | The VPC.
 
 
 

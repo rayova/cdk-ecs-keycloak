@@ -1,0 +1,5 @@
+# Obvious oversights while documenting early release
+removed:@wheatstalk/cdk-ecs-keycloak.DefaultVpcNetworkProvider
+removed:@wheatstalk/cdk-ecs-keycloak.IVpcInfo
+removed:@wheatstalk/cdk-ecs-keycloak.VpcProvider.vpc
+change-return-type:@wheatstalk/cdk-ecs-keycloak.IVpcInfoProvider.bind
