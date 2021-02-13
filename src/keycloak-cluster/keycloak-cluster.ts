@@ -133,7 +133,6 @@ export class KeycloakCluster extends cdk.Construct {
     // Defaults
     const cpu = props?.cpu ?? 1024;
     const memoryLimitMiB = props?.memoryLimitMiB ?? 2048;
-    const healthCheckGracePeriod = props?.healthCheckGracePeriod ?? cdk.Duration.minutes(10);
 
     // Let the user provide
     const vpcInfoProvider = props?.vpcProvider ?? VpcProvider.ingressAndPrivateVpc();
@@ -176,9 +175,18 @@ export class KeycloakCluster extends cdk.Construct {
       },
     });
 
-    // Create the keycloak service
+    // Enable the ecs deployment circuit breaker by default
     const circuitBreaker = !props?.circuitBreaker ? { rollback: true } : undefined;
 
+    const defaultHealthCheckGracePeriod = keycloakTaskDefinition.keycloakContainerExtension.infinicacheClustering
+      // When infinicache clustering is enabled, we need a longer default health check grace period.
+      ? cdk.Duration.minutes(10)
+      // Without infinicache clustering, keycloak comes online quicker.
+      : cdk.Duration.minutes(2);
+
+    const healthCheckGracePeriod = props?.healthCheckGracePeriod ?? defaultHealthCheckGracePeriod;
+
+    // Create the keycloak service
     this.service = new ecs.FargateService(this, 'Service', {
       cluster: cluster,
       taskDefinition: keycloakTaskDefinition,

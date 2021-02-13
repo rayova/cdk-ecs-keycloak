@@ -136,6 +136,16 @@ describe('KeycloakContainerExtension', () => {
     }));
   });
 
+  test('throws when infinicache clustering is disabled with custom cache counts', () => {
+    expect(() => {
+      new KeycloakContainerExtension({
+        infinicacheClustering: false,
+        cacheOwnersCount: 2,
+        cacheOwnersAuthSessionsCount: 3,
+      });
+    }).toThrow(/clustering must be enabled/i);
+  });
+
   test('allows custom default admin user/password', () => {
     const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
     const addContainerSpy = jest.spyOn(task, 'addContainer');
@@ -259,7 +269,9 @@ describe('KeycloakContainerExtension', () => {
       const stack = new cdk.Stack();
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeycloakContainerExtension();
+      const extension = new KeycloakContainerExtension({
+        infinicacheClustering: true,
+      });
       task.addExtension(extension);
 
       const res = SynthUtils.toCloudFormation(stack);
@@ -291,7 +303,9 @@ describe('KeycloakContainerExtension', () => {
       });
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeycloakContainerExtension();
+      const extension = new KeycloakContainerExtension({
+        infinicacheClustering: true,
+      });
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 
@@ -333,7 +347,9 @@ describe('KeycloakContainerExtension', () => {
       });
       const task = new ecs.FargateTaskDefinition(stack, 'TaskDefinition');
 
-      const extension = new KeycloakContainerExtension();
+      const extension = new KeycloakContainerExtension({
+        infinicacheClustering: true,
+      });
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 
