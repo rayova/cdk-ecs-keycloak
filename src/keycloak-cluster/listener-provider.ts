@@ -20,7 +20,6 @@ export interface IListenerInfoProvider {
  */
 export interface ListenerInfoProviderBindingProps extends elbv2.AddApplicationTargetsProps {
   readonly vpc: ec2.IVpc;
-  // readonly targetGroup: elbv2.ApplicationTargetGroup;
 }
 
 /**
@@ -87,7 +86,6 @@ export class HttpListenerProvider implements IListenerInfoProvider {
 
     const listener = loadBalancer.addListener('HTTP', {
       protocol: elbv2.ApplicationProtocol.HTTP,
-      // defaultAction: elbv2.ListenerAction.forward([props.targetGroup]),
     });
 
     return listener.addTargets('Keycloak', {

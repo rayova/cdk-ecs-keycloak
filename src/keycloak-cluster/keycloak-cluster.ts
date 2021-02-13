@@ -192,7 +192,6 @@ export class KeycloakCluster extends cdk.Construct {
       protocol: elbv2.ApplicationProtocol.HTTP,
       port: 8080,
       slowStart: cdk.Duration.seconds(60),
-      deregistrationDelay: cdk.Duration.seconds(60),
     });
 
     // Configure the health check for the given target group
