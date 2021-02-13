@@ -127,19 +127,19 @@ export class KeycloakCluster extends cdk.Construct {
 
     // Let the user provide
     const vpcInfoProvider = props?.vpcProvider ?? VpcProvider.ingressAndPrivateVpc();
-    const { vpc } = vpcInfoProvider.bind(this);
+    const { vpc } = vpcInfoProvider._bind(this);
 
     const databaseInfoProvider = props?.databaseProvider ?? DatabaseProvider.serverlessAuroraCluster();
-    const databaseInfo = databaseInfoProvider.bind(this, vpc);
+    const databaseInfo = databaseInfoProvider._bind(this, vpc);
 
     const clusterInfoProvider = props?.ecsClusterProvider ?? ClusterProvider.cluster();
-    const { cluster } = clusterInfoProvider.bind(this, vpc);
+    const { cluster } = clusterInfoProvider._bind(this, vpc);
 
     const iCloudMapNamespaceInfoProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
-    const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider.bind(this, vpc);
+    const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
 
     const listenerProvider = props?.listenerProvider ?? ListenerProvider.http();
-    const listenerInfo = listenerProvider.bind(this, vpc);
+    const listenerInfo = listenerProvider._bind(this, vpc);
 
     // Create a keycloak task definition. The task will create a database for
     // you if the database doesn't already exist.

@@ -10,8 +10,9 @@ export interface IListenerInfoProvider {
   /**
    * Binds resources to the parent scope and provides ListenerInfo once the
    * VPC is available.
+   * @internal
    */
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo;
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo;
 }
 
 /**
@@ -32,7 +33,7 @@ export abstract class ListenerProvider {
    */
   static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider {
     return {
-      bind: () => listenerInfo,
+      _bind: () => listenerInfo,
     };
   }
 
@@ -55,7 +56,10 @@ export abstract class ListenerProvider {
  * Creates a load balancer and an HTTP load balancer.
  */
 export class HttpListenerProvider implements IListenerInfoProvider {
-  public bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
+  /**
+   * @internal
+   */
+  public _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
       vpc: vpc,
       internetFacing: true,
@@ -98,7 +102,10 @@ export class HttpsListenerProvider implements IListenerInfoProvider {
     this.certificates = props.certificates;
   }
 
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
+  /**
+   * @internal
+   */
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
     // Create a load balancer.
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
       vpc: vpc,

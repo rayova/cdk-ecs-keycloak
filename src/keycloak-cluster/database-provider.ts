@@ -10,8 +10,9 @@ import { KeycloakDatabaseVendor } from '../keycloak-container-extension';
 export interface IDatabaseInfoProvider {
   /**
    * Bind any new resources to the parent scope with access to the vpc.
+   * @internal
    */
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo;
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo;
 }
 
 /**
@@ -57,7 +58,7 @@ export abstract class DatabaseProvider {
    */
   static fromDatabaseInfo(props: DatabaseInfo): IDatabaseInfoProvider {
     return {
-      bind: () => props,
+      _bind: () => props,
     };
   }
 }
@@ -104,7 +105,10 @@ export class DatabaseInstanceProvider implements IDatabaseInfoProvider {
     this.subnets = props?.subnets;
   }
 
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
+  /**
+   * @internal
+   */
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
     const db = new rds.DatabaseInstance(scope, 'Database', {
       engine: this.engine,
       instanceType: this.instanceType,
@@ -160,7 +164,10 @@ export class ServerlessAuroraDatabaseProvider implements IDatabaseInfoProvider {
     this.vpcSubnets = props?.subnets;
   }
 
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
+  /**
+   * @internal
+   */
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
     const db = new rds.ServerlessCluster(scope, 'Database', {
       engine: this.engine,
       vpc: vpc,

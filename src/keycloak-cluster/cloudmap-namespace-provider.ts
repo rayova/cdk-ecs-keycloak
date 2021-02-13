@@ -9,12 +9,14 @@ export interface ICloudMapNamespaceInfoProvider {
   /**
    * Binds resources to the parent scope with the VPC and provides
    * CloudMapNamespaceInfo
+   * @internal
    */
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): CloudMapNamespaceInfo;
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): CloudMapNamespaceInfo;
 }
 
 /**
  * Information about the CloudMap namespace for service discovery.
+ * @internal
  */
 export interface CloudMapNamespaceInfo {
   /**
@@ -43,7 +45,7 @@ export abstract class CloudMapNamespaceProvider {
    */
   static privateDns(props?: PrivateDnsNamespaceProviderProps): ICloudMapNamespaceInfoProvider {
     return {
-      bind(scope: cdk.Construct, vpc: ec2.IVpc): CloudMapNamespaceInfo {
+      _bind(scope: cdk.Construct, vpc: ec2.IVpc): CloudMapNamespaceInfo {
         return {
           cloudMapNamespace: new servicediscovery.PrivateDnsNamespace(scope, 'ServiceDiscoveryNS', {
             name: props?.name ?? 'keycloak-service-discovery',

@@ -8,8 +8,9 @@ import * as cdk from '@aws-cdk/core';
 export interface IClusterInfoProvider {
   /**
    * Bind any new resources to the parent scope with access to the vpc.
+   * @internal
    */
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo;
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo;
 }
 
 /**
@@ -38,7 +39,7 @@ export abstract class ClusterProvider {
    */
   static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider {
     return {
-      bind: () => clusterInfo,
+      _bind: () => clusterInfo,
     };
   }
 }
@@ -47,7 +48,10 @@ export abstract class ClusterProvider {
  * Provides a very basic ECS cluster in the given VPC.
  */
 export class EcsClusterInfoProvider implements IClusterInfoProvider {
-  bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo {
+  /**
+   * @internal
+   */
+  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo {
     const cluster = new ecs.Cluster(scope, 'Cluster', {
       vpc,
     });
