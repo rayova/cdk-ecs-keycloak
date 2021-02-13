@@ -139,7 +139,6 @@ export class KeycloakCluster extends cdk.Construct {
     const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
 
     const listenerProvider = props?.listenerProvider ?? ListenerProvider.http();
-    const listenerInfo = listenerProvider._bind(this, vpc);
 
     // Create a keycloak task definition. The task will create a database for
     // you if the database doesn't already exist.
@@ -175,15 +174,6 @@ export class KeycloakCluster extends cdk.Construct {
       },
     });
 
-    this.targetGroup = listenerInfo.listener.addTargets('Keycloak', {
-      targets: [this.service],
-      slowStart: cdk.Duration.seconds(60),
-      port: 8080,
-      protocol: elbv2.ApplicationProtocol.HTTP,
-      conditions: listenerInfo.conditions,
-      priority: listenerInfo.priority,
-    });
-
     if (databaseInfo.connectable) {
       // Allow keycloak to connect to the database.
       databaseInfo.connectable.connections.allowDefaultPortFrom(this.service);
@@ -191,10 +181,20 @@ export class KeycloakCluster extends cdk.Construct {
 
     // Inform keycloak to use cloudmap service discovery
     keycloakTaskDefinition.useCloudMapService(this.service.cloudMapService!);
-    // Configure the health check for the given target group
-    keycloakTaskDefinition.configureHealthCheck(this.targetGroup);
 
     // Allow keycloak to connect to cluster members
     this.service.connections.allowInternally(ec2.Port.allTraffic());
+
+    // Register the service's web port with target groups
+    this.targetGroup = listenerProvider._addTargets(this, {
+      vpc,
+      targets: [this.service],
+      protocol: elbv2.ApplicationProtocol.HTTP,
+      port: 8080,
+      slowStart: cdk.Duration.seconds(60),
+    });
+
+    // Configure the health check for the given target group
+    keycloakTaskDefinition.configureHealthCheck(this.targetGroup);
   }
 }

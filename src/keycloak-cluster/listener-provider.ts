@@ -12,7 +12,14 @@ export interface IListenerInfoProvider {
    * VPC is available.
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo;
+  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps): elbv2.ApplicationTargetGroup;
+}
+
+/**
+ * @internal
+ */
+export interface ListenerInfoProviderBindingProps extends elbv2.AddApplicationTargetsProps {
+  readonly vpc: ec2.IVpc;
 }
 
 /**
@@ -33,7 +40,13 @@ export abstract class ListenerProvider {
    */
   static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider {
     return {
-      _bind: () => listenerInfo,
+      _addTargets: (_scope, props) => {
+        return listenerInfo.listener.addTargets('Keycloak', {
+          ...props,
+          conditions: listenerInfo.conditions,
+          priority: listenerInfo.priority ?? 1000,
+        });
+      },
     };
   }
 
@@ -59,14 +72,10 @@ export class HttpListenerProvider implements IListenerInfoProvider {
   /**
    * @internal
    */
-  public _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
+  public _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
-      vpc: vpc,
+      vpc: props.vpc,
       internetFacing: true,
-    });
-
-    const listener = loadBalancer.addListener('HTTP', {
-      protocol: elbv2.ApplicationProtocol.HTTP,
     });
 
     new cdk.CfnOutput(scope, 'LoadBalancerUrl', {
@@ -75,9 +84,13 @@ export class HttpListenerProvider implements IListenerInfoProvider {
       }),
     });
 
-    return {
-      listener,
-    };
+    const listener = loadBalancer.addListener('HTTP', {
+      protocol: elbv2.ApplicationProtocol.HTTP,
+    });
+
+    return listener.addTargets('Keycloak', {
+      ...props,
+    });
   }
 }
 
@@ -105,10 +118,10 @@ export class HttpsListenerProvider implements IListenerInfoProvider {
   /**
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ListenerInfo {
+  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
     // Create a load balancer.
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
-      vpc: vpc,
+      vpc: props.vpc,
       internetFacing: true,
     });
 
@@ -127,8 +140,8 @@ export class HttpsListenerProvider implements IListenerInfoProvider {
       protocol: elbv2.ApplicationProtocol.HTTPS,
     });
 
-    return {
-      listener,
-    };
+    return listener.addTargets('Keycloak', {
+      ...props,
+    });
   }
 }
