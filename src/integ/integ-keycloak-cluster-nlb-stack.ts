@@ -2,8 +2,9 @@ import * as cdk from '@aws-cdk/core';
 import * as keycloak from '..';
 
 export class IntegKeycloakClusterNlbStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string) {
-    super(scope, id);
+  constructor(scope: cdk.Construct) {
+    super(scope, 'integ-keycloak-cluster-nlb');
+
     new keycloak.KeycloakCluster(this, 'Keycloak', {
       listenerProvider: keycloak.ListenerProvider.nlb({
         port: 8080,
@@ -21,4 +22,4 @@ export class IntegKeycloakClusterNlbStack extends cdk.Stack {
 }
 
 const app = new cdk.App();
-new IntegKeycloakClusterNlbStack(app, 'integ-lit-nlb');
+new IntegKeycloakClusterNlbStack(app);
