@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.11...v0.0.12) (2021-02-13)
+
+
+### Features
+
+* Enable or disable infinicache clustering ([#56](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/56)) ([5e36b65](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/5e36b65a489b2885304014425fcadec263cce54f))
+
 ### [0.0.11](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.10...v0.0.11) (2021-02-13)
 
 ### [0.0.10](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.9...v0.0.10) (2021-02-13)
