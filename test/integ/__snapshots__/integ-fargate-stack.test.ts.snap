@@ -527,6 +527,10 @@ Object {
                 "Name": "JDBC_PARAMS",
                 "Value": "useSSL=false",
               },
+              Object {
+                "Name": "JAVA_OPTS",
+                "Value": "-Djboss.bind.address.management=0.0.0.0",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",
@@ -548,6 +552,14 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 8443,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 9990,
                 "Protocol": "tcp",
               },
               Object {

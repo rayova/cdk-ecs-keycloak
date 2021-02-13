@@ -144,6 +144,21 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    */
   public readonly defaultAdminPassword: string;
 
+  /**
+   * Web traffic port.
+   */
+  public readonly webPort: number = 8080;
+
+  /**
+   * Web traffic port with HTTPS
+   */
+  public readonly httpsWebPort: number = 8443;
+
+  /**
+   * Admin console port.
+   */
+  public readonly adminConsolePort: number = 9990;
+
   // Privates
   private readonly _memoryLimitMiB?: number;
   private readonly _memoryReservationMiB?: number;
@@ -151,7 +166,6 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
   private readonly _databaseCredentials?: secretsmanager.ISecret;
   private readonly _image: ecs.ContainerImage;
   private _cloudMapService?: cloudmap.IService;
-
 
   constructor(props?: KeycloakContainerExtensionProps) {
     this.cacheOwnersCount = props?.cacheOwnersCount ?? 1;
@@ -233,6 +247,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
         CACHE_OWNERS_COUNT: this.cacheOwnersCount.toString(),
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: this.cacheOwnersAuthSessionsCount.toString(),
         JDBC_PARAMS: 'useSSL=false',
+        JAVA_OPTS: '-Djboss.bind.address.management=0.0.0.0',
       },
       secrets: keycloakSecrets,
       logging: this._logging,
@@ -241,7 +256,9 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
     });
 
 
-    keycloak.addPortMappings({ containerPort: 8080 }); // Web port
+    keycloak.addPortMappings({ containerPort: this.webPort }); // Web port
+    keycloak.addPortMappings({ containerPort: this.httpsWebPort }); // HTTPS web port
+    keycloak.addPortMappings({ containerPort: this.adminConsolePort }); // Admin console port
     keycloak.addPortMappings({ containerPort: 7600 }); // jgroups-tcp
     keycloak.addPortMappings({ containerPort: 57600 }); // jgroups-tcp-fd
     keycloak.addPortMappings({ containerPort: 55200, protocol: ecs.Protocol.UDP }); // jgroups-udp

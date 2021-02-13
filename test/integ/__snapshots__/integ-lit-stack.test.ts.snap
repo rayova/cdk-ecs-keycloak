@@ -229,16 +229,16 @@ Object {
       "Properties": Object {
         "HealthCheckEnabled": true,
         "HealthCheckPath": "/auth/realms/master",
-        "Port": 8080,
+        "Port": 80,
         "Protocol": "HTTP",
         "TargetGroupAttributes": Array [
           Object {
-            "Key": "slow_start.duration_seconds",
-            "Value": "60",
-          },
-          Object {
             "Key": "deregistration_delay.timeout_seconds",
             "Value": "5",
+          },
+          Object {
+            "Key": "slow_start.duration_seconds",
+            "Value": "60",
           },
         ],
         "TargetType": "ip",
@@ -569,6 +569,10 @@ Object {
                 "Name": "JDBC_PARAMS",
                 "Value": "useSSL=false",
               },
+              Object {
+                "Name": "JAVA_OPTS",
+                "Value": "-Djboss.bind.address.management=0.0.0.0",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",
@@ -590,6 +594,14 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 8443,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 9990,
                 "Protocol": "tcp",
               },
               Object {
@@ -1382,16 +1394,8 @@ Object {
     },
     "AlbhttpKeycloakGroupC074F478": Object {
       "Properties": Object {
-        "HealthCheckEnabled": true,
-        "HealthCheckPath": "/auth/realms/master",
-        "Port": 8080,
+        "Port": 80,
         "Protocol": "HTTP",
-        "TargetGroupAttributes": Array [
-          Object {
-            "Key": "slow_start.duration_seconds",
-            "Value": "60",
-          },
-        ],
         "TargetType": "ip",
         "VpcId": Object {
           "Ref": "Vpc8378EB38",
@@ -1795,6 +1799,10 @@ Object {
                 "Name": "JDBC_PARAMS",
                 "Value": "useSSL=false",
               },
+              Object {
+                "Name": "JAVA_OPTS",
+                "Value": "-Djboss.bind.address.management=0.0.0.0",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",
@@ -1816,6 +1824,14 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 8443,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 9990,
                 "Protocol": "tcp",
               },
               Object {
@@ -2718,9 +2734,13 @@ Object {
       "Properties": Object {
         "HealthCheckEnabled": true,
         "HealthCheckPath": "/auth/realms/master",
-        "Port": 8080,
+        "Port": 80,
         "Protocol": "HTTP",
         "TargetGroupAttributes": Array [
+          Object {
+            "Key": "deregistration_delay.timeout_seconds",
+            "Value": "5",
+          },
           Object {
             "Key": "slow_start.duration_seconds",
             "Value": "60",
@@ -2993,6 +3013,10 @@ Object {
                 "Name": "JDBC_PARAMS",
                 "Value": "useSSL=false",
               },
+              Object {
+                "Name": "JAVA_OPTS",
+                "Value": "-Djboss.bind.address.management=0.0.0.0",
+              },
             ],
             "Essential": true,
             "Image": "jboss/keycloak",
@@ -3014,6 +3038,14 @@ Object {
             "PortMappings": Array [
               Object {
                 "ContainerPort": 8080,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 8443,
+                "Protocol": "tcp",
+              },
+              Object {
+                "ContainerPort": 9990,
                 "Protocol": "tcp",
               },
               Object {

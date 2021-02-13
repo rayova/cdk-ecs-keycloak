@@ -53,10 +53,22 @@ export interface KeycloakClusterProps {
   readonly ecsClusterProvider?: IClusterInfoProvider;
 
   /**
-   * Add the service to an existing load balancer's listener.
+   * Add the service to a load balancer
    * @default - a new load balancer is automatically created.
    */
   readonly listenerProvider?: IListenerInfoProvider;
+
+  /**
+   * Add the service's https port to a load balancer
+   * @default - not exposed
+   */
+  readonly httpsListenerProvider?: IListenerInfoProvider;
+
+  /**
+   * Add the service's admin console port to a load balancer
+   * @default - not exposed
+   */
+  readonly adminConsoleListenerProvider?: IListenerInfoProvider;
 
   /**
    * Database server.
@@ -112,11 +124,6 @@ export class KeycloakCluster extends cdk.Construct {
    */
   public readonly service: ecs.BaseService;
 
-  /**
-   * The Target Group that the service registers with.
-   */
-  public readonly targetGroup: elbv2.ApplicationTargetGroup;
-
   constructor(scope: cdk.Construct, id: string, props?: KeycloakClusterProps) {
     super(scope, id);
 
@@ -138,7 +145,12 @@ export class KeycloakCluster extends cdk.Construct {
     const iCloudMapNamespaceInfoProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
     const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
 
+    // Add the http web port to an http ALB by default
     const listenerProvider = props?.listenerProvider ?? ListenerProvider.http();
+    // Don't add the https web port to the load balancer by default
+    const httpsListenerProvider = props?.httpsListenerProvider ?? ListenerProvider.none();
+    // Don't add the wildfly admin console to the load balancer by default
+    const adminConsoleListenerProvider = props?.adminConsoleListenerProvider ?? ListenerProvider.none();
 
     // Create a keycloak task definition. The task will create a database for
     // you if the database doesn't already exist.
@@ -185,16 +197,37 @@ export class KeycloakCluster extends cdk.Construct {
     // Allow keycloak to connect to cluster members
     this.service.connections.allowInternally(ec2.Port.allTraffic());
 
-    // Register the service's web port with target groups
-    this.targetGroup = listenerProvider._addTargets(this, {
+    const commonAddTargetProps = {
       vpc,
-      targets: [this.service],
-      protocol: elbv2.ApplicationProtocol.HTTP,
-      port: 8080,
+      service: this.service,
+      containerName: keycloakTaskDefinition.keycloakContainerExtension.containerName,
       slowStart: cdk.Duration.seconds(60),
+      deregistrationDelay: cdk.Duration.seconds(5),
+      healthCheck: {
+        path: '/auth/realms/master',
+        enabled: true,
+      },
+    };
+
+    // Add the service's web port to load balancers.
+    listenerProvider._addTargets(this, {
+      ...commonAddTargetProps,
+      containerPort: keycloakTaskDefinition.keycloakContainerExtension.webPort,
+      containerPortProtocol: elbv2.Protocol.HTTP,
     });
 
-    // Configure the health check for the given target group
-    keycloakTaskDefinition.configureHealthCheck(this.targetGroup);
+    // Add the server's https web port to load balancers.
+    httpsListenerProvider._addTargets(this, {
+      ...commonAddTargetProps,
+      containerPort: keycloakTaskDefinition.keycloakContainerExtension.httpsWebPort,
+      containerPortProtocol: elbv2.Protocol.HTTPS,
+    });
+
+    // Add the server's admin port to load balancers.
+    adminConsoleListenerProvider._addTargets(this, {
+      ...commonAddTargetProps,
+      containerPort: keycloakTaskDefinition.keycloakContainerExtension.adminConsolePort,
+      containerPortProtocol: elbv2.Protocol.HTTP,
+    });
   }
 }

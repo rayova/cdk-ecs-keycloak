@@ -1,6 +1,6 @@
 import { SynthUtils } from '@aws-cdk/assert';
 import * as cdk from '@aws-cdk/core';
-import { IntegLitBiggerStack, IntegLitByolStack, IntegLitSimplestStack } from '../src/integ/integ-lit-stack';
+import { IntegLitBiggerStack, IntegLitByolStack, IntegLitSimplestStack } from '../../src/integ/integ-lit-stack';
 
 test('simplest example', () => {
   const app = new cdk.App();

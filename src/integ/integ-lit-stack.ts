@@ -46,9 +46,6 @@ export class IntegLitBiggerStack extends cdk.Stack {
       scaleInCooldown: cdk.Duration.minutes(10),
       scaleOutCooldown: cdk.Duration.minutes(30),
     });
-
-    // Faster deregistration
-    keycloakCluster.targetGroup.setAttribute('deregistration_delay.timeout_seconds', '5');
   }
 }
 
@@ -107,3 +104,4 @@ const app = new cdk.App();
 new IntegLitSimplestStack(app, 'integ-lit-simplest');
 new IntegLitBiggerStack(app, 'integ-lit-bigger');
 new IntegLitByolStack(app, 'integ-lit-byol');
+
