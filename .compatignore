@@ -3,3 +3,17 @@ removed:@wheatstalk/cdk-ecs-keycloak.DefaultVpcNetworkProvider
 removed:@wheatstalk/cdk-ecs-keycloak.IVpcInfo
 removed:@wheatstalk/cdk-ecs-keycloak.VpcProvider.vpc
 change-return-type:@wheatstalk/cdk-ecs-keycloak.IVpcInfoProvider.bind
+
+# Unintentionally exposed implementation details
+removed:@wheatstalk/cdk-ecs-keycloak.CloudMapNamespaceInfo
+removed:@wheatstalk/cdk-ecs-keycloak.DatabaseInstanceProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.EcsClusterInfoProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.HttpListenerProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.HttpsListenerProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.IngressAndPrivateVpcProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.ServerlessAuroraDatabaseProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.ICloudMapNamespaceInfoProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.IClusterInfoProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.IDatabaseInfoProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.IListenerInfoProvider.bind
+removed:@wheatstalk/cdk-ecs-keycloak.IVpcInfoProvider.bind

@@ -43,7 +43,7 @@ describe('database info', () => {
       });
 
       const provider = DatabaseProvider.serverlessAuroraCluster();
-      const databaseInfo = provider.bind(stack, vpc);
+      const databaseInfo = provider._bind(stack, vpc);
 
       expect(stack.node.findChild('Database') instanceof rds.ServerlessCluster).toBeTruthy();
       expect(databaseInfo.vendor).toEqual(KeycloakDatabaseVendor.MYSQL);
@@ -77,7 +77,7 @@ describe('database info', () => {
         },
       });
 
-      provider.bind(stack, vpc);
+      provider._bind(stack, vpc);
 
       const serverlessCluster = stack.node.findChild('Database') as rds.ServerlessCluster;
       const cfnDatabaseCluster = serverlessCluster.node.defaultChild as rds.CfnDBCluster;
@@ -105,7 +105,7 @@ describe('database info', () => {
           subnetType: ec2.SubnetType.PUBLIC,
         },
       });
-      provider.bind(stack, vpc);
+      provider._bind(stack, vpc);
 
       expect(stack.node.findChild('Database') instanceof rds.ServerlessCluster).toBeTruthy();
     });
@@ -132,7 +132,7 @@ describe('database info', () => {
           version: rds.AuroraPostgresEngineVersion.VER_9_6_8,
         }),
       });
-      const databaseInfo = provider.bind(stack, vpc);
+      const databaseInfo = provider._bind(stack, vpc);
 
       expect(stack.node.findChild('Database') instanceof rds.ServerlessCluster).toBeTruthy();
       expect(databaseInfo.vendor).toEqual(KeycloakDatabaseVendor.POSTGRES);
@@ -159,7 +159,7 @@ describe('database info', () => {
       });
 
       const provider = DatabaseProvider.databaseInstance();
-      const databaseInfo = provider.bind(stack, vpc);
+      const databaseInfo = provider._bind(stack, vpc);
 
       expect(stack.node.findChild('Database') instanceof rds.DatabaseInstance).toBeTruthy();
       expect(databaseInfo.vendor).toEqual(KeycloakDatabaseVendor.MYSQL);
@@ -184,7 +184,7 @@ describe('database info', () => {
           subnetType: ec2.SubnetType.PUBLIC,
         },
       });
-      provider.bind(stack, vpc);
+      provider._bind(stack, vpc);
 
       expect(stack.node.findChild('Database') instanceof rds.DatabaseInstance).toBeTruthy();
     });
@@ -209,7 +209,7 @@ describe('database info', () => {
           subnetType: ec2.SubnetType.PUBLIC,
         },
       });
-      expect(() => provider.bind(stack, vpc)).toThrow(/unknown engine/i);
+      expect(() => provider._bind(stack, vpc)).toThrow(/unknown engine/i);
     });
   });
 
@@ -247,7 +247,7 @@ describe('database info', () => {
         vendor: KeycloakDatabaseVendor.MYSQL,
       });
 
-      const databaseInfo = provider.bind(stack, vpc);
+      const databaseInfo = provider._bind(stack, vpc);
 
       expect(databaseInfo.connectable).toEqual(databaseInstance);
       expect(databaseInfo.vendor).toEqual(KeycloakDatabaseVendor.MYSQL);

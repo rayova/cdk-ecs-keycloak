@@ -7,8 +7,9 @@ import * as cdk from '@aws-cdk/core';
 export interface IVpcInfoProvider {
   /**
    * Binds resources to the parent scope and provides VpcInfo.
+   * @internal
    */
-  bind(scope: cdk.Construct): VpcInfo;
+  _bind(scope: cdk.Construct): VpcInfo;
 }
 
 /**
@@ -28,7 +29,7 @@ export abstract class VpcProvider {
    */
   static fromExistingVpc(vpc: ec2.IVpc): IVpcInfoProvider {
     return {
-      bind: () => ({ vpc }),
+      _bind: () => ({ vpc }),
     };
   }
 
@@ -44,7 +45,10 @@ export abstract class VpcProvider {
  * Provides a VPC with both private and public subnets.
  */
 export class IngressAndPrivateVpcProvider implements IVpcInfoProvider {
-  bind(scope: cdk.Construct): VpcInfo {
+  /**
+   * @internal
+   */
+  _bind(scope: cdk.Construct): VpcInfo {
     const vpc = new ec2.Vpc(scope, 'Vpc', {
       subnetConfiguration: [
         {
