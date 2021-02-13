@@ -32,7 +32,7 @@ const keycloakCluster = new keycloak.KeycloakCluster(this, 'Keycloak', {
     // Set distributed inficaches owners to two
     cacheOwnersCount: 2,
   },
-  // Listen on HTTPS and use internal load balancing
+  // Use an HTTPS load balancer with internal HTTPS from the load balancer to Keycloak.
   httpsListenerProvider: keycloak.ListenerProvider.https({
     certificates: [certificate],
   }),
