@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.6](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.5...v0.0.6) (2021-02-13)
+
+
+### Features
+
+* Allow custom container image ([#50](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/50)) ([820a6b1](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/820a6b182c4cb34998287bdde562d7562fda6884))
+
 ### [0.0.5](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.4...v0.0.5) (2021-02-13)
 
 
