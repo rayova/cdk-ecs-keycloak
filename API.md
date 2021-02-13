@@ -517,6 +517,7 @@ new KeycloakContainerExtension(props?: KeycloakContainerExtensionProps)
   * **databaseVendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  The database vendor. __*Default*__: KeycloakDatabaseVendor.H2
   * **defaultAdminPassword** (<code>string</code>)  Default admin user's password. __*Default*__: 'admin'
   * **defaultAdminUser** (<code>string</code>)  Default admin user. __*Default*__: 'admin'
+  * **image** (<code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code>)  Keycloak container image to use. __*Default*__: use jboss/keycloak from docker hub.
   * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Log driver for the task. __*Default*__: cloudwatch with one month retention
   * **memoryLimitMiB** (<code>number</code>)  Memory limit of the keycloak task. __*Default*__: 1024
   * **memoryReservationMiB** (<code>number</code>)  Memory reservation size for the keycloak task. __*Default*__: 80% of memoryLimitMiB
@@ -1165,6 +1166,7 @@ Name | Type | Description
 **databaseVendor**? | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | The database vendor.<br/>__*Default*__: KeycloakDatabaseVendor.H2
 **defaultAdminPassword**? | <code>string</code> | Default admin user's password.<br/>__*Default*__: 'admin'
 **defaultAdminUser**? | <code>string</code> | Default admin user.<br/>__*Default*__: 'admin'
+**image**? | <code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code> | Keycloak container image to use.<br/>__*Default*__: use jboss/keycloak from docker hub.
 **logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Log driver for the task.<br/>__*Default*__: cloudwatch with one month retention
 **memoryLimitMiB**? | <code>number</code> | Memory limit of the keycloak task.<br/>__*Default*__: 1024
 **memoryReservationMiB**? | <code>number</code> | Memory reservation size for the keycloak task.<br/>__*Default*__: 80% of memoryLimitMiB

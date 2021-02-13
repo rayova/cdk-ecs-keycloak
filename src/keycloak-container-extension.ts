@@ -28,6 +28,12 @@ export enum KeycloakDatabaseVendor {
  */
 export interface KeycloakContainerExtensionProps {
   /**
+   * Keycloak container image to use.
+   * @default - use jboss/keycloak from docker hub.
+   */
+  readonly image?: ecs.ContainerImage;
+
+  /**
    * A name for the container added to the task definition.
    * @default 'keycloak'
    */
@@ -143,11 +149,14 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
   private readonly _memoryReservationMiB?: number;
   private readonly _logging: ecs.LogDriver;
   private readonly _databaseCredentials?: secretsmanager.ISecret;
+  private readonly _image: ecs.ContainerImage;
   private _cloudMapService?: cloudmap.IService;
+
 
   constructor(props?: KeycloakContainerExtensionProps) {
     this.cacheOwnersCount = props?.cacheOwnersCount ?? 1;
     this.cacheOwnersAuthSessionsCount = props?.cacheOwnersAuthSessionsCount ?? this.cacheOwnersCount;
+    this._image = props?.image ?? ecs.ContainerImage.fromRegistry('jboss/keycloak');
 
     this.containerName = props?.containerName ?? 'keycloak';
     this.databaseVendor = props?.databaseVendor ?? KeycloakDatabaseVendor.H2;
@@ -209,7 +218,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
     }
 
     const keycloak = taskDefinition.addContainer(this.containerName, {
-      image: ecs.ContainerImage.fromRegistry('jboss/keycloak'),
+      image: this._image,
       environment: {
         KEYCLOAK_USER: this.defaultAdminUser,
         KEYCLOAK_PASSWORD: this.defaultAdminPassword,
