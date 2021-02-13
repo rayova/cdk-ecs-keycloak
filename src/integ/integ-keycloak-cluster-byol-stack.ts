@@ -5,7 +5,7 @@ import * as keycloak from '..';
 
 export class IntegKeycloakClusterBYOLStack extends cdk.Stack {
   constructor(scope: cdk.Construct) {
-    super(scope, 'integ-lit-byol');
+    super(scope, 'integ-keycloak-cluster-byol');
 
     const vpc = new ec2.Vpc(this, 'Vpc', {
       subnetConfiguration: [

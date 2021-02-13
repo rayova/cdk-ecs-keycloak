@@ -126,6 +126,10 @@ export class HttpListenerProvider implements IListenerInfoProvider {
       slowStart: props.slowStart,
       deregistrationDelay: props.deregistrationDelay,
       healthCheck: props.healthCheck,
+      // Keycloak recommends session stickiness to reduce remote distributed cache
+      // access across cluster nodes.
+      // https://www.keycloak.org/docs/latest/server_installation/#sticky-sessions
+      stickinessCookieDuration: cdk.Duration.days(1),
     });
   }
 }
@@ -185,6 +189,10 @@ export class HttpsListenerProvider implements IListenerInfoProvider {
       slowStart: props.slowStart,
       deregistrationDelay: props.deregistrationDelay,
       healthCheck: props.healthCheck,
+      // Keycloak recommends session stickiness to reduce remote distributed cache
+      // access across cluster nodes.
+      // https://www.keycloak.org/docs/latest/server_installation/#sticky-sessions
+      stickinessCookieDuration: cdk.Duration.days(1),
     });
   }
 }

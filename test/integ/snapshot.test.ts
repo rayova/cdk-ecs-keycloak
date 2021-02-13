@@ -33,7 +33,7 @@ test('simplest cluster', () => {
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
 
-test('bigger example', () => {
+test('autoscaling https example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakAutoScalingHttpsStack(app);
 

@@ -377,17 +377,17 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
 * **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)</code>)  *No description*
-  * **adminConsoleListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's admin console port to a load balancer. __*Default*__: not exposed
+  * **adminConsoleListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
   * **circuitBreaker** (<code>boolean</code>)  Enable/disable the deployment circuit breaker. __*Default*__: true
   * **cloudMapNamespaceProvider** (<code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code>)  CloudMap namespace to use for service discovery. __*Default*__: creates one named 'keycloak-service-discovery'
   * **cpu** (<code>number</code>)  Fargate task cpu spec. __*Default*__: 1024
   * **databaseProvider** (<code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>)  Database server. __*Default*__: creates a new one
-  * **desiredCount** (<code>number</code>)  How many keycloak cluster members to spin up. __*Optional*__
+  * **desiredCount** (<code>number</code>)  How many keycloak cluster members to spin up. __*Default*__: 1
   * **ecsClusterProvider** (<code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>)  Provide an ECS cluster. __*Default*__: a cluster is automatically created.
   * **healthCheckGracePeriod** (<code>[Duration](#aws-cdk-core-duration)</code>)  Initial grace period for Keycloak to spin up. __*Default*__: 10 minutes
   * **httpsListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's https port to a load balancer. __*Default*__: not exposed
-  * **keycloak** (<code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  Keycloak configuration. __*Optional*__
-  * **listenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service to a load balancer. __*Default*__: a new load balancer is automatically created.
+  * **keycloak** (<code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  Keycloak configuration options. __*Optional*__
+  * **listenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's http port to a load balancer. __*Default*__: a new load balancer is automatically created unless `httpsListenerProvider` is given.
   * **maxHealthyPercent** (<code>number</code>)  The maximum percentage of healthy tasks during deployments. __*Optional*__
   * **memoryLimitMiB** (<code>number</code>)  Fargate task memory spec. __*Default*__: 2048
   * **minHealthyPercent** (<code>number</code>)  The minimum percentage of healthy tasks during deployments. __*Optional*__
@@ -987,17 +987,17 @@ Props for `KeycloakCluster`.
 
 Name | Type | Description 
 -----|------|-------------
-**adminConsoleListenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's admin console port to a load balancer.<br/>__*Default*__: not exposed
+**adminConsoleListenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
 **circuitBreaker**? | <code>boolean</code> | Enable/disable the deployment circuit breaker.<br/>__*Default*__: true
 **cloudMapNamespaceProvider**? | <code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code> | CloudMap namespace to use for service discovery.<br/>__*Default*__: creates one named 'keycloak-service-discovery'
 **cpu**? | <code>number</code> | Fargate task cpu spec.<br/>__*Default*__: 1024
 **databaseProvider**? | <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code> | Database server.<br/>__*Default*__: creates a new one
-**desiredCount**? | <code>number</code> | How many keycloak cluster members to spin up.<br/>__*Optional*__
+**desiredCount**? | <code>number</code> | How many keycloak cluster members to spin up.<br/>__*Default*__: 1
 **ecsClusterProvider**? | <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code> | Provide an ECS cluster.<br/>__*Default*__: a cluster is automatically created.
 **healthCheckGracePeriod**? | <code>[Duration](#aws-cdk-core-duration)</code> | Initial grace period for Keycloak to spin up.<br/>__*Default*__: 10 minutes
 **httpsListenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's https port to a load balancer.<br/>__*Default*__: not exposed
-**keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration.<br/>__*Optional*__
-**listenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service to a load balancer.<br/>__*Default*__: a new load balancer is automatically created.
+**keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration options.<br/>__*Optional*__
+**listenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's http port to a load balancer.<br/>__*Default*__: a new load balancer is automatically created unless `httpsListenerProvider` is given.
 **maxHealthyPercent**? | <code>number</code> | The maximum percentage of healthy tasks during deployments.<br/>__*Optional*__
 **memoryLimitMiB**? | <code>number</code> | Fargate task memory spec.<br/>__*Default*__: 2048
 **minHealthyPercent**? | <code>number</code> | The minimum percentage of healthy tasks during deployments.<br/>__*Optional*__

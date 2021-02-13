@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`bigger example 1`] = `
+exports[`autoscaling https example 1`] = `
 Object {
   "Outputs": Object {
     "KeycloakLoadBalancerUrl601AE2AE": Object {
@@ -124,9 +124,9 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "KeycloakDatabaseSecurityGroupfrominteglitbiggerKeycloakServiceSecurityGroupF1F4C2C4IndirectPortD3957FF9": Object {
+    "KeycloakDatabaseSecurityGroupfromintegkeycloakclusterautoscalinghttpsKeycloakServiceSecurityGroupCFCB80E1IndirectPort41144B6A": Object {
       "Properties": Object {
-        "Description": "from integlitbiggerKeycloakServiceSecurityGroupF1F4C2C4:{IndirectPort}",
+        "Description": "from integkeycloakclusterautoscalinghttpsKeycloakServiceSecurityGroupCFCB80E1:{IndirectPort}",
         "FromPort": Object {
           "Fn::GetAtt": Array [
             "KeycloakDatabase9FB2EF02",
@@ -206,7 +206,7 @@ Object {
       "Properties": Object {
         "Certificates": Array [
           Object {
-            "CertificateArn": "provide this context on the cli",
+            "CertificateArn": "PRETEND",
           },
         ],
         "DefaultActions": Array [
@@ -229,8 +229,8 @@ Object {
       "Properties": Object {
         "HealthCheckEnabled": true,
         "HealthCheckPath": "/auth/realms/master",
-        "Port": 80,
-        "Protocol": "HTTP",
+        "Port": 443,
+        "Protocol": "HTTPS",
         "TargetGroupAttributes": Array [
           Object {
             "Key": "deregistration_delay.timeout_seconds",
@@ -239,6 +239,18 @@ Object {
           Object {
             "Key": "slow_start.duration_seconds",
             "Value": "60",
+          },
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "true",
+          },
+          Object {
+            "Key": "stickiness.type",
+            "Value": "lb_cookie",
+          },
+          Object {
+            "Key": "stickiness.lb_cookie.duration_seconds",
+            "Value": "86400",
           },
         ],
         "TargetType": "ip",
@@ -250,7 +262,7 @@ Object {
     },
     "KeycloakLoadBalancerSecurityGroupBD1401A8": Object {
       "Properties": Object {
-        "GroupDescription": "Automatically created Security Group for ELB integlitbiggerKeycloakLoadBalancerAB971CF6",
+        "GroupDescription": "Automatically created Security Group for ELB integkeycloakclusterautoscalinghttpsKeycloakLoadBalancerAE25FE77",
         "SecurityGroupIngress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -266,7 +278,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "KeycloakLoadBalancerSecurityGrouptointeglitbiggerKeycloakServiceSecurityGroupF1F4C2C48080EA2E8FFD": Object {
+    "KeycloakLoadBalancerSecurityGrouptointegkeycloakclusterautoscalinghttpsKeycloakServiceSecurityGroupCFCB80E18443B129626C": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": Object {
@@ -275,7 +287,7 @@ Object {
             "GroupId",
           ],
         },
-        "FromPort": 8080,
+        "FromPort": 8443,
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "KeycloakLoadBalancerSecurityGroupBD1401A8",
@@ -283,7 +295,7 @@ Object {
           ],
         },
         "IpProtocol": "tcp",
-        "ToPort": 8080,
+        "ToPort": 8443,
       },
       "Type": "AWS::EC2::SecurityGroupEgress",
     },
@@ -310,7 +322,7 @@ Object {
         "LoadBalancers": Array [
           Object {
             "ContainerName": "keycloak",
-            "ContainerPort": 8080,
+            "ContainerPort": 8443,
             "TargetGroupArn": Object {
               "Ref": "KeycloakLoadBalancerHTTPSKeycloakGroupF8466409",
             },
@@ -393,7 +405,7 @@ Object {
     },
     "KeycloakServiceSecurityGroup9C087FD3": Object {
       "Properties": Object {
-        "GroupDescription": "integ-lit-bigger/Keycloak/Service/SecurityGroup",
+        "GroupDescription": "integ-keycloak-cluster-autoscaling-https/Keycloak/Service/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -407,10 +419,10 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "KeycloakServiceSecurityGroupfrominteglitbiggerKeycloakLoadBalancerSecurityGroupEC112C388080DDCE27B0": Object {
+    "KeycloakServiceSecurityGroupfromintegkeycloakclusterautoscalinghttpsKeycloakLoadBalancerSecurityGroup9D877AF7844368082926": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
-        "FromPort": 8080,
+        "FromPort": 8443,
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "KeycloakServiceSecurityGroup9C087FD3",
@@ -424,13 +436,13 @@ Object {
             "GroupId",
           ],
         },
-        "ToPort": 8080,
+        "ToPort": 8443,
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
-    "KeycloakServiceSecurityGroupfrominteglitbiggerKeycloakServiceSecurityGroupF1F4C2C4ALLTRAFFIC91D7658C": Object {
+    "KeycloakServiceSecurityGroupfromintegkeycloakclusterautoscalinghttpsKeycloakServiceSecurityGroupCFCB80E1ALLTRAFFIC34ABFA28": Object {
       "Properties": Object {
-        "Description": "from integlitbiggerKeycloakServiceSecurityGroupF1F4C2C4:ALL TRAFFIC",
+        "Description": "from integkeycloakclusterautoscalinghttpsKeycloakServiceSecurityGroupCFCB80E1:ALL TRAFFIC",
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "KeycloakServiceSecurityGroup9C087FD3",
@@ -492,7 +504,7 @@ Object {
     },
     "KeycloakServiceTaskCountTargetTarget40E7C31114": Object {
       "Properties": Object {
-        "PolicyName": "integlitbiggerKeycloakServiceTaskCountTargetTarget4033BCB567",
+        "PolicyName": "integkeycloakclusterautoscalinghttpsKeycloakServiceTaskCountTargetTarget40B08E5770",
         "PolicyType": "TargetTrackingScaling",
         "ScalingTargetId": Object {
           "Ref": "KeycloakServiceTaskCountTarget51F033D1",
@@ -776,7 +788,7 @@ Object {
             "Arn",
           ],
         },
-        "Family": "integlitbiggerKeycloakTaskDefinitionA5B6282A",
+        "Family": "integkeycloakclusterautoscalinghttpsKeycloakTaskDefinition207D0DD6",
         "Memory": "1024",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": Array [
@@ -902,7 +914,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc",
           },
         ],
       },
@@ -913,7 +925,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc",
           },
         ],
       },
@@ -951,7 +963,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet1",
           },
         ],
       },
@@ -971,7 +983,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet1",
           },
         ],
       },
@@ -993,7 +1005,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet1",
           },
         ],
         "VpcId": Object {
@@ -1025,7 +1037,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet1",
           },
         ],
         "VpcId": Object {
@@ -1055,7 +1067,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet2",
           },
         ],
       },
@@ -1075,7 +1087,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet2",
           },
         ],
       },
@@ -1086,7 +1098,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet2",
           },
         ],
         "VpcId": Object {
@@ -1129,7 +1141,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/ingressSubnet2",
           },
         ],
         "VpcId": Object {
@@ -1155,7 +1167,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/privateSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/privateSubnet1",
           },
         ],
         "VpcId": Object {
@@ -1198,7 +1210,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/privateSubnet1",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/privateSubnet1",
           },
         ],
         "VpcId": Object {
@@ -1224,7 +1236,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/privateSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/privateSubnet2",
           },
         ],
         "VpcId": Object {
@@ -1267,7 +1279,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-bigger/Keycloak/Vpc/privateSubnet2",
+            "Value": "integ-keycloak-cluster-autoscaling-https/Keycloak/Vpc/privateSubnet2",
           },
         ],
         "VpcId": Object {
@@ -1335,7 +1347,7 @@ Object {
     },
     "AlbSecurityGroup580F65A6": Object {
       "Properties": Object {
-        "GroupDescription": "Automatically created Security Group for ELB integlitbyolAlbFF2A6B19",
+        "GroupDescription": "Automatically created Security Group for ELB integkeycloakclusterbyolAlb26FD4720",
         "SecurityGroupIngress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -1351,7 +1363,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "AlbSecurityGrouptointeglitbyolKeycloakServiceSecurityGroup5E2FE5548080452EC867": Object {
+    "AlbSecurityGrouptointegkeycloakclusterbyolKeycloakServiceSecurityGroupEC6D5B7980809E848DFF": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "DestinationSecurityGroupId": Object {
@@ -1534,9 +1546,9 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "KeycloakDatabaseSecurityGroupfrominteglitbyolKeycloakServiceSecurityGroup5E2FE554IndirectPort9E456980": Object {
+    "KeycloakDatabaseSecurityGroupfromintegkeycloakclusterbyolKeycloakServiceSecurityGroupEC6D5B79IndirectPortB8477682": Object {
       "Properties": Object {
-        "Description": "from integlitbyolKeycloakServiceSecurityGroup5E2FE554:{IndirectPort}",
+        "Description": "from integkeycloakclusterbyolKeycloakServiceSecurityGroupEC6D5B79:{IndirectPort}",
         "FromPort": Object {
           "Fn::GetAtt": Array [
             "KeycloakDatabase9FB2EF02",
@@ -1684,7 +1696,7 @@ Object {
     },
     "KeycloakServiceSecurityGroup9C087FD3": Object {
       "Properties": Object {
-        "GroupDescription": "integ-lit-byol/Keycloak/Service/SecurityGroup",
+        "GroupDescription": "integ-keycloak-cluster-byol/Keycloak/Service/SecurityGroup",
         "SecurityGroupEgress": Array [
           Object {
             "CidrIp": "0.0.0.0/0",
@@ -1698,7 +1710,7 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroup",
     },
-    "KeycloakServiceSecurityGroupfrominteglitbyolAlbSecurityGroup6F9DA49F8080F13833CA": Object {
+    "KeycloakServiceSecurityGroupfromintegkeycloakclusterbyolAlbSecurityGroupDB0B93B980808322326F": Object {
       "Properties": Object {
         "Description": "Load balancer to target",
         "FromPort": 8080,
@@ -1719,9 +1731,9 @@ Object {
       },
       "Type": "AWS::EC2::SecurityGroupIngress",
     },
-    "KeycloakServiceSecurityGroupfrominteglitbyolKeycloakServiceSecurityGroup5E2FE554ALLTRAFFIC93039D8D": Object {
+    "KeycloakServiceSecurityGroupfromintegkeycloakclusterbyolKeycloakServiceSecurityGroupEC6D5B79ALLTRAFFIC92CEF077": Object {
       "Properties": Object {
-        "Description": "from integlitbyolKeycloakServiceSecurityGroup5E2FE554:ALL TRAFFIC",
+        "Description": "from integkeycloakclusterbyolKeycloakServiceSecurityGroupEC6D5B79:ALL TRAFFIC",
         "GroupId": Object {
           "Fn::GetAtt": Array [
             "KeycloakServiceSecurityGroup9C087FD3",
@@ -2006,7 +2018,7 @@ Object {
             "Arn",
           ],
         },
-        "Family": "integlitbyolKeycloakTaskDefinitionB3366CB7",
+        "Family": "integkeycloakclusterbyolKeycloakTaskDefinition1001897E",
         "Memory": "2048",
         "NetworkMode": "awsvpc",
         "RequiresCompatibilities": Array [
@@ -2132,7 +2144,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc",
+            "Value": "integ-keycloak-cluster-byol/Vpc",
           },
         ],
       },
@@ -2143,7 +2155,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc",
+            "Value": "integ-keycloak-cluster-byol/Vpc",
           },
         ],
       },
@@ -2181,7 +2193,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet1",
           },
         ],
       },
@@ -2201,7 +2213,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet1",
           },
         ],
       },
@@ -2212,7 +2224,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet1",
           },
         ],
         "VpcId": Object {
@@ -2255,7 +2267,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet1",
           },
         ],
         "VpcId": Object {
@@ -2285,7 +2297,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet2",
           },
         ],
       },
@@ -2305,7 +2317,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet2",
           },
         ],
       },
@@ -2316,7 +2328,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet2",
           },
         ],
         "VpcId": Object {
@@ -2359,7 +2371,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/ingressSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/ingressSubnet2",
           },
         ],
         "VpcId": Object {
@@ -2385,7 +2397,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/privateSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/privateSubnet1",
           },
         ],
         "VpcId": Object {
@@ -2428,7 +2440,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/privateSubnet1",
+            "Value": "integ-keycloak-cluster-byol/Vpc/privateSubnet1",
           },
         ],
         "VpcId": Object {
@@ -2454,7 +2466,7 @@ Object {
         "Tags": Array [
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/privateSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/privateSubnet2",
           },
         ],
         "VpcId": Object {
@@ -2497,7 +2509,7 @@ Object {
           },
           Object {
             "Key": "Name",
-            "Value": "integ-lit-byol/Vpc/privateSubnet2",
+            "Value": "integ-keycloak-cluster-byol/Vpc/privateSubnet2",
           },
         ],
         "VpcId": Object {
@@ -6681,6 +6693,18 @@ Object {
           Object {
             "Key": "slow_start.duration_seconds",
             "Value": "60",
+          },
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "true",
+          },
+          Object {
+            "Key": "stickiness.type",
+            "Value": "lb_cookie",
+          },
+          Object {
+            "Key": "stickiness.lb_cookie.duration_seconds",
+            "Value": "86400",
           },
         ],
         "TargetType": "ip",

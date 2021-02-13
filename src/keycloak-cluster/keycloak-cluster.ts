@@ -47,42 +47,45 @@ export interface KeycloakClusterProps {
   readonly cloudMapNamespaceProvider?: ICloudMapNamespaceInfoProvider;
 
   /**
-   * Provide an ECS cluster
-   * @default - a cluster is automatically created.
-   */
-  readonly ecsClusterProvider?: IClusterInfoProvider;
-
-  /**
-   * Add the service to a load balancer
-   * @default - a new load balancer is automatically created.
-   */
-  readonly listenerProvider?: IListenerInfoProvider;
-
-  /**
-   * Add the service's https port to a load balancer
-   * @default - not exposed
-   */
-  readonly httpsListenerProvider?: IListenerInfoProvider;
-
-  /**
-   * Add the service's admin console port to a load balancer
-   * @default - not exposed
-   */
-  readonly adminConsoleListenerProvider?: IListenerInfoProvider;
-
-  /**
    * Database server.
    * @default - creates a new one
    */
   readonly databaseProvider?: IDatabaseInfoProvider;
 
   /**
-   * Keycloak configuration.
+   * Provide an ECS cluster
+   * @default - a cluster is automatically created.
+   */
+  readonly ecsClusterProvider?: IClusterInfoProvider;
+
+  /**
+   * Add the service's http port to a load balancer
+   * @default - a new load balancer is automatically created unless `httpsListenerProvider` is given.
+   */
+  readonly listenerProvider?: IListenerInfoProvider;
+
+  /**
+   * Add the service's https port to a load balancer. When provided, the
+   * http port is no longer exposed by an http load balancer by default.
+   * @default - not exposed
+   */
+  readonly httpsListenerProvider?: IListenerInfoProvider;
+
+  /**
+   * Add the service's WildFly admin console port to a load balancer. You will
+   * probably need to use your own Dockerfile to add access to this console.
+   * @default - not exposed
+   */
+  readonly adminConsoleListenerProvider?: IListenerInfoProvider;
+
+  /**
+   * Keycloak configuration options.
    */
   readonly keycloak?: KeycloakContainerExtensionProps;
 
   /**
    * How many keycloak cluster members to spin up.
+   * @default 1
    */
   readonly desiredCount?: number;
 
@@ -145,8 +148,15 @@ export class KeycloakCluster extends cdk.Construct {
     const iCloudMapNamespaceInfoProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
     const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
 
-    // Add the http web port to an http ALB by default
-    const listenerProvider = props?.listenerProvider ?? ListenerProvider.http();
+    // When there's an https listener provider, we disable internal HTTP by
+    // default. Otherwise, we opt for a plain http load balancer.
+    const defaultListenerProvider = props?.httpsListenerProvider
+      ? ListenerProvider.none()
+      // Without an https listener provider, use internal HTTP by default
+      : ListenerProvider.http();
+
+    const listenerProvider = props?.listenerProvider ?? defaultListenerProvider;
+
     // Don't add the https web port to the load balancer by default
     const httpsListenerProvider = props?.httpsListenerProvider ?? ListenerProvider.none();
     // Don't add the wildfly admin console to the load balancer by default

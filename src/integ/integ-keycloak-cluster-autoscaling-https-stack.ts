@@ -4,9 +4,9 @@ import * as keycloak from '../index';
 
 export class IntegKeycloakAutoScalingHttpsStack extends cdk.Stack {
   constructor(scope: cdk.Construct) {
-    super(scope, 'integ-lit-bigger');
+    super(scope, 'integ-keycloak-cluster-autoscaling-https');
 
-    const certificateArn = this.node.tryGetContext('CERTICATE_ARN') ?? 'provide this context on the cli';
+    const certificateArn = scope.node.tryGetContext('CERTIFICATE_ARN') ?? 'PRETEND';
     const certificate = acm.Certificate.fromCertificateArn(this, 'Certificate', certificateArn);
 
     // Create a Keycloak cluster on Fargate
@@ -21,7 +21,8 @@ export class IntegKeycloakAutoScalingHttpsStack extends cdk.Stack {
       keycloak: {
         cacheOwnersCount: 2,
       },
-      listenerProvider: keycloak.ListenerProvider.https({
+      // Use internal HTTPS
+      httpsListenerProvider: keycloak.ListenerProvider.https({
         certificates: [certificate],
       }),
     });

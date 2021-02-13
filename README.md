@@ -17,7 +17,7 @@ This CDK construct allows you spin up a HA Keycloak cluster on AWS ECS.
 new keycloak.KeycloakCluster(this, 'Keycloak');
 ```
 
-**Auto-scaling example with SSL**
+**Auto-scaling example with SSL and keycloak configuration**
 
 ```ts
 // Create a Keycloak cluster on Fargate
@@ -29,11 +29,11 @@ const keycloakCluster = new keycloak.KeycloakCluster(this, 'Keycloak', {
   minHealthyPercent: 50,
   maxHealthyPercent: 200,
   keycloak: {
-    // Set replicated inficaches owners to two
+    // Set distributed inficaches owners to two
     cacheOwnersCount: 2,
   },
-  // Listen on HTTPS
-  listenerProvider: keycloak.ListenerProvider.https({
+  // Listen on HTTPS and use internal load balancing
+  httpsListenerProvider: keycloak.ListenerProvider.https({
     certificates: [certificate],
   }),
 });
