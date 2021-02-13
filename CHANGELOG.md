@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.9...v0.0.10) (2021-02-13)
+
+
+### Features
+
+* Add load balancer support for all ports ([#54](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/54)) ([6afe590](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/6afe590cd814929c3c27f6140fd6521a38f2191a))
+* Add Network load balancer support ([eef7f39](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/eef7f39378d77074f02ccbd531645a6e8b329f80))
+
 ### [0.0.9](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.8...v0.0.9) (2021-02-13)
 
 ### [0.0.8](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.7...v0.0.8) (2021-02-13)
