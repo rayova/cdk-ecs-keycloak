@@ -12,7 +12,7 @@ export interface IListenerInfoProvider {
    * VPC is available.
    * @internal
    */
-  _registerTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps): elbv2.ApplicationTargetGroup;
+  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps): elbv2.ApplicationTargetGroup;
 }
 
 /**
@@ -40,7 +40,7 @@ export abstract class ListenerProvider {
    */
   static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider {
     return {
-      _registerTargets: (_scope, props) => {
+      _addTargets: (_scope, props) => {
         return listenerInfo.listener.addTargets('Keycloak', {
           ...props,
           conditions: listenerInfo.conditions,
@@ -72,7 +72,7 @@ export class HttpListenerProvider implements IListenerInfoProvider {
   /**
    * @internal
    */
-  public _registerTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
+  public _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
       vpc: props.vpc,
       internetFacing: true,
@@ -118,7 +118,7 @@ export class HttpsListenerProvider implements IListenerInfoProvider {
   /**
    * @internal
    */
-  _registerTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
+  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
     // Create a load balancer.
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
       vpc: props.vpc,

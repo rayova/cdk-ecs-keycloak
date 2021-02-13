@@ -186,7 +186,7 @@ export class KeycloakCluster extends cdk.Construct {
     this.service.connections.allowInternally(ec2.Port.allTraffic());
 
     // Register the service's web port with target groups
-    this.targetGroup = listenerProvider._registerTargets(this, {
+    this.targetGroup = listenerProvider._addTargets(this, {
       vpc,
       targets: [this.service],
       protocol: elbv2.ApplicationProtocol.HTTP,
