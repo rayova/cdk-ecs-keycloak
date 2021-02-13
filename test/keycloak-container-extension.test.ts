@@ -154,6 +154,21 @@ describe('KeycloakContainerExtension', () => {
     }));
   });
 
+  test('allows custom container image', () => {
+    const task = new ecs.FargateTaskDefinition(new cdk.Stack(), 'TaskDefinition');
+    const addContainerSpy = jest.spyOn(task, 'addContainer');
+    const image = ecs.ContainerImage.fromRegistry('jboss/keycloak:12.0.1');
+    const extension = new KeycloakContainerExtension({
+      image: image,
+    });
+
+    task.addExtension(extension);
+
+    expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
+      image: image,
+    }));
+  });
+
   test('when unspecified, it sets the auth session count to the provided cache owner count', () => {
     const extension = new KeycloakContainerExtension({
       cacheOwnersCount: 5,
