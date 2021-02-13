@@ -77,6 +77,11 @@ export interface DatabaseInstanceProviderProps {
    * @default - t2.micro
    */
   readonly instanceType?: ec2.InstanceType;
+
+  /**
+   * Select subnets to register the database instance in.
+   */
+  readonly subnets?: ec2.SubnetSelection;
 }
 
 /**
@@ -85,6 +90,7 @@ export interface DatabaseInstanceProviderProps {
 export class DatabaseInstanceProvider implements IDatabaseInfoProvider {
   private readonly engine: rds.IInstanceEngine;
   private readonly instanceType: ec2.InstanceType;
+  private readonly subnets?: ec2.SubnetSelection;
 
   constructor(props?: DatabaseInstanceProviderProps) {
     this.engine = props?.engine ??
@@ -94,12 +100,15 @@ export class DatabaseInstanceProvider implements IDatabaseInfoProvider {
 
     this.instanceType = props?.instanceType ??
       ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO);
+
+    this.subnets = props?.subnets;
   }
 
   bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
     const db = new rds.DatabaseInstance(scope, 'Database', {
       engine: this.engine,
       instanceType: this.instanceType,
+      vpcSubnets: this.subnets,
       vpc,
     });
 
