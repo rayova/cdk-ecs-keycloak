@@ -162,6 +162,7 @@ new DatabaseInstanceProvider(props?: DatabaseInstanceProviderProps)
 * **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
   * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
   * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
 
 
 ### Methods
@@ -213,6 +214,7 @@ static databaseInstance(props?: DatabaseInstanceProviderProps): DatabaseInstance
 * **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
   * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
   * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
 
 __Returns__:
 * <code>[DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider)</code>
@@ -919,6 +921,7 @@ Name | Type | Description
 -----|------|-------------
 **engine**? | <code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code> | Instance database engine.<br/>__*Default*__: mysql 8.0
 **instanceType**? | <code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code> | Instance type.<br/>__*Default*__: t2.micro
+**subnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | Select subnets to register the database instance in.<br/>__*Optional*__
 
 
 
