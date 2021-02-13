@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.4...v0.0.5) (2021-02-13)
+
+
+### Features
+
+* Add rds instance subnet selection ([df4c6e9](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/df4c6e9ae76be5e4527529e3772beeb516f0dc01))
+
 ### [0.0.4](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.3...v0.0.4) (2021-02-12)
 
 ### [0.0.3](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.2...v0.0.3) (2021-02-12)
