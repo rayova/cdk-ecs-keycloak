@@ -1608,7 +1608,7 @@ Object {
           "MinimumHealthyPercent": 50,
         },
         "EnableECSManagedTags": false,
-        "HealthCheckGracePeriodSeconds": 600,
+        "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
         "LoadBalancers": Array [
           Object {
@@ -1779,25 +1779,11 @@ Object {
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROTOCOL",
-                "Value": "dns.DNS_PING",
+                "Value": "",
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROPERTIES",
-                "Value": Object {
-                  "Fn::Sub": Array [
-                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
-                    Object {
-                      "QueryType": "A",
-                      "ServiceName": Object {
-                        "Fn::GetAtt": Array [
-                          "KeycloakServiceCloudmapService002D27A5",
-                          "Name",
-                        ],
-                      },
-                      "ServiceNamespace": "keycloak-service-discovery",
-                    },
-                  ],
-                },
+                "Value": "",
               },
               Object {
                 "Name": "CACHE_OWNERS_COUNT",
@@ -5508,7 +5494,7 @@ Object {
           "MinimumHealthyPercent": 50,
         },
         "EnableECSManagedTags": false,
-        "HealthCheckGracePeriodSeconds": 600,
+        "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
         "LoadBalancers": Array [
           Object {
@@ -5716,25 +5702,11 @@ Object {
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROTOCOL",
-                "Value": "dns.DNS_PING",
+                "Value": "",
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROPERTIES",
-                "Value": Object {
-                  "Fn::Sub": Array [
-                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
-                    Object {
-                      "QueryType": "A",
-                      "ServiceName": Object {
-                        "Fn::GetAtt": Array [
-                          "KeycloakServiceCloudmapService002D27A5",
-                          "Name",
-                        ],
-                      },
-                      "ServiceNamespace": "keycloak-service-discovery",
-                    },
-                  ],
-                },
+                "Value": "",
               },
               Object {
                 "Name": "CACHE_OWNERS_COUNT",
@@ -6771,7 +6743,7 @@ Object {
           "MinimumHealthyPercent": 50,
         },
         "EnableECSManagedTags": false,
-        "HealthCheckGracePeriodSeconds": 600,
+        "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
         "LoadBalancers": Array [
           Object {
@@ -6942,25 +6914,11 @@ Object {
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROTOCOL",
-                "Value": "dns.DNS_PING",
+                "Value": "",
               },
               Object {
                 "Name": "JGROUPS_DISCOVERY_PROPERTIES",
-                "Value": Object {
-                  "Fn::Sub": Array [
-                    "dns_query=\${ServiceName}.\${ServiceNamespace},dns_record_type=\${QueryType}",
-                    Object {
-                      "QueryType": "A",
-                      "ServiceName": Object {
-                        "Fn::GetAtt": Array [
-                          "KeycloakServiceCloudmapService002D27A5",
-                          "Name",
-                        ],
-                      },
-                      "ServiceNamespace": "keycloak-service-discovery",
-                    },
-                  ],
-                },
+                "Value": "",
               },
               Object {
                 "Name": "CACHE_OWNERS_COUNT",

@@ -40,6 +40,12 @@ export interface KeycloakContainerExtensionProps {
   readonly containerName?: string;
 
   /**
+   * Enable infinicache clustering.
+   * @default - true if any cache owner count is greater than 1
+   */
+  readonly infinicacheClustering?: boolean;
+
+  /**
    * The default number of distributed cache owners for each key.
    * @default 1
    */
@@ -145,6 +151,11 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
   public readonly defaultAdminPassword: string;
 
   /**
+   * True if infinicache clustering is enabled.
+   */
+  public readonly infinicacheClustering: boolean;
+
+  /**
    * Web traffic port.
    */
   public readonly webPort: number = 8080;
@@ -186,6 +197,16 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
       streamPrefix: '/cdk-ecs-keycloak',
       logRetention: logs.RetentionDays.ONE_MONTH,
     });
+
+    // Enable infinicache clustering by default if any cache owner count is greater than 1
+    const defaultInfinicacheClustering = this.cacheOwnersCount > 1 || this.cacheOwnersAuthSessionsCount > 1;
+    this.infinicacheClustering = props?.infinicacheClustering ?? defaultInfinicacheClustering;
+
+    if (!this.infinicacheClustering) {
+      if (this.cacheOwnersCount > 1 || this.cacheOwnersAuthSessionsCount > 1) {
+        throw new Error('Infinicache clustering must be enabled for any cache owner count greater than 1');
+      }
+    }
 
     if (!isSupportedDatabaseVendor(this.databaseVendor)) {
       throw new Error(`The ${this.databaseVendor} is not yet tested and fully supported. Please submit a PR.`);
@@ -269,7 +290,9 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    * @internal
    */
   public _getJGroupsDiscoveryProtocol() {
-    if (!this._cloudMapService) {
+    if (!this.infinicacheClustering) {
+      return '';
+    } else if (!this._cloudMapService) {
       return 'JDBC_PING';
     } else {
       return 'dns.DNS_PING';
@@ -280,7 +303,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
    * @internal
    */
   public _getJGroupsDiscoveryProperties() {
-    if (!this._cloudMapService) {
+    if (!(this.infinicacheClustering && this._cloudMapService)) {
       return '';
     }
 

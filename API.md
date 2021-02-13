@@ -436,6 +436,7 @@ new KeycloakContainerExtension(props?: KeycloakContainerExtensionProps)
   * **defaultAdminPassword** (<code>string</code>)  Default admin user's password. __*Default*__: 'admin'
   * **defaultAdminUser** (<code>string</code>)  Default admin user. __*Default*__: 'admin'
   * **image** (<code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code>)  Keycloak container image to use. __*Default*__: use jboss/keycloak from docker hub.
+  * **infinicacheClustering** (<code>boolean</code>)  Enable infinicache clustering. __*Default*__: true if any cache owner count is greater than 1
   * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Log driver for the task. __*Default*__: cloudwatch with one month retention
   * **memoryLimitMiB** (<code>number</code>)  Memory limit of the keycloak task. __*Default*__: 1024
   * **memoryReservationMiB** (<code>number</code>)  Memory reservation size for the keycloak task. __*Default*__: 80% of memoryLimitMiB
@@ -456,6 +457,7 @@ Name | Type | Description
 **defaultAdminPassword** | <code>string</code> | The default admin user password.
 **defaultAdminUser** | <code>string</code> | The default admin user's name.
 **httpsWebPort** | <code>number</code> | Web traffic port with HTTPS.
+**infinicacheClustering** | <code>boolean</code> | True if infinicache clustering is enabled.
 **webPort** | <code>number</code> | Web traffic port.
 
 ### Methods
@@ -1025,6 +1027,7 @@ Name | Type | Description
 **defaultAdminPassword**? | <code>string</code> | Default admin user's password.<br/>__*Default*__: 'admin'
 **defaultAdminUser**? | <code>string</code> | Default admin user.<br/>__*Default*__: 'admin'
 **image**? | <code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code> | Keycloak container image to use.<br/>__*Default*__: use jboss/keycloak from docker hub.
+**infinicacheClustering**? | <code>boolean</code> | Enable infinicache clustering.<br/>__*Default*__: true if any cache owner count is greater than 1
 **logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Log driver for the task.<br/>__*Default*__: cloudwatch with one month retention
 **memoryLimitMiB**? | <code>number</code> | Memory limit of the keycloak task.<br/>__*Default*__: 1024
 **memoryReservationMiB**? | <code>number</code> | Memory reservation size for the keycloak task.<br/>__*Default*__: 80% of memoryLimitMiB
