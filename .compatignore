@@ -17,3 +17,7 @@ removed:@wheatstalk/cdk-ecs-keycloak.IClusterInfoProvider.bind
 removed:@wheatstalk/cdk-ecs-keycloak.IDatabaseInfoProvider.bind
 removed:@wheatstalk/cdk-ecs-keycloak.IListenerInfoProvider.bind
 removed:@wheatstalk/cdk-ecs-keycloak.IVpcInfoProvider.bind
+
+# A single target group makes no sense in the context of the cluster as there
+# may none or several depending on listener configuration.
+removed:@wheatstalk/cdk-ecs-keycloak.KeycloakCluster.targetGroup
