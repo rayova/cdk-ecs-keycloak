@@ -71,6 +71,12 @@ export interface KeycloakContainerExtensionProps {
   readonly databaseName?: string;
 
   /**
+   * Database schema
+   * @default - for Postgresql, the default is 'public'
+   */
+  readonly databaseSchema?: string;
+
+  /**
    * The database vendor.
    * @default KeycloakDatabaseVendor.H2
    */
@@ -176,6 +182,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
   private readonly _databaseCredentials?: secretsmanager.ISecret;
   private readonly _image: ecs.ContainerImage;
   private _cloudMapService?: cloudmap.IService;
+  private readonly _databaseSchema?: string;
 
   constructor(props?: KeycloakContainerExtensionProps) {
     this.cacheOwnersCount = props?.cacheOwnersCount ?? 1;
@@ -185,6 +192,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
     this.containerName = props?.containerName ?? 'keycloak';
     this.databaseVendor = props?.databaseVendor ?? KeycloakDatabaseVendor.H2;
     this.databaseName = props?.databaseName ?? 'keycloak';
+    this._databaseSchema = props?.databaseSchema;
     this._databaseCredentials = props?.databaseCredentials;
     this.defaultAdminUser = props?.defaultAdminUser ?? 'admin';
     this.defaultAdminPassword = props?.defaultAdminPassword ?? 'admin';
@@ -208,7 +216,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
     }
 
     if (!isSupportedDatabaseVendor(this.databaseVendor)) {
-      throw new Error(`The ${this.databaseVendor} is not yet tested and fully supported. Please submit a PR.`);
+      throw new Error(`The ${this.databaseVendor} engine is not yet tested and fully supported. Please submit a PR.`);
     }
 
     if (!this._databaseCredentials && this.databaseVendor !== KeycloakDatabaseVendor.H2) {
@@ -258,6 +266,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
         KEYCLOAK_PASSWORD: this.defaultAdminPassword,
         DB_VENDOR: this.databaseVendor,
         DB_NAME: databaseNameForVendor,
+        DB_SCHEMA: this._databaseSchema ?? '',
         JGROUPS_DISCOVERY_PROTOCOL: cdk.Lazy.string({
           produce: () => this._getJGroupsDiscoveryProtocol(),
         }),
@@ -339,8 +348,8 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
 export function isSupportedDatabaseVendor(databaseVendor: KeycloakDatabaseVendor) {
   switch (databaseVendor) {
     case KeycloakDatabaseVendor.H2:
-    case KeycloakDatabaseVendor.MARIADB:
     case KeycloakDatabaseVendor.MYSQL:
+    case KeycloakDatabaseVendor.POSTGRES:
       return true;
 
     default:

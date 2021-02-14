@@ -3,6 +3,7 @@ import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as servicediscovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
+import { EnsurePostgresqlDatabaseExtension } from './ensure-postgresql-database-extension';
 import {
   KeycloakContainerExtension,
   KeycloakContainerExtensionProps,
@@ -108,6 +109,12 @@ export function configureKeyCloak(task: ecs.TaskDefinition, keycloak?: KeycloakC
   if (keycloak?.databaseCredentials && extension.databaseVendor === KeycloakDatabaseVendor.MYSQL) {
     task.addExtension(
       new EnsureMysqlDatabaseExtension({
+        databaseName: extension.databaseName,
+        databaseCredentials: keycloak.databaseCredentials,
+      }));
+  } else if (keycloak?.databaseCredentials && extension.databaseVendor === KeycloakDatabaseVendor.POSTGRES) {
+    task.addExtension(
+      new EnsurePostgresqlDatabaseExtension({
         databaseName: extension.databaseName,
         databaseCredentials: keycloak.databaseCredentials,
       }));
