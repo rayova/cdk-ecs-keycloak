@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.18](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.17...v0.0.18) (2021-02-14)
+
+
+### Features
+
+* Add Postgresql database support ([#62](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/62)) ([7952602](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/79526026ec3b2fc6dd2f09f93f640ffb21bd8ace))
+
 ### [0.0.17](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.16...v0.0.17) (2021-02-14)
 
 ### [0.0.16](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.15...v0.0.16) (2021-02-14)
