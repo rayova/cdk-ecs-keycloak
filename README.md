@@ -88,7 +88,7 @@ example, we re-use a VPC and Application Load Balancer listener.
 ```ts
 new keycloak.KeycloakCluster(this, 'Keycloak', {
   // Provide an existing VPC so the cluster and database can opt to reuse it
-  vpcProvider: keycloak.VpcProvider.fromExistingVpc(vpc),
+  vpcProvider: keycloak.VpcProvider.fromVpc(vpc),
   // Bring your own load balancer
   httpPortPublisher: keycloak.PortPublisher.addTarget({
     // Your load balancer's listener

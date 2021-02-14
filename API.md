@@ -11,6 +11,9 @@ Name|Description
 [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider)|Convenience interface for providing DatabaseInfo to the cluster.
 [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|Provides a very basic ECS cluster in the given VPC.
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
+[FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)|Directly provide cluster info.
+[FromDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoprovider)|Provide database info directly.
+[FromVpcProvider](#wheatstalk-cdk-ecs-keycloak-fromvpcprovider)|Directly provides the given VPC.
 [HttpAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisher)|Creates a load balancer and an HTTP load balancer.
 [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider)|Creates a load balancer and an HTTP load balancer.
 [HttpsAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisher)|Creates an application load balancer and an HTTPS listener with the given ACM certificates.
@@ -38,6 +41,9 @@ Name|Description
 [DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)|Information about needed to connect to the database.
 [DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)|Basic props for creating a database instance.
 [EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)|Props for EnsureMysqlDatabaseExtension.
+[FromClusterInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops)|Props for `FromClusterInfoProvider`.
+[FromDatabaseInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoproviderprops)|Props for `FromDatabaseInfoProvider`.
+[FromVpcProviderProps](#wheatstalk-cdk-ecs-keycloak-fromvpcproviderprops)|Props for `FromVpcProvider`.
 [HttpAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops)|Properties for an HTTP ALB port publisher.
 [HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)|Properties for a new HTTPS-listening load balancer.
 [HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)|Properties for a new HTTPS-listening load balancer.
@@ -50,7 +56,7 @@ Name|Description
 [NlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-nlbportpublisherprops)|Information about a network load balancer to create.
 [PrivateDnsNamespaceProviderProps](#wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops)|Props for creating a private Dns Namespace.
 [ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)|Basic props for creating a serverless Aurora database cluster.
-[VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)|Information about the VPC other providers may opt to privde their resources in.
+[VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)|Information about the VPC other providers may opt to use to host their resources.
 
 
 **Interfaces**
@@ -329,6 +335,71 @@ extend(taskDefinition: TaskDefinition): void
 * **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
 
 
+
+
+
+
+## class FromClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider"></a>
+
+Directly provide cluster info.
+
+__Implements__: [IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new FromClusterInfoProvider(props: FromClusterInfoProviderProps)
+```
+
+* **props** (<code>[FromClusterInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops)</code>)  *No description*
+  * **cluster** (<code>[ICluster](#aws-cdk-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
+
+
+
+
+## class FromDatabaseInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoprovider"></a>
+
+Provide database info directly.
+
+__Implements__: [IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new FromDatabaseInfoProvider(props: FromDatabaseInfoProviderProps)
+```
+
+* **props** (<code>[FromDatabaseInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoproviderprops)</code>)  *No description*
+  * **credentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
+  * **vendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  Database vendor. 
+  * **connectable** (<code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
+
+
+
+
+## class FromVpcProvider  <a id="wheatstalk-cdk-ecs-keycloak-fromvpcprovider"></a>
+
+Directly provides the given VPC.
+
+__Implements__: [IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new FromVpcProvider(props: FromVpcProviderProps)
+```
+
+* **props** (<code>[FromVpcProviderProps](#wheatstalk-cdk-ecs-keycloak-fromvpcproviderprops)</code>)  *No description*
+  * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  The VPC. 
 
 
 
@@ -1008,12 +1079,25 @@ new VpcProvider()
 ### Methods
 
 
-#### *static* fromExistingVpc(vpc) <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc"></a>
+#### *static* fromExistingVpc(vpc)⚠️ <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc"></a>
 
 Provides an already-existing vpc.
 
 ```ts
 static fromExistingVpc(vpc: IVpc): IVpcInfoProvider
+```
+
+* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+
+__Returns__:
+* <code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code>
+
+#### *static* fromVpc(vpc) <a id="wheatstalk-cdk-ecs-keycloak-vpcprovider-fromvpc"></a>
+
+Provides an already-existing vpc.
+
+```ts
+static fromVpc(vpc: IVpc): IVpcInfoProvider
 ```
 
 * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
@@ -1123,6 +1207,47 @@ Name | Type | Description
 
 
 
+## struct FromClusterInfoProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops"></a>
+
+
+Props for `FromClusterInfoProvider`.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**cluster** | <code>[ICluster](#aws-cdk-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
+
+
+
+## struct FromDatabaseInfoProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoproviderprops"></a>
+
+
+Props for `FromDatabaseInfoProvider`.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**credentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
+**vendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | Database vendor.
+**connectable**? | <code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
+
+
+
+## struct FromVpcProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-fromvpcproviderprops"></a>
+
+
+Props for `FromVpcProvider`.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**vpc** | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | The VPC.
+
+
+
 ## struct HttpAlbPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops"></a>
 
 
@@ -1176,7 +1301,7 @@ Provides CloudMapNamespaceInfo once the VPC is available.
 
 ## interface IClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider"></a>
 
-__Implemented by__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)
+__Implemented by__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider), [FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)
 __Obtainable from__: [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[cluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster)(), [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[fromClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-fromclusterinfo)()
 
 Provides ClusterInfo after the VPC is available.
@@ -1184,7 +1309,7 @@ Provides ClusterInfo after the VPC is available.
 
 ## interface IDatabaseInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider"></a>
 
-__Implemented by__: [DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider), [ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider)
+__Implemented by__: [DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider), [FromDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoprovider), [ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider)
 __Obtainable from__: [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider).[fromDatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseprovider#wheatstalk-cdk-ecs-keycloak-databaseprovider-fromdatabaseinfo)(), [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider).[serverlessAuroraCluster](#wheatstalk-cdk-ecs-keycloak-databaseprovider#wheatstalk-cdk-ecs-keycloak-databaseprovider-serverlessauroracluster)()
 
 Provides DatabaseInfo after the VPC is available.
@@ -1252,8 +1377,8 @@ Publishes container ports.
 
 ## interface IVpcInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider"></a>
 
-__Implemented by__: [IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider)
-__Obtainable from__: [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[fromExistingVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc)(), [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[ingressAndPrivateVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-ingressandprivatevpc)()
+__Implemented by__: [FromVpcProvider](#wheatstalk-cdk-ecs-keycloak-fromvpcprovider), [IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider)
+__Obtainable from__: [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[fromExistingVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-fromexistingvpc)(), [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[fromVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-fromvpc)(), [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider).[ingressAndPrivateVpc](#wheatstalk-cdk-ecs-keycloak-vpcprovider#wheatstalk-cdk-ecs-keycloak-vpcprovider-ingressandprivatevpc)()
 
 Provides VpcInfo.
 
@@ -1433,7 +1558,7 @@ Name | Type | Description
 ## struct VpcInfo  <a id="wheatstalk-cdk-ecs-keycloak-vpcinfo"></a>
 
 
-Information about the VPC other providers may opt to privde their resources in.
+Information about the VPC other providers may opt to use to host their resources.
 
 
 

@@ -45,9 +45,27 @@ export abstract class ClusterProvider {
    * Provide raw clusterInfo
    */
   static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider {
-    return {
-      _provideClusterInfo: () => clusterInfo,
-    };
+    return new FromClusterInfoProvider(clusterInfo);
+  }
+}
+
+/**
+ * Props for `FromClusterInfoProvider`
+ */
+export interface FromClusterInfoProviderProps extends ClusterInfo {}
+
+/**
+ * Directly provide cluster info.
+ */
+export class FromClusterInfoProvider implements IClusterInfoProvider {
+  constructor(private readonly props: FromClusterInfoProviderProps) {
+  }
+
+  /**
+   * @internal
+   */
+  _provideClusterInfo(_scope: cdk.Construct, _props: ProvideClusterInfoProps): ClusterInfo {
+    return this.props;
   }
 }
 
