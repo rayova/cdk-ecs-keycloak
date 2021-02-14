@@ -5,6 +5,8 @@ import { IntegEc2Stack } from '../../src/integ/integ-ec2-stack';
 import { IntegFargateStack } from '../../src/integ/integ-fargate-stack';
 import { IntegKeycloakAutoScalingHttpsStack } from '../../src/integ/integ-keycloak-cluster-autoscaling-https-stack';
 import { IntegKeycloakClusterBYOLStack } from '../../src/integ/integ-keycloak-cluster-byol-stack';
+import { IntegKeycloakClusterCustomContainerStack } from '../../src/integ/integ-keycloak-cluster-custom-container-stack';
+import { IntegKeycloakClusterDbInstanceStack } from '../../src/integ/integ-keycloak-cluster-db-instance-stack';
 import { IntegKeycloakClusterNlbStack } from '../../src/integ/integ-keycloak-cluster-nlb-stack';
 import { IntegKeycloakClusterSimplestStack } from '../../src/integ/integ-keycloak-cluster-simplest-stack';
 
@@ -50,6 +52,20 @@ test('byol example', () => {
 test('nlb example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterNlbStack(app);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('custom container example', () => {
+  const app = new cdk.App();
+  const stack = new IntegKeycloakClusterCustomContainerStack(app);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('db instance example', () => {
+  const app = new cdk.App();
+  const stack = new IntegKeycloakClusterDbInstanceStack(app);
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
