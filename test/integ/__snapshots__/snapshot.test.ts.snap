@@ -3,7 +3,7 @@
 exports[`autoscaling https example 1`] = `
 Object {
   "Outputs": Object {
-    "KeycloakLoadBalancerUrl601AE2AE": Object {
+    "KeycloakLoadBalancerHTTPSUrl42EE2844": Object {
       "Value": Object {
         "Fn::Sub": Array [
           "https://\${HostName}/",
@@ -202,6 +202,26 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
     },
+    "KeycloakLoadBalancerHTTP71CCF64D": Object {
+      "Properties": Object {
+        "DefaultActions": Array [
+          Object {
+            "RedirectConfig": Object {
+              "Port": "443",
+              "Protocol": "HTTPS",
+              "StatusCode": "HTTP_302",
+            },
+            "Type": "redirect",
+          },
+        ],
+        "LoadBalancerArn": Object {
+          "Ref": "KeycloakLoadBalancer21EA60AD",
+        },
+        "Port": 80,
+        "Protocol": "HTTP",
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::Listener",
+    },
     "KeycloakLoadBalancerHTTPS6970B755": Object {
       "Properties": Object {
         "Certificates": Array [
@@ -264,6 +284,13 @@ Object {
       "Properties": Object {
         "GroupDescription": "Automatically created Security Group for ELB integkeycloakclusterautoscalinghttpsKeycloakLoadBalancerAE25FE77",
         "SecurityGroupIngress": Array [
+          Object {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow from anyone on port 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
+          },
           Object {
             "CidrIp": "0.0.0.0/0",
             "Description": "Allow from anyone on port 443",
@@ -5142,7 +5169,7 @@ Object {
 exports[`nlb example 1`] = `
 Object {
   "Outputs": Object {
-    "KeycloakLoadBalancerEndpointPort8080E65A8FCA": Object {
+    "KeycloakLoadBalancerPort8080Endpoint5A95FA00": Object {
       "Value": Object {
         "Fn::Sub": Array [
           "\${Host}:\${Port}",
@@ -5158,7 +5185,7 @@ Object {
         ],
       },
     },
-    "KeycloakLoadBalancerEndpointPort8443F6CBB041": Object {
+    "KeycloakLoadBalancerPort8443EndpointB0E21924": Object {
       "Value": Object {
         "Fn::Sub": Array [
           "\${Host}:\${Port}",
@@ -5174,7 +5201,7 @@ Object {
         ],
       },
     },
-    "KeycloakLoadBalancerEndpointPort99904B4070F4": Object {
+    "KeycloakLoadBalancerPort9990Endpoint49C5862E": Object {
       "Value": Object {
         "Fn::Sub": Array [
           "\${Host}:\${Port}",
@@ -6434,7 +6461,7 @@ Object {
 exports[`simplest cluster 1`] = `
 Object {
   "Outputs": Object {
-    "KeycloakLoadBalancerUrl601AE2AE": Object {
+    "KeycloakLoadBalancerHTTPUrlA774BB72": Object {
       "Value": Object {
         "Fn::Sub": Array [
           "http://\${HostName}/",

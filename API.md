@@ -4,13 +4,16 @@
 
 Name|Description
 ----|-----------
+[AddTargetPortPublisher](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisher)|Publishes a container port common `listener.addTargets` props.
 [CloudMapNamespaceProvider](#wheatstalk-cdk-ecs-keycloak-cloudmapnamespaceprovider)|A convenience interface for creating a CloudMap namespace.
 [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider)|Convenience interface for providing ClusterInfo to the cluster construct.
 [DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider)|Provides a very basic RDS database instance.
 [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider)|Convenience interface for providing DatabaseInfo to the cluster.
 [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|Provides a very basic ECS cluster in the given VPC.
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
+[HttpAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisher)|Creates a load balancer and an HTTP load balancer.
 [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider)|Creates a load balancer and an HTTP load balancer.
+[HttpsAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisher)|Creates an application load balancer and an HTTPS listener with the given ACM certificates.
 [HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider)|Creates an application load balancer and an HTTPS listener with the given ACM certificates.
 [IngressAndPrivateVpcProvider](#wheatstalk-cdk-ecs-keycloak-ingressandprivatevpcprovider)|Provides a VPC with both private and public subnets.
 [KeycloakCluster](#wheatstalk-cdk-ecs-keycloak-keycloakcluster)|A complete Keycloak cluster in a box.
@@ -19,6 +22,8 @@ Name|Description
 [KeycloakFargateTaskDefinition](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinition)|The details of a Keycloak task definition running on Fargate.
 [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider)|Convenience interface for providing ListenerInfo to the cluster.
 [NlbListenerProvider](#wheatstalk-cdk-ecs-keycloak-nlblistenerprovider)|Creates a network load balancer listener.
+[NlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-nlbportpublisher)|Publishes a port via a Network Load Balancer.
+[PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher)|Convenience interface for creating port publishers.
 [ServerlessAuroraDatabaseProvider](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseprovider)|Provides a serverless Aurora database cluster.
 [VpcProvider](#wheatstalk-cdk-ecs-keycloak-vpcprovider)|*No description*
 
@@ -27,10 +32,14 @@ Name|Description
 
 Name|Description
 ----|-----------
+[AddTargetPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops)|Information about how to register with a load balancer.
+[AlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-albportpublisherprops)|Properties for an ALB port publisher.
 [ClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterinfo)|Information about the ecs cluster.
 [DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)|Information about needed to connect to the database.
 [DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)|Basic props for creating a database instance.
 [EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)|Props for EnsureMysqlDatabaseExtension.
+[HttpAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops)|Properties for an HTTP ALB port publisher.
+[HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)|Properties for a new HTTPS-listening load balancer.
 [HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)|Properties for a new HTTPS-listening load balancer.
 [KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)|Props for `KeycloakCluster`.
 [KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)|Configuration for the Keycloak container.
@@ -38,6 +47,7 @@ Name|Description
 [KeycloakFargateTaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinitionprops)|Props for `KeycloakFargateTaskDefinition`.
 [ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)|Information about how to register with a load balancer.
 [NlbListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-nlblistenerproviderprops)|Information about a network load balancer to create.
+[NlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-nlbportpublisherprops)|Information about a network load balancer to create.
 [PrivateDnsNamespaceProviderProps](#wheatstalk-cdk-ecs-keycloak-privatednsnamespaceproviderprops)|Props for creating a private Dns Namespace.
 [ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)|Basic props for creating a serverless Aurora database cluster.
 [VpcInfo](#wheatstalk-cdk-ecs-keycloak-vpcinfo)|Information about the VPC other providers may opt to privde their resources in.
@@ -52,6 +62,7 @@ Name|Description
 [IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)|Provides DatabaseInfo after the VPC is available.
 [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)|A Keycloak task definition.
 [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)|Provides ListenerInfo once the VPC is available.
+[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)|Publishes container ports.
 [IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)|Provides VpcInfo.
 
 
@@ -60,6 +71,29 @@ Name|Description
 Name|Description
 ----|-----------
 [KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)|The database vendor.
+
+
+
+## class AddTargetPortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-addtargetportpublisher"></a>
+
+Publishes a container port common `listener.addTargets` props.
+
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+
+### Initializer
+
+
+
+
+```ts
+new AddTargetPortPublisher(listenerInfo: AddTargetPortPublisherProps)
+```
+
+* **listenerInfo** (<code>[AddTargetPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops)</code>)  *No description*
+  * **listener** (<code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
+  * **conditions** (<code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
+  * **priority** (<code>number</code>)  *No description* __*Optional*__
+
 
 
 
@@ -299,11 +333,11 @@ extend(taskDefinition: TaskDefinition): void
 
 
 
-## class HttpListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-httplistenerprovider"></a>
+## class HttpAlbPortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-httpalbportpublisher"></a>
 
 Creates a load balancer and an HTTP load balancer.
 
-__Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
 
 ### Initializer
 
@@ -311,18 +345,70 @@ __Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerin
 
 
 ```ts
-new HttpListenerProvider()
+new HttpAlbPortPublisher(props?: HttpAlbPortPublisherProps)
 ```
 
+* **props** (<code>[HttpAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops)</code>)  *No description*
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
 
 
 
 
-## class HttpsListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerprovider"></a>
+## class HttpListenerProvider ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-httplistenerprovider"></a>
+
+Creates a load balancer and an HTTP load balancer.
+
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher), [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider), [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+__Extends__: [HttpAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisher)
+
+### Initializer
+
+
+
+
+```ts
+new HttpListenerProvider(props?: HttpAlbPortPublisherProps)
+```
+
+* **props** (<code>[HttpAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops)</code>)  *No description*
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+
+
+
+
+## class HttpsAlbPortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-httpsalbportpublisher"></a>
 
 Creates an application load balancer and an HTTPS listener with the given ACM certificates.
 
-__Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+
+### Initializer
+
+
+
+
+```ts
+new HttpsAlbPortPublisher(props: HttpsAlbPortPublisherProps)
+```
+
+* **props** (<code>[HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)</code>)  *No description*
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **upgradeHttp** (<code>boolean</code>)  Upgrade HTTP connection to HTTPS. __*Default*__: false
+  * **upgradeHttpHost** (<code>string</code>)  A host name to redirect to when upgrading to HTTPS. __*Default*__: same as the request
+
+
+
+
+## class HttpsListenerProvider ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerprovider"></a>
+
+Creates an application load balancer and an HTTPS listener with the given ACM certificates.
+
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher), [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider), [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+__Extends__: [HttpsAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisher)
 
 ### Initializer
 
@@ -378,6 +464,7 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)</code>)  *No description*
   * **adminConsoleListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
+  * **adminConsolePortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
   * **circuitBreaker** (<code>boolean</code>)  Enable/disable the deployment circuit breaker. __*Default*__: true
   * **cloudMapNamespaceProvider** (<code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code>)  CloudMap namespace to use for service discovery. __*Default*__: creates one named 'keycloak-service-discovery'
   * **cpu** (<code>number</code>)  Fargate task cpu spec. __*Default*__: 1024
@@ -385,7 +472,9 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
   * **desiredCount** (<code>number</code>)  How many keycloak cluster members to spin up. __*Default*__: 1
   * **ecsClusterProvider** (<code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>)  Provide an ECS cluster. __*Default*__: a cluster is automatically created.
   * **healthCheckGracePeriod** (<code>[Duration](#aws-cdk-core-duration)</code>)  Initial grace period for Keycloak to spin up. __*Default*__: 10 minutes
+  * **httpPortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Publish the service's HTTP port. __*Default*__: a new load balancer is automatically created unless `httpsPort` is given.
   * **httpsListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's https port to a load balancer. __*Default*__: not exposed
+  * **httpsPortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Publish the service's HTTPS port. __*Default*__: not published
   * **keycloak** (<code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  Keycloak configuration options. __*Optional*__
   * **listenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's http port to a load balancer. __*Default*__: a new load balancer is automatically created unless `httpsListenerProvider` is given.
   * **maxHealthyPercent** (<code>number</code>)  The maximum percentage of healthy tasks during deployments. __*Optional*__
@@ -412,8 +501,7 @@ Adds a keycloak container to a task definition.
 
 To use ECS service discovery
 to locate cluster members, you need to call `useCloudMapService` with the
-CloudMap service so that we can configure the correct DNS query. Without
-CloudMap service discovery, the Keycloak will use JDBC_PING.
+CloudMap service so that we can configure the correct DNS query.
 
 __Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
 
@@ -642,7 +730,7 @@ useCloudMapService(cloudMapService: IService): void
 
 
 
-## class ListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider"></a>
+## class ListenerProvider ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider"></a>
 
 Convenience interface for providing ListenerInfo to the cluster.
 
@@ -661,7 +749,7 @@ new ListenerProvider()
 ### Methods
 
 
-#### *static* fromListenerInfo(listenerInfo) <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-fromlistenerinfo"></a>
+#### *static* fromListenerInfo(listenerInfo)⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-fromlistenerinfo"></a>
 
 Add to an existing load balancer.
 
@@ -677,7 +765,7 @@ static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider
 __Returns__:
 * <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>
 
-#### *static* http() <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-http"></a>
+#### *static* http()⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-http"></a>
 
 Create a load balancer that listens for HTTP.
 
@@ -689,7 +777,7 @@ static http(): IListenerInfoProvider
 __Returns__:
 * <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>
 
-#### *static* https(props) <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-https"></a>
+#### *static* https(props)⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-https"></a>
 
 Create a load balancer that listens for HTTPS with your certificates.
 
@@ -703,7 +791,7 @@ static https(props: HttpsListenerProviderProps): IListenerInfoProvider
 __Returns__:
 * <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>
 
-#### *static* nlb(props) <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-nlb"></a>
+#### *static* nlb(props)⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-nlb"></a>
 
 Create a network load balancer.
 
@@ -719,7 +807,7 @@ static nlb(props: NlbListenerProviderProps): IListenerInfoProvider
 __Returns__:
 * <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>
 
-#### *static* none() <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-none"></a>
+#### *static* none()⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerprovider-none"></a>
 
 Not added to a load balancer.
 
@@ -733,11 +821,12 @@ __Returns__:
 
 
 
-## class NlbListenerProvider  <a id="wheatstalk-cdk-ecs-keycloak-nlblistenerprovider"></a>
+## class NlbListenerProvider ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-nlblistenerprovider"></a>
 
 Creates a network load balancer listener.
 
-__Implements__: [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher), [IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider), [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+__Extends__: [NlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-nlbportpublisher)
 
 ### Initializer
 
@@ -753,6 +842,127 @@ new NlbListenerProvider(props: NlbListenerProviderProps)
   * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
   * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
 
+
+
+
+## class NlbPortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-nlbportpublisher"></a>
+
+Publishes a port via a Network Load Balancer.
+
+__Implements__: [IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)
+
+### Initializer
+
+
+
+
+```ts
+new NlbPortPublisher(props: NlbPortPublisherProps)
+```
+
+* **props** (<code>[NlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-nlbportpublisherprops)</code>)  *No description*
+  * **port** (<code>number</code>)  Port to listen on. 
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+
+
+
+
+## class PortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-portpublisher"></a>
+
+Convenience interface for creating port publishers.
+
+
+### Initializer
+
+
+
+
+```ts
+new PortPublisher()
+```
+
+
+
+### Methods
+
+
+#### *static* addTarget(props) <a id="wheatstalk-cdk-ecs-keycloak-portpublisher-addtarget"></a>
+
+Add to an existing load balancer.
+
+```ts
+static addTarget(props: AddTargetPortPublisherProps): IPortPublisher
+```
+
+* **props** (<code>[AddTargetPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops)</code>)  *No description*
+  * **listener** (<code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
+  * **conditions** (<code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
+  * **priority** (<code>number</code>)  *No description* __*Optional*__
+
+__Returns__:
+* <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>
+
+#### *static* httpAlb(props?) <a id="wheatstalk-cdk-ecs-keycloak-portpublisher-httpalb"></a>
+
+Create a load balancer that listens for HTTP.
+
+```ts
+static httpAlb(props?: HttpAlbPortPublisherProps): IPortPublisher
+```
+
+* **props** (<code>[HttpAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops)</code>)  *No description*
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+
+__Returns__:
+* <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>
+
+#### *static* httpsAlb(props) <a id="wheatstalk-cdk-ecs-keycloak-portpublisher-httpsalb"></a>
+
+Create a load balancer that listens for HTTPS with your certificates.
+
+```ts
+static httpsAlb(props: HttpsAlbPortPublisherProps): IPortPublisher
+```
+
+* **props** (<code>[HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)</code>)  *No description*
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **upgradeHttp** (<code>boolean</code>)  Upgrade HTTP connection to HTTPS. __*Default*__: false
+  * **upgradeHttpHost** (<code>string</code>)  A host name to redirect to when upgrading to HTTPS. __*Default*__: same as the request
+
+__Returns__:
+* <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>
+
+#### *static* nlb(props) <a id="wheatstalk-cdk-ecs-keycloak-portpublisher-nlb"></a>
+
+Create a network load balancer.
+
+```ts
+static nlb(props: NlbPortPublisherProps): IPortPublisher
+```
+
+* **props** (<code>[NlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-nlbportpublisherprops)</code>)  *No description*
+  * **port** (<code>number</code>)  Port to listen on. 
+  * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
+  * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
+
+__Returns__:
+* <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>
+
+#### *static* none() <a id="wheatstalk-cdk-ecs-keycloak-portpublisher-none"></a>
+
+Not added to a load balancer.
+
+```ts
+static none(): IPortPublisher
+```
+
+
+__Returns__:
+* <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>
 
 
 
@@ -825,6 +1035,35 @@ __Returns__:
 
 
 
+## struct AddTargetPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops"></a>
+
+
+Information about how to register with a load balancer.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**listener** | <code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
+**conditions**? | <code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
+**priority**? | <code>number</code> | __*Optional*__
+
+
+
+## struct AlbPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-albportpublisherprops"></a>
+
+
+Properties for an ALB port publisher.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**healthCheck**? | <code>boolean</code> | Enable health checking on this endpoint.<br/>__*Default*__: true
+**id**? | <code>string</code> | Scope ID of the load balancer.<br/>__*Default*__: 'LoadBalancer'
+
+
+
 ## struct ClusterInfo  <a id="wheatstalk-cdk-ecs-keycloak-clusterinfo"></a>
 
 
@@ -884,7 +1123,21 @@ Name | Type | Description
 
 
 
-## struct HttpsListenerProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops"></a>
+## struct HttpAlbPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-httpalbportpublisherprops"></a>
+
+
+Properties for an HTTP ALB port publisher.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**healthCheck**? | <code>boolean</code> | Enable health checking on this endpoint.<br/>__*Default*__: true
+**id**? | <code>string</code> | Scope ID of the load balancer.<br/>__*Default*__: 'LoadBalancer'
+
+
+
+## struct HttpsAlbPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops"></a>
 
 
 Properties for a new HTTPS-listening load balancer.
@@ -894,6 +1147,23 @@ Properties for a new HTTPS-listening load balancer.
 Name | Type | Description 
 -----|------|-------------
 **certificates** | <code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
+**healthCheck**? | <code>boolean</code> | Enable health checking on this endpoint.<br/>__*Default*__: true
+**id**? | <code>string</code> | Scope ID of the load balancer.<br/>__*Default*__: 'LoadBalancer'
+**upgradeHttp**? | <code>boolean</code> | Upgrade HTTP connection to HTTPS.<br/>__*Default*__: false
+**upgradeHttpHost**? | <code>string</code> | A host name to redirect to when upgrading to HTTPS.<br/>__*Default*__: same as the request
+
+
+
+## struct HttpsListenerProviderProps ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops"></a>
+
+
+Properties for a new HTTPS-listening load balancer.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**certificates**⚠️ | <code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
 
 
 
@@ -964,12 +1234,20 @@ useCloudMapService(cloudMapService: IService): void
 
 
 
-## interface IListenerInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider"></a>
+## interface IListenerInfoProvider ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider"></a>
 
 __Implemented by__: [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider), [HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider), [NlbListenerProvider](#wheatstalk-cdk-ecs-keycloak-nlblistenerprovider)
 __Obtainable from__: [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[fromListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-fromlistenerinfo)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[http](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-http)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[https](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-https)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[nlb](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-nlb)(), [ListenerProvider](#wheatstalk-cdk-ecs-keycloak-listenerprovider).[none](#wheatstalk-cdk-ecs-keycloak-listenerprovider#wheatstalk-cdk-ecs-keycloak-listenerprovider-none)()
 
 Provides ListenerInfo once the VPC is available.
+
+
+## interface IPortPublisher  <a id="wheatstalk-cdk-ecs-keycloak-iportpublisher"></a>
+
+__Implemented by__: [AddTargetPortPublisher](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisher), [HttpAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpalbportpublisher), [HttpListenerProvider](#wheatstalk-cdk-ecs-keycloak-httplistenerprovider), [HttpsAlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisher), [HttpsListenerProvider](#wheatstalk-cdk-ecs-keycloak-httpslistenerprovider), [NlbListenerProvider](#wheatstalk-cdk-ecs-keycloak-nlblistenerprovider), [NlbPortPublisher](#wheatstalk-cdk-ecs-keycloak-nlbportpublisher)
+__Obtainable from__: [PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher).[addTarget](#wheatstalk-cdk-ecs-keycloak-portpublisher#wheatstalk-cdk-ecs-keycloak-portpublisher-addtarget)(), [PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher).[httpAlb](#wheatstalk-cdk-ecs-keycloak-portpublisher#wheatstalk-cdk-ecs-keycloak-portpublisher-httpalb)(), [PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher).[httpsAlb](#wheatstalk-cdk-ecs-keycloak-portpublisher#wheatstalk-cdk-ecs-keycloak-portpublisher-httpsalb)(), [PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher).[nlb](#wheatstalk-cdk-ecs-keycloak-portpublisher#wheatstalk-cdk-ecs-keycloak-portpublisher-nlb)(), [PortPublisher](#wheatstalk-cdk-ecs-keycloak-portpublisher).[none](#wheatstalk-cdk-ecs-keycloak-portpublisher#wheatstalk-cdk-ecs-keycloak-portpublisher-none)()
+
+Publishes container ports.
 
 
 ## interface IVpcInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider"></a>
@@ -989,7 +1267,8 @@ Props for `KeycloakCluster`.
 
 Name | Type | Description 
 -----|------|-------------
-**adminConsoleListenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
+**adminConsoleListenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
+**adminConsolePortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
 **circuitBreaker**? | <code>boolean</code> | Enable/disable the deployment circuit breaker.<br/>__*Default*__: true
 **cloudMapNamespaceProvider**? | <code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code> | CloudMap namespace to use for service discovery.<br/>__*Default*__: creates one named 'keycloak-service-discovery'
 **cpu**? | <code>number</code> | Fargate task cpu spec.<br/>__*Default*__: 1024
@@ -997,9 +1276,11 @@ Name | Type | Description
 **desiredCount**? | <code>number</code> | How many keycloak cluster members to spin up.<br/>__*Default*__: 1
 **ecsClusterProvider**? | <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code> | Provide an ECS cluster.<br/>__*Default*__: a cluster is automatically created.
 **healthCheckGracePeriod**? | <code>[Duration](#aws-cdk-core-duration)</code> | Initial grace period for Keycloak to spin up.<br/>__*Default*__: 10 minutes
-**httpsListenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's https port to a load balancer.<br/>__*Default*__: not exposed
+**httpPortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Publish the service's HTTP port.<br/>__*Default*__: a new load balancer is automatically created unless `httpsPort` is given.
+**httpsListenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's https port to a load balancer.<br/>__*Default*__: not exposed
+**httpsPortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Publish the service's HTTPS port.<br/>__*Default*__: not published
 **keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration options.<br/>__*Optional*__
-**listenerProvider**? | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's http port to a load balancer.<br/>__*Default*__: a new load balancer is automatically created unless `httpsListenerProvider` is given.
+**listenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's http port to a load balancer.<br/>__*Default*__: a new load balancer is automatically created unless `httpsListenerProvider` is given.
 **maxHealthyPercent**? | <code>number</code> | The maximum percentage of healthy tasks during deployments.<br/>__*Optional*__
 **memoryLimitMiB**? | <code>number</code> | Fargate task memory spec.<br/>__*Default*__: 2048
 **minHealthyPercent**? | <code>number</code> | The minimum percentage of healthy tasks during deployments.<br/>__*Optional*__
@@ -1076,7 +1357,7 @@ Name | Type | Description
 
 
 
-## struct ListenerInfo  <a id="wheatstalk-cdk-ecs-keycloak-listenerinfo"></a>
+## struct ListenerInfo ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-listenerinfo"></a>
 
 
 Information about how to register with a load balancer.
@@ -1085,13 +1366,28 @@ Information about how to register with a load balancer.
 
 Name | Type | Description 
 -----|------|-------------
-**listener** | <code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
-**conditions**? | <code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
-**priority**? | <code>number</code> | __*Optional*__
+**listener**⚠️ | <code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
+**conditions**?⚠️ | <code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
+**priority**?⚠️ | <code>number</code> | __*Optional*__
 
 
 
-## struct NlbListenerProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-nlblistenerproviderprops"></a>
+## struct NlbListenerProviderProps ⚠️ <a id="wheatstalk-cdk-ecs-keycloak-nlblistenerproviderprops"></a>
+
+
+Information about a network load balancer to create.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**port**⚠️ | <code>number</code> | Port to listen on.
+**healthCheck**?⚠️ | <code>boolean</code> | Enable health checking on this endpoint.<br/>__*Default*__: true
+**id**?⚠️ | <code>string</code> | Scope ID of the load balancer.<br/>__*Default*__: 'LoadBalancer'
+
+
+
+## struct NlbPortPublisherProps  <a id="wheatstalk-cdk-ecs-keycloak-nlbportpublisherprops"></a>
 
 
 Information about a network load balancer to create.

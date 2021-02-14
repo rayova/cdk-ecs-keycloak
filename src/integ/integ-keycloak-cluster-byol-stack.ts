@@ -42,12 +42,15 @@ export class IntegKeycloakClusterBYOLStack extends cdk.Stack {
     });
 
     new keycloak.KeycloakCluster(this, 'Keycloak', {
-      // Provide an existing VPC so the cluster and database can opt to reuse it.
+      // Provide an existing VPC so the cluster and database can opt to reuse it
       vpcProvider: keycloak.VpcProvider.fromExistingVpc(vpc),
-      // Re-use the existing listener
-      listenerProvider: keycloak.ListenerProvider.fromListenerInfo({
+      // Bring your own load balancer
+      httpPortPublisher: keycloak.PortPublisher.addTarget({
+        // Your load balancer's listener
         listener,
+        // Answer based on a load balancer listener rule condition
         conditions: [elbv2.ListenerCondition.hostHeaders(['id.example.com'])],
+        // Order the listener rule by priority
         priority: 1000,
       }),
     });
@@ -56,4 +59,3 @@ export class IntegKeycloakClusterBYOLStack extends cdk.Stack {
 
 const app = new cdk.App();
 new IntegKeycloakClusterBYOLStack(app);
-

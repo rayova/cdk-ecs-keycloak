@@ -111,8 +111,7 @@ export interface KeycloakContainerExtensionProps {
 /**
  * Adds a keycloak container to a task definition. To use ECS service discovery
  * to locate cluster members, you need to call `useCloudMapService` with the
- * CloudMap service so that we can configure the correct DNS query. Without
- * CloudMap service discovery, the Keycloak will use JDBC_PING.
+ * CloudMap service so that we can configure the correct DNS query.
  */
 export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension {
   /**

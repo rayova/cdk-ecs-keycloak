@@ -9,6 +9,7 @@ import { CloudMapNamespaceProvider, ICloudMapNamespaceInfoProvider } from './clo
 import { ClusterProvider, IClusterInfoProvider } from './cluster-provider';
 import { DatabaseProvider, IDatabaseInfoProvider } from './database-provider';
 import { IListenerInfoProvider, ListenerProvider } from './listener-provider';
+import { IPortPublisher, PortPublisher } from './port-publisher';
 import { IVpcInfoProvider, VpcProvider } from './vpc-provider';
 
 /**
@@ -59,8 +60,29 @@ export interface KeycloakClusterProps {
   readonly ecsClusterProvider?: IClusterInfoProvider;
 
   /**
+   * Publish the service's HTTP port.
+   * @default - a new load balancer is automatically created unless `httpsPort` is given.
+   */
+  readonly httpPortPublisher?: IPortPublisher;
+
+  /**
+   * Publish the service's HTTPS port. When provided, the http port is no
+   * longer exposed by default
+   * @default - not published
+   */
+  readonly httpsPortPublisher?: IPortPublisher;
+
+  /**
+   * Add the service's WildFly admin console port to a load balancer. You will
+   * probably need to use your own Dockerfile to add access to this console.
+   * @default - not exposed
+   */
+  readonly adminConsolePortPublisher?: IPortPublisher;
+
+  /**
    * Add the service's http port to a load balancer
    * @default - a new load balancer is automatically created unless `httpsListenerProvider` is given.
+   * @deprecated use `httpPortPublisher` instead
    */
   readonly listenerProvider?: IListenerInfoProvider;
 
@@ -68,6 +90,7 @@ export interface KeycloakClusterProps {
    * Add the service's https port to a load balancer. When provided, the
    * http port is no longer exposed by an http load balancer by default.
    * @default - not exposed
+   * @deprecated - use `httpsPortPublisher` instead
    */
   readonly httpsListenerProvider?: IListenerInfoProvider;
 
@@ -75,6 +98,7 @@ export interface KeycloakClusterProps {
    * Add the service's WildFly admin console port to a load balancer. You will
    * probably need to use your own Dockerfile to add access to this console.
    * @default - not exposed
+   * @deprecated use `adminConsolePortPublisher` instead
    */
   readonly adminConsoleListenerProvider?: IListenerInfoProvider;
 
@@ -127,6 +151,13 @@ export class KeycloakCluster extends cdk.Construct {
    */
   public readonly service: ecs.BaseService;
 
+  /** @internal */
+  public readonly _httpPortPublisher: IPortPublisher;
+  /** @internal */
+  public readonly _httpsPortPublisher: IPortPublisher;
+  /** @internal */
+  public readonly _adminConsolePortPublisher: IPortPublisher;
+
   constructor(scope: cdk.Construct, id: string, props?: KeycloakClusterProps) {
     super(scope, id);
 
@@ -147,19 +178,37 @@ export class KeycloakCluster extends cdk.Construct {
     const iCloudMapNamespaceInfoProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
     const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
 
-    // When there's an https listener provider, we disable internal HTTP by
-    // default. Otherwise, we opt for a plain http load balancer.
-    const defaultListenerProvider = props?.httpsListenerProvider
-      ? ListenerProvider.none()
-      // Without an https listener provider, use internal HTTP by default
-      : ListenerProvider.http();
+    // Backwards compat.
+    const isListenerProvider = props?.listenerProvider || props?.httpsListenerProvider || props?.adminConsoleListenerProvider;
+    const isPortPublisher = props?.httpPortPublisher || props?.httpsPortPublisher || props?.adminConsolePortPublisher;
 
-    const listenerProvider = props?.listenerProvider ?? defaultListenerProvider;
+    if (isListenerProvider && isPortPublisher) {
+      throw new Error('Cannot use both PortPublisher and ListenerProvider properties at the same time');
+    }
 
-    // Don't add the https web port to the load balancer by default
-    const httpsListenerProvider = props?.httpsListenerProvider ?? ListenerProvider.none();
-    // Don't add the wildfly admin console to the load balancer by default
-    const adminConsoleListenerProvider = props?.adminConsoleListenerProvider ?? ListenerProvider.none();
+    if (!isListenerProvider) {
+      // Publish the http port to an HTTP load balancer by default unless
+      // https is specified.
+      this._httpPortPublisher = props?.httpPortPublisher ??
+        (props?.httpsPortPublisher
+          ? PortPublisher.none()
+          : PortPublisher.httpAlb());
+
+      // Don't publish internal HTTPS by default
+      this._httpsPortPublisher = props?.httpsPortPublisher ?? PortPublisher.none();
+      // Don't publish the admin console by default.
+      this._adminConsolePortPublisher = props?.adminConsolePortPublisher ?? PortPublisher.none();
+    } else {
+      // Publish the http port to an HTTP load balancer by default unless https port is published.
+      this._httpPortPublisher = props?.listenerProvider ??
+        (props?.httpsListenerProvider
+          ? ListenerProvider.none()
+          : ListenerProvider.http());
+      // Don't publish internal HTTPS by default
+      this._httpsPortPublisher = props?.httpsListenerProvider ?? ListenerProvider.none();
+      // Don't publish the admin console by default
+      this._adminConsolePortPublisher = props?.adminConsoleListenerProvider ?? ListenerProvider.none();
+    }
 
     // Create a keycloak task definition. The task will create a database for
     // you if the database doesn't already exist.
@@ -228,21 +277,21 @@ export class KeycloakCluster extends cdk.Construct {
     };
 
     // Add the service's web port to load balancers.
-    listenerProvider._addTargets(this, {
+    this._httpPortPublisher._publishContainerPort(this, {
       ...commonAddTargetProps,
       containerPort: keycloakTaskDefinition.keycloakContainerExtension.webPort,
       containerPortProtocol: elbv2.Protocol.HTTP,
     });
 
     // Add the server's https web port to load balancers.
-    httpsListenerProvider._addTargets(this, {
+    this._httpsPortPublisher._publishContainerPort(this, {
       ...commonAddTargetProps,
       containerPort: keycloakTaskDefinition.keycloakContainerExtension.httpsWebPort,
       containerPortProtocol: elbv2.Protocol.HTTPS,
     });
 
     // Add the server's admin port to load balancers.
-    adminConsoleListenerProvider._addTargets(this, {
+    this._adminConsolePortPublisher._publishContainerPort(this, {
       ...commonAddTargetProps,
       containerPort: keycloakTaskDefinition.keycloakContainerExtension.adminConsolePort,
       containerPortProtocol: elbv2.Protocol.HTTP,
