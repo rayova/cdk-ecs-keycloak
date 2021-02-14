@@ -6,7 +6,7 @@ import { IntegFargateStack } from '../../src/integ/integ-fargate-stack';
 import { IntegKeycloakAutoScalingHttpsStack } from '../../src/integ/integ-keycloak-cluster-autoscaling-https-stack';
 import { IntegKeycloakClusterBYOLStack } from '../../src/integ/integ-keycloak-cluster-byol-stack';
 import { IntegKeycloakClusterNlbStack } from '../../src/integ/integ-keycloak-cluster-nlb-stack';
-import { IntegKeycloakClusterSimplestStack } from '../../src/integ/integ-keycloak-cluster-simplest';
+import { IntegKeycloakClusterSimplestStack } from '../../src/integ/integ-keycloak-cluster-simplest-stack';
 
 test('ec2-stack', () => {
   const app = new cdk.App();

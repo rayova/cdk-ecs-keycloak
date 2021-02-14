@@ -17,13 +17,15 @@ export class IntegKeycloakAutoScalingHttpsStack extends cdk.Stack {
       // Service options
       minHealthyPercent: 50,
       maxHealthyPercent: 200,
-      // Configure some keycloak-specific settings.
       keycloak: {
+        // Set distributed inficaches owners to two
         cacheOwnersCount: 2,
       },
-      // Use internal HTTPS
-      httpsListenerProvider: keycloak.ListenerProvider.https({
+      // Use an HTTPS load balancer with internal HTTPS from the load balancer to Keycloak.
+      httpsPortPublisher: keycloak.PortPublisher.httpsAlb({
         certificates: [certificate],
+        // Redirect HTTP traffic to HTTPS
+        upgradeHttp: true,
       }),
     });
 

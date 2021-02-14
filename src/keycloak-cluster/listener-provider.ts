@@ -1,75 +1,38 @@
 import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as cdk from '@aws-cdk/core';
+import {
+  AddTargetPortPublisher,
+  HttpAlbPortPublisher,
+  HttpsAlbPortPublisher,
+  IPortPublisher,
+  NlbPortPublisher,
+  NonePortPublisher,
+} from './port-publisher';
 
 /**
  * Provides ListenerInfo once the VPC is available.
+ * @deprecated use `IPortPublisher` instead
  */
-export interface IListenerInfoProvider {
-  /**
-   * Binds resources to the parent scope and provides ListenerInfo once the
-   * VPC is available.
-   * @internal
-   */
-  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps): void;
-}
-
-/**
- * @internal
- */
-export interface ListenerInfoProviderBindingProps {
-  readonly vpc: ec2.IVpc;
-  readonly service: ecs.BaseService;
-  readonly containerName: string;
-  readonly containerPort: number;
-  readonly containerPortProtocol: elbv2.Protocol;
-  readonly slowStart?: cdk.Duration;
-  readonly deregistrationDelay?: cdk.Duration;
-  readonly healthCheck?: elbv2.HealthCheck;
-}
-
-/**
- * Information about how to register with a load balancer.
- */
-export interface ListenerInfo {
-  readonly listener: elbv2.IApplicationListener;
-  readonly conditions?: elbv2.ListenerCondition[];
-  readonly priority?: number;
+export interface IListenerInfoProvider extends IPortPublisher {
 }
 
 /**
  * Convenience interface for providing ListenerInfo to the cluster.
+ * @deprecated use `PortPublisher` interfaces instead
  */
 export abstract class ListenerProvider {
   /**
    * Not added to a load balancer.
    */
   static none(): IListenerInfoProvider {
-    return {
-      _addTargets: () => undefined,
-    };
+    return new NoneListenerProvider();
   };
 
   /**
    * Add to an existing load balancer.
    */
   static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider {
-    return {
-      _addTargets: (_scope, props) => {
-        return listenerInfo.listener.addTargets('Keycloak', {
-          // Target
-          targets: [props.service.loadBalancerTarget({
-            containerName: props.containerName,
-            containerPort: props.containerPort,
-          })],
-          protocol: mapElbv2ProtocolToALBProtocol(props.containerPortProtocol),
-          conditions: listenerInfo.conditions,
-          priority: listenerInfo.priority ?? 1000,
-        });
-      },
-    };
+    return new FromListenerInfoInfoProvider(listenerInfo);
   }
 
   /**
@@ -88,6 +51,7 @@ export abstract class ListenerProvider {
 
   /**
    * Create a network load balancer.
+   * @deprecated Use `PortPublisher.nlb()` instead
    */
   static nlb(props: NlbListenerProviderProps): IListenerInfoProvider {
     return new NlbListenerProvider(props);
@@ -95,47 +59,35 @@ export abstract class ListenerProvider {
 }
 
 /**
- * Creates a load balancer and an HTTP load balancer.
+ * Information about how to register with a load balancer.
+ * @deprecated use IPortPublisher interfaces instead
  */
-export class HttpListenerProvider implements IListenerInfoProvider {
-  /**
-   * @internal
-   */
-  public _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
-    const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
-      vpc: props.vpc,
-      internetFacing: true,
-    });
+export interface ListenerInfo {
+  readonly listener: elbv2.IApplicationListener;
+  readonly conditions?: elbv2.ListenerCondition[];
+  readonly priority?: number;
+}
 
-    new cdk.CfnOutput(scope, 'LoadBalancerUrl', {
-      value: cdk.Fn.sub('http://${HostName}/', {
-        HostName: loadBalancer.loadBalancerDnsName,
-      }),
-    });
-
-    const listener = loadBalancer.addListener('HTTP', {
-      protocol: elbv2.ApplicationProtocol.HTTP,
-    });
-
-    return listener.addTargets('Keycloak', {
-      targets: [props.service.loadBalancerTarget({
-        containerName: props.containerName,
-        containerPort: props.containerPort,
-      })],
-      protocol: mapElbv2ProtocolToALBProtocol(props.containerPortProtocol),
-      slowStart: props.slowStart,
-      deregistrationDelay: props.deregistrationDelay,
-      healthCheck: props.healthCheck,
-      // Keycloak recommends session stickiness to reduce remote distributed cache
-      // access across cluster nodes.
-      // https://www.keycloak.org/docs/latest/server_installation/#sticky-sessions
-      stickinessCookieDuration: cdk.Duration.days(1),
-    });
+/**
+ * @internal
+ * @deprecated
+ */
+class FromListenerInfoInfoProvider extends AddTargetPortPublisher implements IListenerInfoProvider {
+  constructor(listenerInfo: ListenerInfo) {
+    super(listenerInfo);
   }
 }
 
 /**
+ * Creates a load balancer and an HTTP load balancer.
+ * @deprecated use IPortPublisher interfaces instead
+ */
+export class HttpListenerProvider extends HttpAlbPortPublisher implements IListenerInfoProvider {
+}
+
+/**
  * Properties for a new HTTPS-listening load balancer.
+ * @deprecated use IPortPublisher interfaces instead
  */
 export interface HttpsListenerProviderProps {
   /**
@@ -147,58 +99,17 @@ export interface HttpsListenerProviderProps {
 /**
  * Creates an application load balancer and an HTTPS listener with the given
  * ACM certificates.
+ * @deprecated use IPortPublisher interfaces instead
  */
-export class HttpsListenerProvider implements IListenerInfoProvider {
-  private readonly certificates: acm.ICertificate[];
-
+export class HttpsListenerProvider extends HttpsAlbPortPublisher implements IListenerInfoProvider {
   constructor(props: HttpsListenerProviderProps) {
-    this.certificates = props.certificates;
-  }
-
-  /**
-   * @internal
-   */
-  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
-    // Create a load balancer.
-    const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, 'LoadBalancer', {
-      vpc: props.vpc,
-      internetFacing: true,
-    });
-
-    new cdk.CfnOutput(scope, 'LoadBalancerUrl', {
-      value: cdk.Fn.sub('https://${HostName}/', {
-        HostName: loadBalancer.loadBalancerDnsName,
-      }),
-    });
-
-    if (this.certificates.length === 0) {
-      throw new Error('Please provide one or more certificates to the load balancer');
-    }
-
-    const listener = loadBalancer.addListener('HTTPS', {
-      certificates: this.certificates,
-      protocol: elbv2.ApplicationProtocol.HTTPS,
-    });
-
-    return listener.addTargets('Keycloak', {
-      targets: [props.service.loadBalancerTarget({
-        containerName: props.containerName,
-        containerPort: props.containerPort,
-      })],
-      protocol: mapElbv2ProtocolToALBProtocol(props.containerPortProtocol),
-      slowStart: props.slowStart,
-      deregistrationDelay: props.deregistrationDelay,
-      healthCheck: props.healthCheck,
-      // Keycloak recommends session stickiness to reduce remote distributed cache
-      // access across cluster nodes.
-      // https://www.keycloak.org/docs/latest/server_installation/#sticky-sessions
-      stickinessCookieDuration: cdk.Duration.days(1),
-    });
+    super(props);
   }
 }
 
 /**
  * Information about a network load balancer to create.
+ * @deprecated use IPortPublisher interfaces instead
  */
 export interface NlbListenerProviderProps {
   /**
@@ -221,82 +132,17 @@ export interface NlbListenerProviderProps {
 
 /**
  * Creates a network load balancer listener.
+ * @deprecated use IPortPublisher interfaces instead
  */
-export class NlbListenerProvider implements IListenerInfoProvider {
-  private readonly id: string;
-  private readonly port: number;
-  private readonly healthCheck: boolean;
-
+export class NlbListenerProvider extends NlbPortPublisher implements IListenerInfoProvider {
   constructor(props: NlbListenerProviderProps) {
-    this.id = props.id ?? 'LoadBalancer';
-    this.port = props.port;
-    this.healthCheck = props.healthCheck ?? true;
-  }
-
-  /**
-   * @internal
-   */
-  _addTargets(scope: cdk.Construct, props: ListenerInfoProviderBindingProps) {
-    // Create or re-use a network load balancer in the scope.
-    const loadBalancer: elbv2.NetworkLoadBalancer = scope.node.tryFindChild(this.id) as any ??
-      new elbv2.NetworkLoadBalancer(scope, this.id, {
-        vpc: props.vpc,
-        internetFacing: true,
-      });
-
-    const listener = loadBalancer.addListener(`Port${props.containerPort}`, {
-      port: this.port,
-    });
-
-    new cdk.CfnOutput(loadBalancer, `EndpointPort${props.containerPort}`, {
-      value: cdk.Fn.sub('${Host}:${Port}', {
-        Host: loadBalancer.loadBalancerDnsName,
-        Port: this.port.toString(),
-      }),
-    });
-
-    // XXX: NLBs don't have security groups, so we allow traffic from any peer.
-    props.service.connections.allowFrom(ec2.Peer.anyIpv4(), ec2.Port.tcp(props.containerPort));
-    props.service.connections.allowFrom(ec2.Peer.anyIpv6(), ec2.Port.tcp(props.containerPort));
-
-    listener.addTargets('Target', {
-      // Listener's port.
-      port: this.port,
-      // Target
-      targets: [props.service.loadBalancerTarget({
-        containerName: props.containerName,
-        containerPort: props.containerPort,
-      })],
-      protocol: mapElbv2ProtocolToNLBProtocol(props.containerPortProtocol),
-      deregistrationDelay: props.deregistrationDelay,
-      healthCheck: !this.healthCheck ? undefined : {
-        ...props.healthCheck,
-        // Check paths are not supported for NLB protcols we use, but we still
-        // want the rest of the health check config from the cluster.
-        path: undefined,
-      },
-    });
+    super(props);
   }
 }
 
-function mapElbv2ProtocolToALBProtocol(protocol: elbv2.Protocol) {
-  switch (protocol) {
-    case elbv2.Protocol.HTTP:
-      return elbv2.ApplicationProtocol.HTTP;
-    case elbv2.Protocol.HTTPS:
-      return elbv2.ApplicationProtocol.HTTPS;
-    default:
-      throw new Error(`${protocol} is not supported by ALB`);
-  }
-}
-
-function mapElbv2ProtocolToNLBProtocol(protocol: elbv2.Protocol) {
-  switch (protocol) {
-    case elbv2.Protocol.HTTPS:
-    case elbv2.Protocol.HTTP:
-    case elbv2.Protocol.TCP:
-      return elbv2.Protocol.TCP;
-    default:
-      throw new Error(`${protocol} not supported by NLB`);
-  }
+/**
+ * @internal
+ * @deprecated
+ */
+export class NoneListenerProvider extends NonePortPublisher implements IListenerInfoProvider {
 }

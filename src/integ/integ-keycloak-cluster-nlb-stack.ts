@@ -6,14 +6,14 @@ export class IntegKeycloakClusterNlbStack extends cdk.Stack {
     super(scope, 'integ-keycloak-cluster-nlb');
 
     new keycloak.KeycloakCluster(this, 'Keycloak', {
-      listenerProvider: keycloak.ListenerProvider.nlb({
+      httpPortPublisher: keycloak.PortPublisher.nlb({
         port: 8080,
       }),
-      httpsListenerProvider: keycloak.ListenerProvider.nlb({
+      httpsPortPublisher: keycloak.PortPublisher.nlb({
         port: 8443,
         healthCheck: false,
       }),
-      adminConsoleListenerProvider: keycloak.ListenerProvider.nlb({
+      adminConsolePortPublisher: keycloak.PortPublisher.nlb({
         port: 9990,
         healthCheck: false,
       }),

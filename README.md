@@ -33,8 +33,10 @@ const keycloakCluster = new keycloak.KeycloakCluster(this, 'Keycloak', {
     cacheOwnersCount: 2,
   },
   // Use an HTTPS load balancer with internal HTTPS from the load balancer to Keycloak.
-  httpsListenerProvider: keycloak.ListenerProvider.https({
+  httpsPortPublisher: keycloak.PortPublisher.httpsAlb({
     certificates: [certificate],
+    // Redirect HTTP traffic to HTTPS
+    upgradeHttp: true,
   }),
 });
 
@@ -57,9 +59,9 @@ autoScaling.scaleOnCpuUtilization('Target40', {
 new keycloak.KeycloakCluster(this, 'Keycloak', {
   // Provide an existing VPC so the cluster and database can opt to reuse it
   vpcProvider: keycloak.VpcProvider.fromExistingVpc(vpc),
-  // Re-use the existing listener
-  listenerProvider: keycloak.ListenerProvider.fromListenerInfo({
-    // Your load blancer's listener
+  // Bring your own load balancer
+  httpPortPublisher: keycloak.PortPublisher.addTarget({
+    // Your load balancer's listener
     listener,
     // Answer based on a load balancer listener rule condition
     conditions: [elbv2.ListenerCondition.hostHeaders(['id.example.com'])],
