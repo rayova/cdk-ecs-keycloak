@@ -1,6 +1,6 @@
 # CDK-based Keycloak Cluster on ECS
 
-This CDK construct allows you to spin up a high availability Keycloak cluster on AWS ECS.
+This CDK construct allows you to spin up a high availability Keycloak cluster on AWS ECS using Fargate capacity.
 
 * [API Reference](https://github.com/wheatstalk/cdk-ecs-keycloak/blob/master/API.md)
 * [Changelog](https://github.com/wheatstalk/cdk-ecs-keycloak/blob/master/CHANGELOG.md)
@@ -9,7 +9,7 @@ This CDK construct allows you to spin up a high availability Keycloak cluster on
 
 Keycloak is an open-source identity and access management server. With it, you can add authentication to your apps and secure services with little fuss.
 
-## But Keycloak on ECS over Cognito?
+## But why Keycloak on ECS over Cognito?
 
 - Account linking doesn't break down in Keycloak when the user signed up with a social account and now wants to set a password
 - User-oriented account management console
