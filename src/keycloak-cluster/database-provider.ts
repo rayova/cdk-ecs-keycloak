@@ -64,9 +64,28 @@ export abstract class DatabaseProvider {
    * Provide raw DatabaseInfo
    */
   static fromDatabaseInfo(props: DatabaseInfo): IDatabaseInfoProvider {
-    return {
-      _provideDatabaseInfo: () => props,
-    };
+    return new FromDatabaseInfoProvider(props);
+  }
+}
+
+/**
+ * Props for `FromDatabaseInfoProvider`
+ */
+export interface FromDatabaseInfoProviderProps extends DatabaseInfo {
+}
+
+/**
+ * Provide database info directly.
+ */
+export class FromDatabaseInfoProvider implements IDatabaseInfoProvider {
+  constructor(private readonly props: FromDatabaseInfoProviderProps) {
+  }
+
+  /**
+   * @internal
+   */
+  _provideDatabaseInfo(_scope: cdk.Construct, _props: ProvideDatabaseInfoProps): DatabaseInfo {
+    return this.props;
   }
 }
 

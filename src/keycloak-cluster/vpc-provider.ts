@@ -13,8 +13,8 @@ export interface IVpcInfoProvider {
 }
 
 /**
- * Information about the VPC other providers may opt to privde their resources
- * in.
+ * Information about the VPC other providers may opt to use to host their
+ * resources.
  */
 export interface VpcInfo {
   /**
@@ -26,11 +26,17 @@ export interface VpcInfo {
 export abstract class VpcProvider {
   /**
    * Provides an already-existing vpc
+   * @deprecated use `fromVpc` instead
    */
   static fromExistingVpc(vpc: ec2.IVpc): IVpcInfoProvider {
-    return {
-      _provideVpcInfo: () => ({ vpc }),
-    };
+    return VpcProvider.fromVpc(vpc);
+  }
+
+  /**
+   * Provides an already-existing vpc
+   */
+  static fromVpc(vpc: ec2.IVpc): IVpcInfoProvider {
+    return new FromVpcProvider({ vpc });
   }
 
   /**
@@ -38,6 +44,32 @@ export abstract class VpcProvider {
    */
   static ingressAndPrivateVpc(): IVpcInfoProvider {
     return new IngressAndPrivateVpcProvider();
+  }
+}
+
+/**
+ * Props for `FromVpcProvider`
+ */
+export interface FromVpcProviderProps {
+  /**
+   * The VPC
+   */
+  readonly vpc: ec2.IVpc;
+}
+
+/**
+ * Directly provides the given VPC.
+ */
+export class FromVpcProvider implements IVpcInfoProvider {
+  constructor(private readonly props: FromVpcProviderProps) {}
+
+  /**
+   * @internal
+   */
+  _provideVpcInfo(_scope: cdk.Construct): VpcInfo {
+    return {
+      vpc: this.props.vpc,
+    };
   }
 }
 
