@@ -11,6 +11,7 @@ Name|Description
 [DatabaseProvider](#wheatstalk-cdk-ecs-keycloak-databaseprovider)|Convenience interface for providing DatabaseInfo to the cluster.
 [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|Provides a very basic ECS cluster in the given VPC.
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
+[EnsurePostgresqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextension)|Ensures a Postgresql database exists by adding an init container.
 [FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)|Directly provide cluster info.
 [FromDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoprovider)|Provide database info directly.
 [FromVpcProvider](#wheatstalk-cdk-ecs-keycloak-fromvpcprovider)|Directly provides the given VPC.
@@ -41,6 +42,7 @@ Name|Description
 [DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)|Information about needed to connect to the database.
 [DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)|Basic props for creating a database instance.
 [EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)|Props for EnsureMysqlDatabaseExtension.
+[EnsurePostgresqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextensionprops)|Props for EnsurePostgresqlDatabaseExtension.
 [FromClusterInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops)|Props for `FromClusterInfoProvider`.
 [FromDatabaseInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoproviderprops)|Props for `FromDatabaseInfoProvider`.
 [FromVpcProviderProps](#wheatstalk-cdk-ecs-keycloak-fromvpcproviderprops)|Props for `FromVpcProvider`.
@@ -339,6 +341,49 @@ extend(taskDefinition: TaskDefinition): void
 
 
 
+## class EnsurePostgresqlDatabaseExtension  <a id="wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextension"></a>
+
+Ensures a Postgresql database exists by adding an init container.
+
+Makes the
+default container depend on the successful completion of this container.
+
+__Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
+
+### Initializer
+
+
+
+
+```ts
+new EnsurePostgresqlDatabaseExtension(props: EnsurePostgresqlDatabaseExtensionProps)
+```
+
+* **props** (<code>[EnsurePostgresqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextensionprops)</code>)  *No description*
+  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  RDS credentials. 
+  * **databaseName** (<code>string</code>)  Name of the database to create. 
+  * **containerName** (<code>string</code>)  Name of the container to add to do this work. __*Default*__: 'ensure-postgresql-database'
+  * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Logging driver. __*Optional*__
+
+
+### Methods
+
+
+#### extend(taskDefinition) <a id="wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextension-extend"></a>
+
+Apply the extension to the given TaskDefinition.
+
+```ts
+extend(taskDefinition: TaskDefinition): void
+```
+
+* **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
+
+
+
+
+
+
 ## class FromClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider"></a>
 
 Directly provide cluster info.
@@ -591,6 +636,7 @@ new KeycloakContainerExtension(props?: KeycloakContainerExtensionProps)
   * **containerName** (<code>string</code>)  A name for the container added to the task definition. __*Default*__: 'keycloak'
   * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Secrets manager secret containing the RDS database credentials and connection information in JSON format. __*Default*__: none
   * **databaseName** (<code>string</code>)  Database name. __*Default*__: 'keycloak'
+  * **databaseSchema** (<code>string</code>)  Database schema. __*Default*__: for Postgresql, the default is 'public'
   * **databaseVendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  The database vendor. __*Default*__: KeycloakDatabaseVendor.H2
   * **defaultAdminPassword** (<code>string</code>)  Default admin user's password. __*Default*__: 'admin'
   * **defaultAdminUser** (<code>string</code>)  Default admin user. __*Default*__: 'admin'
@@ -1207,6 +1253,22 @@ Name | Type | Description
 
 
 
+## struct EnsurePostgresqlDatabaseExtensionProps  <a id="wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextensionprops"></a>
+
+
+Props for EnsurePostgresqlDatabaseExtension.
+
+
+
+Name | Type | Description 
+-----|------|-------------
+**databaseCredentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | RDS credentials.
+**databaseName** | <code>string</code> | Name of the database to create.
+**containerName**? | <code>string</code> | Name of the container to add to do this work.<br/>__*Default*__: 'ensure-postgresql-database'
+**logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Logging driver.<br/>__*Optional*__
+
+
+
 ## struct FromClusterInfoProviderProps  <a id="wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops"></a>
 
 
@@ -1429,6 +1491,7 @@ Name | Type | Description
 **containerName**? | <code>string</code> | A name for the container added to the task definition.<br/>__*Default*__: 'keycloak'
 **databaseCredentials**? | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Secrets manager secret containing the RDS database credentials and connection information in JSON format.<br/>__*Default*__: none
 **databaseName**? | <code>string</code> | Database name.<br/>__*Default*__: 'keycloak'
+**databaseSchema**? | <code>string</code> | Database schema.<br/>__*Default*__: for Postgresql, the default is 'public'
 **databaseVendor**? | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | The database vendor.<br/>__*Default*__: KeycloakDatabaseVendor.H2
 **defaultAdminPassword**? | <code>string</code> | Default admin user's password.<br/>__*Default*__: 'admin'
 **defaultAdminUser**? | <code>string</code> | Default admin user.<br/>__*Default*__: 'admin'

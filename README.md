@@ -80,6 +80,19 @@ new keycloak.KeycloakCluster(this, 'Keycloak', {
 });
 ```
 
+### Use Postgres instead of MySQL
+
+```ts
+new keycloak.KeycloakCluster(this, 'Keycloak', {
+  databaseProvider: keycloak.DatabaseProvider.databaseInstance({
+    engine: rds.DatabaseInstanceEngine.postgres({
+      version: rds.PostgresEngineVersion.VER_11_10,
+    }),
+    instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
+  }),
+});
+```
+
 ### Bring your own resources
 
 You may provide your own resources, such as VPCs, Clusters, CloudMap namespaces and load balancers. In the following
