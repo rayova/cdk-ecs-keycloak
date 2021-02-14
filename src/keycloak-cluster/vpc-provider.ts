@@ -9,7 +9,7 @@ export interface IVpcInfoProvider {
    * Binds resources to the parent scope and provides VpcInfo.
    * @internal
    */
-  _bind(scope: cdk.Construct): VpcInfo;
+  _provideVpcInfo(scope: cdk.Construct): VpcInfo;
 }
 
 /**
@@ -29,7 +29,7 @@ export abstract class VpcProvider {
    */
   static fromExistingVpc(vpc: ec2.IVpc): IVpcInfoProvider {
     return {
-      _bind: () => ({ vpc }),
+      _provideVpcInfo: () => ({ vpc }),
     };
   }
 
@@ -48,7 +48,7 @@ export class IngressAndPrivateVpcProvider implements IVpcInfoProvider {
   /**
    * @internal
    */
-  _bind(scope: cdk.Construct): VpcInfo {
+  _provideVpcInfo(scope: cdk.Construct): VpcInfo {
     const vpc = new ec2.Vpc(scope, 'Vpc', {
       subnetConfiguration: [
         {

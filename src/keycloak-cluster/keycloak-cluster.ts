@@ -165,18 +165,18 @@ export class KeycloakCluster extends cdk.Construct {
     const cpu = props?.cpu ?? 1024;
     const memoryLimitMiB = props?.memoryLimitMiB ?? 2048;
 
-    // Let the user provide
+    // Let the user provide a vpc, database, cluster, and/or cloudmap namespace
     const vpcInfoProvider = props?.vpcProvider ?? VpcProvider.ingressAndPrivateVpc();
-    const { vpc } = vpcInfoProvider._bind(this);
+    const vpcInfo = vpcInfoProvider._provideVpcInfo(this);
 
     const databaseInfoProvider = props?.databaseProvider ?? DatabaseProvider.serverlessAuroraCluster();
-    const databaseInfo = databaseInfoProvider._bind(this, vpc);
+    const databaseInfo = databaseInfoProvider._provideDatabaseInfo(this, vpcInfo);
 
     const clusterInfoProvider = props?.ecsClusterProvider ?? ClusterProvider.cluster();
-    const { cluster } = clusterInfoProvider._bind(this, vpc);
+    const clusterInfo = clusterInfoProvider._provideClusterInfo(this, vpcInfo);
 
-    const iCloudMapNamespaceInfoProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
-    const { cloudMapNamespace } = iCloudMapNamespaceInfoProvider._bind(this, vpc);
+    const cloudMapNamespaceProvider = props?.cloudMapNamespaceProvider ?? CloudMapNamespaceProvider.privateDns();
+    const cloudMapNamespaceInfo = cloudMapNamespaceProvider._provideCloudMapNamespaceInfo(this, vpcInfo);
 
     // Backwards compat.
     const isListenerProvider = props?.listenerProvider || props?.httpsListenerProvider || props?.adminConsoleListenerProvider;
@@ -237,7 +237,7 @@ export class KeycloakCluster extends cdk.Construct {
 
     // Create the keycloak service
     this.service = new ecs.FargateService(this, 'Service', {
-      cluster: cluster,
+      cluster: clusterInfo.cluster,
       taskDefinition: keycloakTaskDefinition,
       healthCheckGracePeriod: healthCheckGracePeriod,
       circuitBreaker: circuitBreaker,
@@ -247,7 +247,7 @@ export class KeycloakCluster extends cdk.Construct {
       minHealthyPercent: props?.minHealthyPercent,
       maxHealthyPercent: props?.maxHealthyPercent,
       cloudMapOptions: {
-        cloudMapNamespace,
+        cloudMapNamespace: cloudMapNamespaceInfo.cloudMapNamespace,
         dnsRecordType: servicediscovery.DnsRecordType.A,
         dnsTtl: cdk.Duration.seconds(10),
       },
@@ -265,7 +265,7 @@ export class KeycloakCluster extends cdk.Construct {
     this.service.connections.allowInternally(ec2.Port.allTraffic());
 
     const commonAddTargetProps = {
-      vpc,
+      vpc: vpcInfo.vpc,
       service: this.service,
       containerName: keycloakTaskDefinition.keycloakContainerExtension.containerName,
       slowStart: cdk.Duration.seconds(60),

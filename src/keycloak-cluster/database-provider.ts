@@ -12,7 +12,14 @@ export interface IDatabaseInfoProvider {
    * Bind any new resources to the parent scope with access to the vpc.
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo;
+  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo;
+}
+
+/**
+ * @internal
+ */
+export interface ProvideDatabaseInfoProps {
+  readonly vpc: ec2.IVpc;
 }
 
 /**
@@ -58,7 +65,7 @@ export abstract class DatabaseProvider {
    */
   static fromDatabaseInfo(props: DatabaseInfo): IDatabaseInfoProvider {
     return {
-      _bind: () => props,
+      _provideDatabaseInfo: () => props,
     };
   }
 }
@@ -108,12 +115,12 @@ export class DatabaseInstanceProvider implements IDatabaseInfoProvider {
   /**
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
+  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
     const db = new rds.DatabaseInstance(scope, 'Database', {
       engine: this.engine,
       instanceType: this.instanceType,
       vpcSubnets: this.subnets,
-      vpc,
+      vpc: props.vpc,
     });
 
     return {
@@ -167,10 +174,10 @@ export class ServerlessAuroraDatabaseProvider implements IDatabaseInfoProvider {
   /**
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): DatabaseInfo {
+  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
     const db = new rds.ServerlessCluster(scope, 'Database', {
       engine: this.engine,
-      vpc: vpc,
+      vpc: props.vpc,
       scaling: this.scaling,
       vpcSubnets: this.vpcSubnets,
     });

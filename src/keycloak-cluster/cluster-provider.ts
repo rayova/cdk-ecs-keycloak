@@ -10,7 +10,14 @@ export interface IClusterInfoProvider {
    * Bind any new resources to the parent scope with access to the vpc.
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo;
+  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo;
+}
+
+/**
+ * @internal
+ */
+export interface ProvideClusterInfoProps {
+  readonly vpc: ec2.IVpc;
 }
 
 /**
@@ -39,7 +46,7 @@ export abstract class ClusterProvider {
    */
   static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider {
     return {
-      _bind: () => clusterInfo,
+      _provideClusterInfo: () => clusterInfo,
     };
   }
 }
@@ -51,9 +58,9 @@ export class EcsClusterInfoProvider implements IClusterInfoProvider {
   /**
    * @internal
    */
-  _bind(scope: cdk.Construct, vpc: ec2.IVpc): ClusterInfo {
+  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo {
     const cluster = new ecs.Cluster(scope, 'Cluster', {
-      vpc,
+      vpc: props.vpc,
     });
 
     return {
