@@ -86,7 +86,7 @@ new keycloak.KeycloakCluster(this, 'Keycloak', {
 new keycloak.KeycloakCluster(this, 'Keycloak', {
   databaseProvider: keycloak.DatabaseProvider.databaseInstance({
     engine: rds.DatabaseInstanceEngine.postgres({
-      version: rds.PostgresEngineVersion.VER_11_10,
+      version: rds.PostgresEngineVersion.VER_11_9,
     }),
     instanceType: ec2.InstanceType.of(ec2.InstanceClass.T2, ec2.InstanceSize.MICRO),
   }),
