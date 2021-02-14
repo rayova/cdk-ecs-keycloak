@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.14](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.13...v0.0.14) (2021-02-14)
+
+
+### Features
+
+* Add port publisher, deprecate listener provider ([#58](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/58)) ([2c07416](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/2c074160dc4c27eb8e9a3ca927815142e8f45580))
+
 ### [0.0.13](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.12...v0.0.13) (2021-02-14)
 
 ### [0.0.12](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.11...v0.0.12) (2021-02-13)
