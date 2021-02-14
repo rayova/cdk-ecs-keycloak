@@ -43,7 +43,7 @@ By default, all the following are created:
 - An ECS cluster with Keycloak running on it
 - An Aurora Serverless MySQL cluster
 
-### Auto-scaling example with internal HTTPS and Keycloak configuration
+### Auto-scaling with internal HTTPS and Keycloak configuration
 
 To demonstrate more functionality, here is an example cluster that does the following:
 
@@ -139,6 +139,8 @@ new keycloak.KeycloakCluster(this, 'Keycloak', {
   }),
 });
 ```
+
+> You may also provide a cluster and database. More is available in the API reference.
 
 ### Customize the container image
 
