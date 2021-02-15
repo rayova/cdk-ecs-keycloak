@@ -116,31 +116,53 @@ new keycloak.KeycloakCluster(this, 'Keycloak', {
 });
 ```
 
-### Provide your VPC and Application Load Balancer
+### Provide your VPC, Database and Application Load Balancer
 
-You may provide resources you've created, such as VPCs, Clusters, CloudMap namespaces and load balancers. In the following
-for example we re-use a VPC and Application Load Balancer listener. As a result:
+You may provide resources you've created, such as VPCs, Clusters, CloudMap
+namespaces, databases and load balancers.
 
-- The cluster will provide a new ECS cluster and database in the given VPC.
-- The cluster will publish its HTTP port on the given load balancer listener.
+In the following for example we re-use a VPC, database and Application Load
+Balancer listener. As a result the Cluster construct will:
+
+- Create a new ECS cluster in the given VPC
+- Use the given database information
+- Create an ingress rule in the database's security group
+- Publish its HTTP port on the given load balancer listener
 
 ```ts
+// Your resources
+const vpc = new ec2.Vpc(...);
+const rdsDb = new rds.DatabaseInstance(...);
+const loadBalancer = new elbv2.ApplicationLoadBalancer(...);
+const listener = loadBalancer.addListener(...);
+
 new keycloak.KeycloakCluster(this, 'Keycloak', {
   // Provide an existing VPC so the cluster and database can opt to reuse it
   vpcProvider: keycloak.VpcProvider.fromVpc(vpc),
+  // Bring your own database
+  databaseProvider: keycloak.DatabaseProvider.fromDatabaseInfo({
+    // Provide an RDS-compatible secret with credentials and connection
+    // info (required)
+    credentials: rdsDb.secret!,
+    // Inform Keycloak of the database vendor (required)
+    vendor: keycloak.KeycloakDatabaseVendor.MYSQL,
+    // Add an ingress rule to the database security group (optional as long
+    // as the Keycloak tasks can connect to the database)
+    connectable: rdsDb,
+  }),
   // Bring your own load balancer
   httpPortPublisher: keycloak.PortPublisher.addTarget({
-    // Your load balancer's listener
+    // Your load balancer listener
     listener,
-    // Answer based on a load balancer listener rule condition
-    conditions: [elbv2.ListenerCondition.hostHeaders(['id.example.com'])],
-    // Order the listener rule by priority
+    // Only publish certain paths
+    conditions: [elbv2.ListenerCondition.pathPatterns([
+      '/auth/*',
+    ])],
+    // Set your listener rule priority
     priority: 1000,
   }),
 });
 ```
-
-> You may also provide a cluster and database. More is available in the API reference.
 
 ### Customize the container image
 
