@@ -140,6 +140,12 @@ export interface KeycloakClusterProps {
    * The maximum percentage of healthy tasks during deployments.
    */
   readonly maxHealthyPercent?: number;
+
+  /**
+   * Add capacity provider strategy by CDK escape hatch.
+   * @experimental This may be removed or changed without warning
+   */
+  readonly capacityProviderStrategy?: ecs.CfnCluster.CapacityProviderStrategyItemProperty[];
 }
 
 /**
@@ -252,6 +258,13 @@ export class KeycloakCluster extends cdk.Construct {
         dnsTtl: cdk.Duration.seconds(10),
       },
     });
+
+    // Patch in the capacity provider strategy by using an escape hatch.
+    if (props?.capacityProviderStrategy && props?.capacityProviderStrategy.length > 0) {
+      const cfnService = this.service.node.findChild('Service') as ecs.CfnService;
+      cfnService.launchType = undefined;
+      cfnService.capacityProviderStrategy = props.capacityProviderStrategy;
+    }
 
     if (databaseInfo.connectable) {
       // Allow keycloak to connect to the database.

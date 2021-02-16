@@ -42,6 +42,14 @@ export abstract class ClusterProvider {
   }
 
   /**
+   * Create an ECS cluster with Fargate Spot support.
+   * @experimental This may be removed or changed without warning
+   */
+  static fargateSpotCluster(): IClusterInfoProvider {
+    return new FargateSpotEcsClusterInfoProvider();
+  }
+
+  /**
    * Provide raw clusterInfo
    */
   static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider {
@@ -80,6 +88,30 @@ export class EcsClusterInfoProvider implements IClusterInfoProvider {
     const cluster = new ecs.Cluster(scope, 'Cluster', {
       vpc: props.vpc,
     });
+
+    return {
+      cluster,
+    };
+  }
+}
+
+/**
+ * Provides an ECS cluster in the given VPC that has FARGATE and FARGATE_SPOT
+ * capacity providers enabled.
+ * @experimental This may be removed or changed without warning
+ */
+export class FargateSpotEcsClusterInfoProvider implements IClusterInfoProvider {
+  /**
+   * @internal
+   */
+  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo {
+    const cluster = new ecs.Cluster(scope, 'Cluster', {
+      vpc: props.vpc,
+    });
+
+    // Patch in capacity providers for FARGATE and FARGATE_SPOT
+    const cfnCluster = cluster.node.defaultChild as ecs.CfnCluster;
+    cfnCluster.capacityProviders = ['FARGATE', 'FARGATE_SPOT'];
 
     return {
       cluster,
