@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.25](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.24...v0.0.25) (2021-02-16)
+
+
+### Features
+
+* Add experimental Fargate Spot support ([#69](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/69)) ([a84ce29](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/a84ce29166c756fe6e33c1d2b82c3edca16fdc1d))
+
 ### [0.0.24](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.23...v0.0.24) (2021-02-15)
 
 ### [0.0.23](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.22...v0.0.23) (2021-02-15)
