@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.28](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.27...v0.0.28) (2021-02-16)
+
+
+### Features
+
+* Add Maven Central publishing ([8c45265](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/8c45265c2298069108d2c23d669b45a70661b532))
+
 ### [0.0.27](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.26...v0.0.27) (2021-02-16)
 
 ### [0.0.26](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.25...v0.0.26) (2021-02-16)
