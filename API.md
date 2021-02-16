@@ -12,6 +12,7 @@ Name|Description
 [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider)|Provides a very basic ECS cluster in the given VPC.
 [EnsureMysqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextension)|Ensures a MySQL database exists by adding an init container.
 [EnsurePostgresqlDatabaseExtension](#wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextension)|Ensures a Postgresql database exists by adding an init container.
+[FargateSpotEcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fargatespotecsclusterinfoprovider)|Provides an ECS cluster in the given VPC that has FARGATE and FARGATE_SPOT capacity providers enabled.
 [FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)|Directly provide cluster info.
 [FromDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoprovider)|Provide database info directly.
 [FromVpcProvider](#wheatstalk-cdk-ecs-keycloak-fromvpcprovider)|Directly provides the given VPC.
@@ -165,6 +166,18 @@ Create an ECS cluster.
 
 ```ts
 static cluster(): IClusterInfoProvider
+```
+
+
+__Returns__:
+* <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>
+
+#### *static* fargateSpotCluster()🔹 <a id="wheatstalk-cdk-ecs-keycloak-clusterprovider-fargatespotcluster"></a>
+
+Create an ECS cluster with Fargate Spot support.
+
+```ts
+static fargateSpotCluster(): IClusterInfoProvider
 ```
 
 
@@ -384,6 +397,25 @@ extend(taskDefinition: TaskDefinition): void
 
 
 
+## class FargateSpotEcsClusterInfoProvider 🔹 <a id="wheatstalk-cdk-ecs-keycloak-fargatespotecsclusterinfoprovider"></a>
+
+Provides an ECS cluster in the given VPC that has FARGATE and FARGATE_SPOT capacity providers enabled.
+
+__Implements__: [IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)
+
+### Initializer
+
+
+
+
+```ts
+new FargateSpotEcsClusterInfoProvider()
+```
+
+
+
+
+
 ## class FromClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider"></a>
 
 Directly provide cluster info.
@@ -581,6 +613,7 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
 * **props** (<code>[KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)</code>)  *No description*
   * **adminConsoleListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
   * **adminConsolePortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
+  * **capacityProviderStrategy** (<code>Array<[CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code>)  Add capacity provider strategy by CDK escape hatch. __*Optional*__
   * **circuitBreaker** (<code>boolean</code>)  Enable/disable the deployment circuit breaker. __*Default*__: true
   * **cloudMapNamespaceProvider** (<code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code>)  CloudMap namespace to use for service discovery. __*Default*__: creates one named 'keycloak-service-discovery'
   * **cpu** (<code>number</code>)  Fargate task cpu spec. __*Default*__: 1024
@@ -1363,8 +1396,8 @@ Provides CloudMapNamespaceInfo once the VPC is available.
 
 ## interface IClusterInfoProvider  <a id="wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider"></a>
 
-__Implemented by__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider), [FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)
-__Obtainable from__: [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[cluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster)(), [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[fromClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-fromclusterinfo)()
+__Implemented by__: [EcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-ecsclusterinfoprovider), [FargateSpotEcsClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fargatespotecsclusterinfoprovider), [FromClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoprovider)
+__Obtainable from__: [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[cluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-cluster)(), [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[fargateSpotCluster](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-fargatespotcluster)(), [ClusterProvider](#wheatstalk-cdk-ecs-keycloak-clusterprovider).[fromClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterprovider#wheatstalk-cdk-ecs-keycloak-clusterprovider-fromclusterinfo)()
 
 Provides ClusterInfo after the VPC is available.
 
@@ -1456,6 +1489,7 @@ Name | Type | Description
 -----|------|-------------
 **adminConsoleListenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
 **adminConsolePortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
+**capacityProviderStrategy**?🔹 | <code>Array<[CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code> | Add capacity provider strategy by CDK escape hatch.<br/>__*Optional*__
 **circuitBreaker**? | <code>boolean</code> | Enable/disable the deployment circuit breaker.<br/>__*Default*__: true
 **cloudMapNamespaceProvider**? | <code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code> | CloudMap namespace to use for service discovery.<br/>__*Default*__: creates one named 'keycloak-service-discovery'
 **cpu**? | <code>number</code> | Fargate task cpu spec.<br/>__*Default*__: 1024

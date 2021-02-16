@@ -10,6 +10,7 @@ import { IntegKeycloakClusterDbInstanceStack } from '../../src/integ/integ-keycl
 import { IntegKeycloakClusterNlbStack } from '../../src/integ/integ-keycloak-cluster-nlb-stack';
 import { IntegKeycloakClusterPostgresStack } from '../../src/integ/integ-keycloak-cluster-postgres-stack';
 import { IntegKeycloakClusterSimplestStack } from '../../src/integ/integ-keycloak-cluster-simplest-stack';
+import { IntegKeycloakClusterSpotStack } from '../../src/integ/integ-keycloak-cluster-spot-stack';
 
 test('ec2-stack', () => {
   const app = new cdk.App();
@@ -74,6 +75,13 @@ test('postgresql example', () => {
 test('byo example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterBYOStack(app);
+
+  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+});
+
+test('fargate spot example', () => {
+  const app = new cdk.App();
+  const stack = new IntegKeycloakClusterSpotStack(app);
 
   expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
 });
