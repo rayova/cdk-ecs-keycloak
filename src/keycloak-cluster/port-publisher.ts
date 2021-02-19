@@ -92,12 +92,19 @@ export class AddTargetPortPublisher implements IPortPublisher {
   _publishContainerPort(_scope: cdk.Construct, props: PublishContainerPortProps): void {
     const listenerInfo = this.listenerInfo;
 
-    listenerInfo.listener.addTargets('Keycloak', {
-      targets: [props.service.loadBalancerTarget({
-        containerName: props.containerName,
-        containerPort: props.containerPort,
-      })],
+    const targets = [props.service.loadBalancerTarget({
+      containerName: props.containerName,
+      containerPort: props.containerPort,
+    })];
+
+    const targetGroup = new elbv2.ApplicationTargetGroup(_scope, 'KeycloakGroup', {
+      vpc: props.vpc,
+      targets: targets,
       protocol: mapElbv2ProtocolToALBProtocol(props.containerPortProtocol),
+    });
+
+    listenerInfo.listener.addTargetGroups('Keycloak', {
+      targetGroups: [targetGroup],
       conditions: listenerInfo.conditions,
       priority: listenerInfo.priority,
     });

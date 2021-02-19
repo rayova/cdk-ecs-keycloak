@@ -1,5 +1,6 @@
 import { expect as expectCDK, haveResourceLike } from '@aws-cdk/assert';
 import * as acm from '@aws-cdk/aws-certificatemanager';
+import * as ec2 from '@aws-cdk/aws-ec2';
 import * as ecs from '@aws-cdk/aws-ecs';
 import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
 import * as cdk from '@aws-cdk/core';
@@ -36,6 +37,33 @@ describe('port publisher', () => {
       // WHEN
       PortPublisher.addTarget({
         listener,
+      })._publishContainerPort(testStack, {
+        containerName: testStack.service.taskDefinition.defaultContainer!.containerName,
+        containerPort: testStack.service.taskDefinition.defaultContainer!.containerPort,
+        containerPortProtocol: elbv2.Protocol.HTTP,
+        service: testStack.service,
+        vpc: testStack.service.cluster.vpc,
+      });
+
+      // THEN
+      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+        Protocol: 'HTTP',
+      }));
+    });
+
+    test('adds a target to an imported load balancer', () => {
+      const testStack = new TestStack();
+
+      const listener = elbv2.ApplicationListener.fromApplicationListenerAttributes(testStack, 'Listener', {
+        listenerArn: 'arn:alb:fakeid',
+        securityGroup: ec2.SecurityGroup.fromSecurityGroupId(testStack, 'ListenerSG', 'sg-fakeid'),
+      });
+
+      // WHEN
+      PortPublisher.addTarget({
+        listener,
+        conditions: [elbv2.ListenerCondition.hostHeaders(['id.example.com'])],
+        priority: 1000,
       })._publishContainerPort(testStack, {
         containerName: testStack.service.taskDefinition.defaultContainer!.containerName,
         containerPort: testStack.service.taskDefinition.defaultContainer!.containerPort,
