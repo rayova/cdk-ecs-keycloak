@@ -1435,23 +1435,12 @@ Object {
       },
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
     },
-    "AlbhttpKeycloakGroupC074F478": Object {
-      "Properties": Object {
-        "Port": 80,
-        "Protocol": "HTTP",
-        "TargetType": "ip",
-        "VpcId": Object {
-          "Ref": "Vpc8378EB38",
-        },
-      },
-      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
-    },
     "AlbhttpKeycloakRuleE6A8F959": Object {
       "Properties": Object {
         "Actions": Array [
           Object {
             "TargetGroupArn": Object {
-              "Ref": "AlbhttpKeycloakGroupC074F478",
+              "Ref": "KeycloakKeycloakGroupCE118568",
             },
             "Type": "forward",
           },
@@ -1623,6 +1612,17 @@ Object {
     "KeycloakClusterE151A98B": Object {
       "Type": "AWS::ECS::Cluster",
     },
+    "KeycloakKeycloakGroupCE118568": Object {
+      "Properties": Object {
+        "Port": 80,
+        "Protocol": "HTTP",
+        "TargetType": "ip",
+        "VpcId": Object {
+          "Ref": "Vpc8378EB38",
+        },
+      },
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+    },
     "KeycloakService398C344C": Object {
       "DependsOn": Array [
         "AlbhttpKeycloakRuleE6A8F959",
@@ -1647,7 +1647,7 @@ Object {
             "ContainerName": "keycloak",
             "ContainerPort": 8080,
             "TargetGroupArn": Object {
-              "Ref": "AlbhttpKeycloakGroupC074F478",
+              "Ref": "KeycloakKeycloakGroupCE118568",
             },
           },
         ],

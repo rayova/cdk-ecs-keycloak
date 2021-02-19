@@ -22,7 +22,6 @@ export class IntegKeycloakClusterBYOStack extends cdk.Stack {
         },
       ],
     });
-
     const rdsDb = new rds.ServerlessCluster(this, 'DB', {
       vpc,
       engine: rds.DatabaseClusterEngine.auroraMysql({
