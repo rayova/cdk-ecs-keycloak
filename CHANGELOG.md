@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.34](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.33...v0.0.34) (2021-02-19)
+
+
+### Bug Fixes
+
+* Imported alb listeners lack addTarget ([#78](https://github.com/misterjoshua/cdk-ecs-keycloak/issues/78)) ([b2db837](https://github.com/misterjoshua/cdk-ecs-keycloak/commit/b2db8376c6171b9517d3bc1d07ec6a732c29d320))
+
 ### [0.0.33](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.32...v0.0.33) (2021-02-19)
 
 ### [0.0.32](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.31...v0.0.32) (2021-02-19)
