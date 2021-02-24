@@ -24,6 +24,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
@@ -1463,6 +1464,7 @@ Object {
       "Type": "AWS::ElasticLoadBalancingV2::ListenerRule",
     },
     "DB4924F778": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
@@ -2568,6 +2570,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
@@ -3835,6 +3838,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "AllocatedStorage": "100",
         "CopyTagsToSnapshot": true,
@@ -5655,6 +5659,7 @@ systemctl start amazon-ssm-agent",
       "Type": "AWS::SNS::Topic",
     },
     "DB4924F778": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "AllocatedStorage": "100",
         "CopyTagsToSnapshot": true,
@@ -6652,6 +6657,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
@@ -7911,6 +7917,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "DB4924F778": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "AllocatedStorage": "100",
         "CopyTagsToSnapshot": true,
@@ -8950,6 +8957,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
@@ -10213,6 +10221,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "AllocatedStorage": "100",
         "CopyTagsToSnapshot": true,
@@ -11425,6 +11434,7 @@ Object {
       "Type": "AWS::ECS::Cluster",
     },
     "KeycloakDatabase9FB2EF02": Object {
+      "DeletionPolicy": "Snapshot",
       "Properties": Object {
         "DBClusterParameterGroupName": "default.aurora-mysql5.7",
         "DBSubnetGroupName": Object {
