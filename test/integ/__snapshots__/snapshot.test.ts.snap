@@ -344,6 +344,9 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
+        "DeploymentController": Object {
+          "Type": "ECS",
+        },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 600,
         "LaunchType": "FARGATE",
@@ -1641,6 +1644,9 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
+        "DeploymentController": Object {
+          "Type": "ECS",
+        },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
@@ -2857,6 +2863,9 @@ Object {
           },
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
+        },
+        "DeploymentController": Object {
+          "Type": "ECS",
         },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
@@ -4121,6 +4130,9 @@ Object {
           },
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
+        },
+        "DeploymentController": Object {
+          "Type": "ECS",
         },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
@@ -6955,6 +6967,9 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
+        "DeploymentController": Object {
+          "Type": "ECS",
+        },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
         "LoadBalancers": Array [
@@ -9255,6 +9270,9 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
+        "DeploymentController": Object {
+          "Type": "ECS",
+        },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
@@ -10505,6 +10523,9 @@ Object {
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
         },
+        "DeploymentController": Object {
+          "Type": "ECS",
+        },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
         "LaunchType": "FARGATE",
@@ -11721,6 +11742,9 @@ Object {
           },
           "MaximumPercent": 200,
           "MinimumHealthyPercent": 50,
+        },
+        "DeploymentController": Object {
+          "Type": "ECS",
         },
         "EnableECSManagedTags": false,
         "HealthCheckGracePeriodSeconds": 120,
