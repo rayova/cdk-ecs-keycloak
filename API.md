@@ -766,6 +766,7 @@ new KeycloakEc2TaskDefinition(scope: Construct, id: string, props?: KeycloakEc2T
   * **proxyConfiguration** (<code>[ProxyConfiguration](#aws-cdk-aws-ecs-proxyconfiguration)</code>)  The configuration details for the App Mesh proxy. __*Default*__: No proxy configuration.
   * **taskRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
   * **volumes** (<code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
+  * **inferenceAccelerators** (<code>Array<[InferenceAccelerator](#aws-cdk-aws-ecs-inferenceaccelerator)></code>)  The inference accelerators to use for the containers in the task. __*Default*__: No inference accelerators.
   * **ipcMode** (<code>[IpcMode](#aws-cdk-aws-ecs-ipcmode)</code>)  The IPC resource namespace to use for the containers in the task. __*Default*__: IpcMode used by the task is not specified
   * **networkMode** (<code>[NetworkMode](#aws-cdk-aws-ecs-networkmode)</code>)  The Docker networking mode to use for the containers in the task. __*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
   * **pidMode** (<code>[PidMode](#aws-cdk-aws-ecs-pidmode)</code>)  The process namespace to use for the containers in the task. __*Default*__: PidMode used by the task is not specified
@@ -1548,6 +1549,7 @@ Name | Type | Description
 -----|------|-------------
 **executionRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
 **family**? | <code>string</code> | The name of a family that this task definition is registered to.<br/>__*Default*__: Automatically generated name.
+**inferenceAccelerators**? | <code>Array<[InferenceAccelerator](#aws-cdk-aws-ecs-inferenceaccelerator)></code> | The inference accelerators to use for the containers in the task.<br/>__*Default*__: No inference accelerators.
 **ipcMode**? | <code>[IpcMode](#aws-cdk-aws-ecs-ipcmode)</code> | The IPC resource namespace to use for the containers in the task.<br/>__*Default*__: IpcMode used by the task is not specified
 **keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration.<br/>__*Optional*__
 **networkMode**? | <code>[NetworkMode](#aws-cdk-aws-ecs-networkmode)</code> | The Docker networking mode to use for the containers in the task.<br/>__*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
