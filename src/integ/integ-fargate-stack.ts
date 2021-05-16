@@ -1,6 +1,6 @@
 import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
 import * as ecs from '@aws-cdk/aws-ecs';
+import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
 import * as rds from '@aws-cdk/aws-rds';
 import * as discovery from '@aws-cdk/aws-servicediscovery';
 import * as cdk from '@aws-cdk/core';
