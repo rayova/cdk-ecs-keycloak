@@ -1372,9 +1372,9 @@
   integrity sha512-fZQQafSREFyuZcdWFAExYjBiCL7AUCdgsk80iO0q4yihYYdcIiH28CcuPTGFgLOCC8RlW49GSQxdHwZP+I7CNg==
 
 "@types/node@*":
-  version "15.9.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.9.0.tgz#0b7f6c33ca5618fe329a9d832b478b4964d325a8"
-  integrity sha512-AR1Vq1Ei1GaA5FjKL5PBqblTZsL5M+monvGSZwe6sSIdGiuu7Xr/pNwWJY+0ZQuN8AapD/XMB5IzBAyYRFbocA==
+  version "15.12.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-15.12.0.tgz#6a459d261450a300e6865faeddb5af01c3389bb3"
+  integrity sha512-+aHJvoCsVhO2ZCuT4o5JtcPrCPyDE3+1nvbDprYes+pPkEsbjH7AGUCNtjMOXS0fqH14t+B7yLzaqSz92FPWyw==
 
 "@types/node@^10.17.0", "@types/node@^10.17.60":
   version "10.17.60"
@@ -1776,9 +1776,9 @@ aws-cdk@^1.87.1:
     yargs "^16.2.0"
 
 aws-sdk@^2.848.0:
-  version "2.920.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.920.0.tgz#27559885ca882de1f87dd21ae4d2d004690867a7"
-  integrity sha512-tbMZ/Y2rRo6R6TTBODJXTiil+MXaoT6Qzotws3yvI1IWGpYxKo7N/3L06XB8ul8tCG0TigxIOY70SMICM70Ppg==
+  version "2.921.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.921.0.tgz#37bb60630d5ae17e0c61c0052078a766b372fcea"
+  integrity sha512-Xi6MGx0oZByTzKN4WP15RjKejyf/mIxXU0Do8L1wf/Oz5USirjzLXFBPVEt25A43nOQVwXagZ2Ayt81ItcbTXg==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -2802,9 +2802,9 @@ dreamopt@~0.6.0:
     wordwrap ">=0.0.2"
 
 electron-to-chromium@^1.3.723:
-  version "1.3.744"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.744.tgz#34e0da7babb325e18b50d3a0214504b12045ca85"
-  integrity sha512-o/vep/PvSXg+7buwCbVJXHY3zbjYVmFPwnMMnchESXgAzrfcasvbX/hQZHCFGG7YdZgdtwt1KTMyK9CyBxPbLA==
+  version "1.3.747"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.747.tgz#c8d6bc625fe783f506aee7710772adab47b0bf29"
+  integrity sha512-+K1vnBc08GNYxCWwdRe9o3Ml30DhsNyK/qIl/NE1Dic+qCy9ZREcqGNiV4jiLiAdALK1DUG3pakJHGkJUd9QQw==
 
 emittery@^0.7.1:
   version "0.7.2"
@@ -4652,9 +4652,9 @@ jsii-diff@^1.18.0:
     yargs "^16.2.0"
 
 jsii-docgen@^1.8.31:
-  version "1.8.85"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.85.tgz#9c2488eabe9621e947d436cb0e0eb98fb5038e8d"
-  integrity sha512-cB9pTWv7MiqeKvYyfKpipWvbwcAyvDQzfyfjRJ1dCM2hE+AX0DeLNTdGT1p7s3wCKMp0UVv1petZblU/0VnteA==
+  version "1.8.86"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.86.tgz#e5d0373971a6e24fdea23ac2c85d1dcb29b4de6a"
+  integrity sha512-wMJjMSz/Lqjm+invtVPg0XlCpMtDscKLK9fO2MugzU42I6LuRAIdszZlZ+Nii3ws/2JSHon1J8vVR49lFTUuig==
   dependencies:
     "@jsii/spec" "^1.16.0"
     fs-extra "^9.0.1"
