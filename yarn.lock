@@ -1795,9 +1795,9 @@ aws-cdk@^1.87.1:
     yargs "^16.2.0"
 
 aws-sdk@^2.848.0:
-  version "2.930.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.930.0.tgz#f98871a790ffdbfae5439e50db99f6d4635afe19"
-  integrity sha512-g8fPOy7Skh2Pqpz2SaDI+M9re2rjTWBQUirAMgtUD/6I/Lf6CR1Q0amsjtQU8WqRQH06kNGwuLtc8Tt6wAux3Q==
+  version "2.931.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.931.0.tgz#7fdc886fa7697095203fe7de16bc948a8b1c8daa"
+  integrity sha512-Db97/aJq8zYl8mHzY6dNO6m9S89TqN4HEUUc2aCYQCTyMb/eNrjf+uZTnutnQbJkClqHzxFcWc3aqe5VlTac/A==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -2295,9 +2295,9 @@ concat-stream@^2.0.0:
     typedarray "^0.0.6"
 
 constructs@^3.3.69:
-  version "3.3.83"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.83.tgz#e62f79c2ec9255f5d91965b12d9bfc12d17b6c87"
-  integrity sha512-HLOdSvbUVejDskjDuieQz69Cp66nLovU5yHanDow/X+WbZx3rQ0HdNpCx7lJJw78uKYIiCQlznqDgzgLl5rcuQ==
+  version "3.3.84"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.84.tgz#cb9719e3708576e346e56377c5c7f1fb7ba8ad44"
+  integrity sha512-SrOydJPzUpgUVb+qhocVUdhhZpve8FRfEP5iEPnt3gpnPU5FEC22Gn40qwyii/vhb2qSmr0zskYVdx9UuFaFug==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.12"
@@ -4664,9 +4664,9 @@ jsii-diff@^1.18.0:
     yargs "^16.2.0"
 
 jsii-docgen@^1.8.31:
-  version "1.8.99"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.99.tgz#5336a1cff34fe181e61a38b0bccfed265b2fae7d"
-  integrity sha512-Xo75tCCpoNnMMJq04AMbfojmHVlU1+ZYc08GcjVBL1n06mOvja5Nd2jI5bDdzVsLbmneizDEXC0dTne5JTOImw==
+  version "1.8.100"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.100.tgz#9061965e2eb743578756c197f9e039f3f08300a8"
+  integrity sha512-iB7WTZGKXEDYKp41YQ2O7z30Pqkp2GzZ29yA7EROpZ/Rfolq71fOXpUv4dOD4kDpeKhJJ8bOwmGHmNgBdi2DhQ==
   dependencies:
     "@jsii/spec" "^1.30.0"
     fs-extra "^9.1.0"
