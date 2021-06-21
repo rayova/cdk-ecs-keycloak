@@ -2295,9 +2295,9 @@ concat-stream@^2.0.0:
     typedarray "^0.0.6"
 
 constructs@^3.3.69:
-  version "3.3.84"
-  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.84.tgz#cb9719e3708576e346e56377c5c7f1fb7ba8ad44"
-  integrity sha512-SrOydJPzUpgUVb+qhocVUdhhZpve8FRfEP5iEPnt3gpnPU5FEC22Gn40qwyii/vhb2qSmr0zskYVdx9UuFaFug==
+  version "3.3.85"
+  resolved "https://registry.yarnpkg.com/constructs/-/constructs-3.3.85.tgz#9b7496bb6197d04cd061e0509b5b2338355a6469"
+  integrity sha512-Or1CtFHhDLWEO64nFtDGStVSZKu0iOkxJ0y90elLR2zVkkFU7l3VujXRuJxY5Tb1SeuN0hSueC7SnMegFLafcw==
 
 conventional-changelog-angular@^5.0.12:
   version "5.0.12"
@@ -4664,9 +4664,9 @@ jsii-diff@^1.18.0:
     yargs "^16.2.0"
 
 jsii-docgen@^1.8.31:
-  version "1.8.100"
-  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.100.tgz#9061965e2eb743578756c197f9e039f3f08300a8"
-  integrity sha512-iB7WTZGKXEDYKp41YQ2O7z30Pqkp2GzZ29yA7EROpZ/Rfolq71fOXpUv4dOD4kDpeKhJJ8bOwmGHmNgBdi2DhQ==
+  version "1.8.101"
+  resolved "https://registry.yarnpkg.com/jsii-docgen/-/jsii-docgen-1.8.101.tgz#eedfc3dfa4d7e754d06997ce671496fd4da578fa"
+  integrity sha512-TFIztJ5zdLEUeXRAno68WodK5CVgYCrkOULcZTMhMTY8xfXLKuI/S0pY9540OzpDtVVE/tUizRLBXjPMumUenQ==
   dependencies:
     "@jsii/spec" "^1.30.0"
     fs-extra "^9.1.0"
@@ -7265,9 +7265,9 @@ yaml@1.10.2, yaml@^1.10.0:
   integrity sha512-r3vXyErRCYJ7wg28yvBY5VSoAF8ZvlcW9/BwUzEtUsjvX/DKs24dIkuwjtuprwJJHsbyUbLApepYTR1BN4uHrg==
 
 yargs-parser@20.x, yargs-parser@^20.2.2, yargs-parser@^20.2.3:
-  version "20.2.7"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.7.tgz#61df85c113edfb5a7a4e36eb8aa60ef423cbc90a"
-  integrity sha512-FiNkvbeHzB/syOjIUxFDCnhSfzAL8R5vs40MgLFBorXACCOAEaWu0gRZl14vG8MR9AOJIZbmkjhusqBYZ3HTHw==
+  version "20.2.9"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.9.tgz#2eb7dc3b0289718fc295f362753845c41a0c94ee"
+  integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
 yargs-parser@^18.1.2:
   version "18.1.3"
