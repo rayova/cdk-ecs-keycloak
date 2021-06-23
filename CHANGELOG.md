@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.168](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.167...v0.0.168) (2021-06-23)
+
 ### [0.0.167](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.166...v0.0.167) (2021-06-23)
 
 ### [0.0.166](https://github.com/misterjoshua/cdk-ecs-keycloak/compare/v0.0.165...v0.0.166) (2021-06-22)
