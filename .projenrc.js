@@ -45,12 +45,6 @@ const project = new AwsCdkConstructLibrary({
   releaseEveryCommit: true,
   releaseToNpm: true,
 
-  publishToMaven: {
-    javaPackage: 'ca.wheatstalk.cdkecskeycloak',
-    mavenGroupId: 'ca.wheatstalk',
-    mavenArtifactId: 'cdk-ecs-keycloak',
-  },
-
   projenUpgradeSecret: 'YARN_UPGRADE_TOKEN',
 
   /* AwsCdkConstructLibraryOptions */
