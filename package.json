@@ -138,15 +138,7 @@
   "stability": "stable",
   "jsii": {
     "outdir": "dist",
-    "targets": {
-      "java": {
-        "package": "ca.wheatstalk.cdkecskeycloak",
-        "maven": {
-          "groupId": "ca.wheatstalk",
-          "artifactId": "cdk-ecs-keycloak"
-        }
-      }
-    },
+    "targets": {},
     "tsc": {
       "outDir": "lib",
       "rootDir": "src"
