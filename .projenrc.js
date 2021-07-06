@@ -1,4 +1,4 @@
-const { AwsCdkConstructLibrary } = require('projen');
+const { AwsCdkConstructLibrary, DependenciesUpgradeMechanism } = require('projen');
 
 const project = new AwsCdkConstructLibrary({
   author: 'Josh Kellendonk',
@@ -13,6 +13,8 @@ const project = new AwsCdkConstructLibrary({
     'fargate',
     'keycloak',
   ],
+
+  defaultReleaseBranch: 'master',
 
   cdkDependencies: [
     '@aws-cdk/aws-certificatemanager',
@@ -34,6 +36,12 @@ const project = new AwsCdkConstructLibrary({
     'ts-node',
   ],
 
+  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow(),
+  autoApproveUpgrades: true,
+  autoApproveOptions: {
+    secret: 'YARN_UPGRADE_TOKEN',
+  },
+
   releaseEveryCommit: true,
   releaseToNpm: true,
 
@@ -42,6 +50,8 @@ const project = new AwsCdkConstructLibrary({
     mavenGroupId: 'ca.wheatstalk',
     mavenArtifactId: 'cdk-ecs-keycloak',
   },
+
+  projenUpgradeSecret: 'YARN_UPGRADE_TOKEN',
 
   /* AwsCdkConstructLibraryOptions */
   // cdkAssert: true,                                                          /* Install the @aws-cdk/assert library? */
@@ -142,37 +152,6 @@ const project = new AwsCdkConstructLibrary({
   // parent: undefined,                                                        /* The parent project, if this project is part of a bigger project. */
   // projectType: ProjectType.UNKNOWN,                                         /* Which type of project this is (library/app). */
   // readme: undefined,                                                        /* The README setup. */
-});
-
-const yarnUp = project.github.addWorkflow('yarn-upgrade');
-
-yarnUp.on({
-  schedule: [{ cron: '0 4 * * *' }],
-  workflow_dispatch: {},
-});
-
-yarnUp.addJobs({
-  upgrade: {
-    'name': 'Yarn Upgrade',
-    'runs-on': 'ubuntu-latest',
-    'steps': [
-      { uses: 'actions/checkout@v2' },
-      { run: 'yarn upgrade' },
-      { run: 'git diff' },
-      { run: 'CI="" npx projen' },
-      { run: 'yarn build' },
-      {
-        name: 'Create Pull Request',
-        uses: 'peter-evans/create-pull-request@v3',
-        with: {
-          'title': 'chore: automatic yarn upgrade',
-          'commit-message': 'chore: automatic yarn upgrade',
-          'token': '${{ secrets.YARN_UPGRADE_TOKEN }}',
-          'labels': 'auto-merge',
-        },
-      },
-    ],
-  },
 });
 
 project.gitignore.exclude('.idea', '*.iml');

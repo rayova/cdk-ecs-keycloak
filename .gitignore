@@ -15,6 +15,8 @@
 .yarn-integrity
 /coverage
 /dist
+/dist/changelog.md
+/dist/version.txt
 /lib
 /test-reports/
 build/Release
@@ -33,18 +35,19 @@ tsconfig.json
 yarn-debug.log*
 yarn-error.log*
 !/.eslintrc.json
-!/.github/dependabot.yml
+!/.gitattributes
 !/.github/pull_request_template.md
+!/.github/workflows/auto-approve.yml
 !/.github/workflows/build.yml
-!/.github/workflows/rebuild-bot.yml
 !/.github/workflows/release.yml
-!/.github/workflows/yarn-upgrade.yml
+!/.github/workflows/stale.yml
+!/.github/workflows/upgrade-dependencies.yml
+!/.github/workflows/upgrade-projen.yml
 !/.mergify.yml
 !/.npmignore
 !/.projen/deps.json
 !/.projen/tasks.json
 !/.projenrc.js
-!/.versionrc.json
 !/API.md
 !/LICENSE
 !/package.json
@@ -52,4 +55,3 @@ yarn-error.log*
 !/test
 !/tsconfig.eslint.json
 !/tsconfig.jest.json
-!version.json
