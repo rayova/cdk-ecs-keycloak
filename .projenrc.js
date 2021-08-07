@@ -36,9 +36,11 @@ const project = new AwsCdkConstructLibrary({
     'ts-node',
   ],
 
-  depsUpgrade: DependenciesUpgradeMechanism.githubWorkflow(),
+  projenUpgradeSecret: 'YARN_UPGRADE_TOKEN',
+  autoApproveUpgrades: true,
   autoApproveOptions: {
-    secret: 'YARN_UPGRADE_TOKEN',
+    secret: 'GITHUB_TOKEN',
+    allowedUsernames: ['github-actions', 'github-actions[bot]', 'misterjoshua'],
   },
 
   releaseEveryCommit: false,
