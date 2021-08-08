@@ -4604,9 +4604,9 @@ is-text-path@^1.0.1:
     text-extensions "^1.0.0"
 
 is-typed-array@^1.1.6:
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/is-typed-array/-/is-typed-array-1.1.6.tgz#5887fdc44a7342da94f21ddd22ebad06c7dff69c"
-  integrity sha512-cDIgneTBa/TueUY6AWd7Tyj3jcFF5GAzFd50x3IB9bcjRSfjxkTfGYeD8YUDnrXQ10Q+2Y6rT+ZDwseIX9CI5A==
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/is-typed-array/-/is-typed-array-1.1.7.tgz#881ddc660b13cb8423b2090fa88c0fe37a83eb2f"
+  integrity sha512-VxlpTBGknhQ3o7YiVjIhdLU6+oD8dPz/79vvvH4F+S/c8608UCVa9fgDpa1kZgFoUST2DCgacc70UszKgzKuvA==
   dependencies:
     available-typed-arrays "^1.0.4"
     call-bind "^1.0.2"
