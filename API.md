@@ -838,6 +838,7 @@ new KeycloakFargateTaskDefinition(scope: Construct, id: string, props?: Keycloak
   * **taskRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
   * **volumes** (<code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
   * **cpu** (<code>number</code>)  The number of cpu units used by the task. __*Default*__: 256
+  * **ephemeralStorageGiB** (<code>number</code>)  The amount (in GiB) of ephemeral storage to be allocated to the task. __*Default*__: 20
   * **memoryLimitMiB** (<code>number</code>)  The amount (in MiB) of memory used by the task. __*Default*__: 512
   * **keycloak** (<code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  Keycloak configuration. __*Optional*__
 
@@ -1571,6 +1572,7 @@ Props for `KeycloakFargateTaskDefinition`.
 Name | Type | Description 
 -----|------|-------------
 **cpu**? | <code>number</code> | The number of cpu units used by the task.<br/>__*Default*__: 256
+**ephemeralStorageGiB**? | <code>number</code> | The amount (in GiB) of ephemeral storage to be allocated to the task.<br/>__*Default*__: 20
 **executionRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
 **family**? | <code>string</code> | The name of a family that this task definition is registered to.<br/>__*Default*__: Automatically generated name.
 **keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration.<br/>__*Optional*__
