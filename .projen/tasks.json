@@ -254,7 +254,8 @@
       "env": {
         "CHANGELOG": "dist/changelog.md",
         "RELEASE_TAG_FILE": "dist/releasetag.txt",
-        "PROJECT_CHANGELOG_FILE": ""
+        "PROJECT_CHANGELOG_FILE": "",
+        "VERSION_FILE": "dist/version.txt"
       },
       "steps": [
         {
