@@ -1621,6 +1621,12 @@ Object {
       "Properties": Object {
         "Port": 80,
         "Protocol": "HTTP",
+        "TargetGroupAttributes": Array [
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
         "TargetType": "ip",
         "VpcId": Object {
           "Ref": "Vpc8378EB38",
@@ -5985,6 +5991,12 @@ systemctl start amazon-ssm-agent",
       "Properties": Object {
         "Port": 80,
         "Protocol": "HTTP",
+        "TargetGroupAttributes": Array [
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
+        ],
         "TargetType": "ip",
         "VpcId": Object {
           "Ref": "Vpc8378EB38",
@@ -8254,6 +8266,10 @@ Object {
         "Port": 80,
         "Protocol": "HTTP",
         "TargetGroupAttributes": Array [
+          Object {
+            "Key": "stickiness.enabled",
+            "Value": "false",
+          },
           Object {
             "Key": "deregistration_delay.timeout_seconds",
             "Value": "5",
