@@ -76,6 +76,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -96,6 +97,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -1532,6 +1534,7 @@ Object {
       "Type": "AWS::SecretsManager::SecretTargetAttachment",
     },
     "DBSecretB8D1B379": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -1552,6 +1555,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "DBSecurityGroup302CDD63": Object {
       "Properties": Object {
@@ -2634,6 +2638,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -2654,6 +2659,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -3901,6 +3907,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -3921,6 +3928,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -5758,6 +5766,7 @@ systemctl start amazon-ssm-agent",
       "Type": "AWS::SecretsManager::SecretTargetAttachment",
     },
     "DBSecretB8D1B379": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -5778,6 +5787,7 @@ systemctl start amazon-ssm-agent",
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "DBSecurityGroup302CDD63": Object {
       "Properties": Object {
@@ -6753,6 +6763,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -6773,6 +6784,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -8025,6 +8037,7 @@ Object {
       "Type": "AWS::SecretsManager::SecretTargetAttachment",
     },
     "DBSecretB8D1B379": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -8045,6 +8058,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "DBSecurityGroup302CDD63": Object {
       "Properties": Object {
@@ -9060,6 +9074,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -9080,6 +9095,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -10323,6 +10339,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -10343,6 +10360,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
@@ -11543,6 +11561,7 @@ Object {
       "UpdateReplacePolicy": "Snapshot",
     },
     "KeycloakDatabaseSecret1C63E8D7": Object {
+      "DeletionPolicy": "Delete",
       "Properties": Object {
         "Description": Object {
           "Fn::Join": Array [
@@ -11563,6 +11582,7 @@ Object {
         },
       },
       "Type": "AWS::SecretsManager::Secret",
+      "UpdateReplacePolicy": "Delete",
     },
     "KeycloakDatabaseSecretAttachment10F733C4": Object {
       "Properties": Object {
