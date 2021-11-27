@@ -2008,9 +2008,9 @@ aws-cdk@^1.134.0:
     yargs "^16.2.0"
 
 aws-sdk@^2.848.0, aws-sdk@^2.979.0:
-  version "2.1036.0"
-  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1036.0.tgz#47f0d0a38b5bfbd4a7a382a6756a6aa7af627aad"
-  integrity sha512-K0f4uXL32ZdoPmWiuSQEAC5ae5v7gNmhjzoEB7VonE5E8l2umWsoU0Ahm8WPr14LgsvtkeyBuqBjphbxLz6hIw==
+  version "2.1037.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.1037.0.tgz#f397aea0aa2b7a862be89240e68c8138c959fb3c"
+  integrity sha512-z1IfFFvKg1ZKikyExhLeiax0jIe/YwFrBjIUhcPjBfh+c4otvuqp9RBp2iyXt3GamhEkKoPyvd6a5K7IGsTBMw==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -3194,9 +3194,9 @@ ecc-jsbn@~0.1.1:
     safer-buffer "^2.1.0"
 
 electron-to-chromium@^1.3.896:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.2.tgz#b81583847c25377027cca7d5a4e94ac23bdce2f4"
-  integrity sha512-SxHMmlSvpT83M/MLxTXQBqfqo3bK+UOk6Uup6w1paX86l+af1xwwTMLlyK3xJwE3Kq8/QnecuFKmnmRlAUJCXw==
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.4.tgz#57311918524c1a26878c330537f967804d43788a"
+  integrity sha512-teHtgwcmVcL46jlFvAaqjyiTLWuMrUQO1JqV303JKB4ysXG6m8fXSFhbjal9st0r9mNskI22AraJZorb1VcLVg==
 
 emittery@^0.7.1:
   version "0.7.2"
@@ -6666,10 +6666,10 @@ progress@^2.0.0, progress@^2.0.3:
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
   integrity sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==
 
-projen@^0.34.21:
-  version "0.34.21"
-  resolved "https://registry.yarnpkg.com/projen/-/projen-0.34.21.tgz#e79e6e258a33ec51215397eb235aa867b1854a89"
-  integrity sha512-SXe3u4nm3i+ozsOrbFQjxKgeYaIOrRYAhoh4hRMFGVAPdCX7lPIJWsUnc5UYzXHMbv/zclnXmFngmPVSf/y/Kw==
+projen@^0.34.23:
+  version "0.34.23"
+  resolved "https://registry.yarnpkg.com/projen/-/projen-0.34.23.tgz#13f6ea308dcff970f8a54f30b75c4cd51eb288a3"
+  integrity sha512-Xuxq0yLOgKiWxEQUwsw8fF6aEVeoJtMmg/favhP7Q7bLxzTPw6qWfD4ylyRfucPl1oeK4G0kXpI9ftcre9CT8A==
   dependencies:
     "@iarna/toml" "^2.2.5"
     case "^1.6.3"
