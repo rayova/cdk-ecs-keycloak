@@ -1,8 +1,9 @@
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { Construct } from 'constructs';
 
 /**
  * @internal
@@ -27,7 +28,7 @@ export interface IPortPublisher {
    * VPC is available.
    * @internal
    */
-  _publishContainerPort(scope: cdk.Construct, props: PublishContainerPortProps): void;
+  _publishContainerPort(scope: Construct, props: PublishContainerPortProps): void;
 }
 
 /**
@@ -89,7 +90,7 @@ export class AddTargetPortPublisher implements IPortPublisher {
   /**
    * @internal
    */
-  _publishContainerPort(_scope: cdk.Construct, props: PublishContainerPortProps): void {
+  _publishContainerPort(_scope: Construct, props: PublishContainerPortProps): void {
     const listenerInfo = this.listenerInfo;
 
     const targets = [props.service.loadBalancerTarget({
@@ -149,7 +150,7 @@ export class HttpAlbPortPublisher implements IPortPublisher {
   /**
    * @internal
    */
-  public _publishContainerPort(scope: cdk.Construct, props: PublishContainerPortProps) {
+  public _publishContainerPort(scope: Construct, props: PublishContainerPortProps) {
     // Create or re-use an application load balancer in the scope.
     const loadBalancer = new elbv2.ApplicationLoadBalancer(scope, this.id, {
       vpc: props.vpc,
@@ -225,7 +226,7 @@ export class HttpsAlbPortPublisher implements IPortPublisher {
   /**
    * @internal
    */
-  _publishContainerPort(scope: cdk.Construct, props: PublishContainerPortProps) {
+  _publishContainerPort(scope: Construct, props: PublishContainerPortProps) {
     // Create or re-use an application load balancer in the scope.
     const loadBalancer: elbv2.ApplicationLoadBalancer = scope.node.tryFindChild(this.id) as any ??
       new elbv2.ApplicationLoadBalancer(scope, this.id, {
@@ -320,7 +321,7 @@ export class NlbPortPublisher implements IPortPublisher {
   /**
    * @internal
    */
-  _publishContainerPort(scope: cdk.Construct, props: PublishContainerPortProps) {
+  _publishContainerPort(scope: Construct, props: PublishContainerPortProps) {
     // Create or re-use a network load balancer in the scope.
     const loadBalancer: elbv2.NetworkLoadBalancer = scope.node.tryFindChild(this.id) as any ??
       new elbv2.NetworkLoadBalancer(scope, this.id, {
@@ -392,7 +393,7 @@ export class NonePortPublisher implements IPortPublisher {
   /**
    * @internal
    */
-  _publishContainerPort(_scope: cdk.Construct, _props: PublishContainerPortProps) {
+  _publishContainerPort(_scope: Construct, _props: PublishContainerPortProps) {
     // Do nothing.
   }
 }

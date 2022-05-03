@@ -1,9 +1,9 @@
-import { SynthUtils } from '@aws-cdk/assert';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as secrets from '@aws-cdk/aws-secretsmanager';
-import * as cloudmap from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as secrets from 'aws-cdk-lib/aws-secretsmanager';
+import * as cloudmap from 'aws-cdk-lib/aws-servicediscovery';
 import { KeycloakContainerExtension, KeycloakDatabaseVendor, mapDnsRecordTypeToJGroup } from '../src';
 
 describe('mapDnsRecordTypeToJGroup', () => {
@@ -192,13 +192,10 @@ describe('KeycloakContainerExtension', () => {
 
     task.addExtension(
       new KeycloakContainerExtension({
-        logging: new ecs.SplunkLogDriver({
-          token: cdk.SecretValue.plainText('secret'),
-          url: 'someurl',
-        }),
+        logging: new ecs.SyslogLogDriver(),
       }));
 
-    expect(task.defaultContainer?.logDriverConfig?.logDriver).toEqual('splunk');
+    expect(task.defaultContainer?.logDriverConfig?.logDriver).toEqual('syslog');
   });
 
   test('throws when credentials not present for non-h2 database vendor', () => {
@@ -274,7 +271,7 @@ describe('KeycloakContainerExtension', () => {
       });
       task.addExtension(extension);
 
-      const res = SynthUtils.toCloudFormation(stack);
+      const res = Template.fromStack(stack).toJSON();
       // Yuck. Don't know another way to check for just these variables.
       const environment = res.Resources.TaskDefinitionB36D86D9.Properties.ContainerDefinitions[0].Environment;
       expect(environment).toEqual(expect.arrayContaining([
@@ -309,7 +306,7 @@ describe('KeycloakContainerExtension', () => {
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 
-      const res = SynthUtils.toCloudFormation(stack);
+      const res = Template.fromStack(stack).toJSON();
       // Yuck. Don't know another way to check for just these variables.
       const environment = res.Resources.TaskDefinitionB36D86D9.Properties.ContainerDefinitions[0].Environment;
       expect(environment).toEqual(expect.arrayContaining([
@@ -353,7 +350,7 @@ describe('KeycloakContainerExtension', () => {
       extension.useCloudMapService(cloudMapService);
       task.addExtension(extension);
 
-      const res = SynthUtils.toCloudFormation(stack);
+      const res = Template.fromStack(stack).toJSON();
       // Yuck. Don't know another way to check for just these variables.
       const environment = res.Resources.TaskDefinitionB36D86D9.Properties.ContainerDefinitions[0].Environment;
       expect(environment).toEqual(expect.arrayContaining([

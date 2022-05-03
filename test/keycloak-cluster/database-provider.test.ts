@@ -1,7 +1,7 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as rds from '@aws-cdk/aws-rds';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { DatabaseProvider, KeycloakDatabaseVendor, mapEngineToKeycloakVendor } from '../../src';
 
 describe('database info', () => {
@@ -11,7 +11,7 @@ describe('database info', () => {
       [rds.DatabaseClusterEngine.AURORA_POSTGRESQL, KeycloakDatabaseVendor.POSTGRES],
       [rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }), KeycloakDatabaseVendor.MYSQL],
       [rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_5_7 }), KeycloakDatabaseVendor.MYSQL],
-      [rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_9_5 }), KeycloakDatabaseVendor.POSTGRES],
+      [rds.DatabaseInstanceEngine.postgres({ version: rds.PostgresEngineVersion.VER_13_4 }), KeycloakDatabaseVendor.POSTGRES],
     ])('%s => %s', (from, to) => {
       expect(mapEngineToKeycloakVendor(from)).toEqual(to);
     });
@@ -233,7 +233,7 @@ describe('database info', () => {
 
       const databaseInstance = new rds.DatabaseInstance(stack, 'Database', {
         engine: rds.DatabaseInstanceEngine.mysql({
-          version: rds.MysqlEngineVersion.VER_5_6,
+          version: rds.MysqlEngineVersion.VER_8_0_26,
         }),
         vpc,
       });

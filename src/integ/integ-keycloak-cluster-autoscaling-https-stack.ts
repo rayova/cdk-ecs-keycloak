@@ -1,9 +1,10 @@
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import { Construct } from 'constructs';
 import * as keycloak from '../index';
 
 export class IntegKeycloakAutoScalingHttpsStack extends cdk.Stack {
-  constructor(scope: cdk.Construct) {
+  constructor(scope: Construct) {
     super(scope, 'integ-keycloak-cluster-autoscaling-https');
 
     const certificateArn = scope.node.tryGetContext('CERTIFICATE_ARN') ?? 'PRETEND';

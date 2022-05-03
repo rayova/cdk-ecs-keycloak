@@ -1,7 +1,7 @@
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as servicediscovery from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import * as servicediscovery from 'aws-cdk-lib/aws-servicediscovery';
+import { Construct } from 'constructs';
 import { EnsureMysqlDatabaseExtension } from './ensure-mysql-database-extension';
 import { EnsurePostgresqlDatabaseExtension } from './ensure-postgresql-database-extension';
 import {
@@ -42,7 +42,7 @@ export interface KeycloakFargateTaskDefinitionProps extends ecs.FargateTaskDefin
 export class KeycloakFargateTaskDefinition extends ecs.FargateTaskDefinition implements IKeycloakTaskDefinition {
   public readonly keycloakContainerExtension: KeycloakContainerExtension;
 
-  constructor(scope: cdk.Construct, id: string, props?: KeycloakFargateTaskDefinitionProps) {
+  constructor(scope: Construct, id: string, props?: KeycloakFargateTaskDefinitionProps) {
     super(scope, id, props);
     this.keycloakContainerExtension = configureKeyCloak(this, props?.keycloak);
   }
@@ -72,7 +72,7 @@ export interface KeycloakEc2TaskDefinitionProps extends ecs.Ec2TaskDefinitionPro
 export class KeycloakEc2TaskDefinition extends ecs.Ec2TaskDefinition implements IKeycloakTaskDefinition {
   public readonly keycloakContainerExtension: KeycloakContainerExtension;
 
-  constructor(scope: cdk.Construct, id: string, props?: KeycloakEc2TaskDefinitionProps) {
+  constructor(scope: Construct, id: string, props?: KeycloakEc2TaskDefinitionProps) {
     const networkMode = props?.networkMode ?? ecs.NetworkMode.AWS_VPC;
 
     if (networkMode !== ecs.NetworkMode.AWS_VPC) {

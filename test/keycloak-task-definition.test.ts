@@ -1,6 +1,6 @@
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 import { KeycloakDatabaseVendor, KeycloakEc2TaskDefinition, KeycloakFargateTaskDefinition } from '../src';
 
 describe('keycloak ec2 task definition', () => {

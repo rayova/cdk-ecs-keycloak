@@ -1,6 +1,6 @@
-import { SynthUtils } from '@aws-cdk/assert';
-import * as rds from '@aws-cdk/aws-rds';
-import * as cdk from '@aws-cdk/core';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as cdk from 'aws-cdk-lib/core';
 import { IntegEc2Stack } from '../../src/integ/integ-ec2-stack';
 import { IntegFargateStack } from '../../src/integ/integ-fargate-stack';
 import { IntegKeycloakAutoScalingHttpsStack } from '../../src/integ/integ-keycloak-cluster-autoscaling-https-stack';
@@ -18,7 +18,7 @@ test('ec2-stack', () => {
     databaseInstanceEngine: rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }),
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('fargate-stack', () => {
@@ -27,61 +27,61 @@ test('fargate-stack', () => {
     databaseInstanceEngine: rds.DatabaseInstanceEngine.mysql({ version: rds.MysqlEngineVersion.VER_8_0 }),
   });
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('simplest cluster', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterSimplestStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('autoscaling https example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakAutoScalingHttpsStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('nlb example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterNlbStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('custom container example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterCustomContainerStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('db instance example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterDbInstanceStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('postgresql example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterPostgresStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('byo example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterBYOStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });
 
 test('fargate spot example', () => {
   const app = new cdk.App();
   const stack = new IntegKeycloakClusterSpotStack(app);
 
-  expect(SynthUtils.toCloudFormation(stack)).toMatchSnapshot();
+  expect(Template.fromStack(stack).toJSON()).toMatchSnapshot();
 });

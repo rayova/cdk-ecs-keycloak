@@ -1,6 +1,6 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { Construct } from 'constructs';
 
 /**
  * Provides ClusterInfo after the VPC is available.
@@ -10,7 +10,7 @@ export interface IClusterInfoProvider {
    * Bind any new resources to the parent scope with access to the vpc.
    * @internal
    */
-  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo;
+  _provideClusterInfo(scope: Construct, props: ProvideClusterInfoProps): ClusterInfo;
 }
 
 /**
@@ -72,7 +72,7 @@ export class FromClusterInfoProvider implements IClusterInfoProvider {
   /**
    * @internal
    */
-  _provideClusterInfo(_scope: cdk.Construct, _props: ProvideClusterInfoProps): ClusterInfo {
+  _provideClusterInfo(_scope: Construct, _props: ProvideClusterInfoProps): ClusterInfo {
     return this.props;
   }
 }
@@ -84,7 +84,7 @@ export class EcsClusterInfoProvider implements IClusterInfoProvider {
   /**
    * @internal
    */
-  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo {
+  _provideClusterInfo(scope: Construct, props: ProvideClusterInfoProps): ClusterInfo {
     const cluster = new ecs.Cluster(scope, 'Cluster', {
       vpc: props.vpc,
     });
@@ -104,7 +104,7 @@ export class FargateSpotEcsClusterInfoProvider implements IClusterInfoProvider {
   /**
    * @internal
    */
-  _provideClusterInfo(scope: cdk.Construct, props: ProvideClusterInfoProps): ClusterInfo {
+  _provideClusterInfo(scope: Construct, props: ProvideClusterInfoProps): ClusterInfo {
     const cluster = new ecs.Cluster(scope, 'Cluster', {
       vpc: props.vpc,
     });

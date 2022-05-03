@@ -1,9 +1,10 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
-import * as rds from '@aws-cdk/aws-rds';
-import * as discovery from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as discovery from 'aws-cdk-lib/aws-servicediscovery';
+import { Construct } from 'constructs';
 
 import { KeycloakDatabaseVendor, KeycloakFargateTaskDefinition } from '../index';
 
@@ -16,7 +17,7 @@ export interface IntegFargateStackPops {
  * @internal
  */
 export class IntegFargateStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: IntegFargateStackPops) {
+  constructor(scope: Construct, id: string, props: IntegFargateStackPops) {
     super(scope, id);
 
     const databaseEngine = props.databaseInstanceEngine;

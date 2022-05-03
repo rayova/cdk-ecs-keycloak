@@ -99,8 +99,8 @@ new AddTargetPortPublisher(listenerInfo: AddTargetPortPublisherProps)
 ```
 
 * **listenerInfo** (<code>[AddTargetPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops)</code>)  *No description*
-  * **listener** (<code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
-  * **conditions** (<code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
+  * **listener** (<code>[aws_elasticloadbalancingv2.IApplicationListener](#aws-cdk-lib-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
+  * **conditions** (<code>Array<[aws_elasticloadbalancingv2.ListenerCondition](#aws-cdk-lib-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
   * **priority** (<code>number</code>)  *No description* __*Optional*__
 
 
@@ -193,7 +193,7 @@ static fromClusterInfo(clusterInfo: ClusterInfo): IClusterInfoProvider
 ```
 
 * **clusterInfo** (<code>[ClusterInfo](#wheatstalk-cdk-ecs-keycloak-clusterinfo)</code>)  *No description*
-  * **cluster** (<code>[ICluster](#aws-cdk-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
+  * **cluster** (<code>[aws_ecs.ICluster](#aws-cdk-lib-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
 
 __Returns__:
 * <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>
@@ -216,9 +216,9 @@ new DatabaseInstanceProvider(props?: DatabaseInstanceProviderProps)
 ```
 
 * **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
-  * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
-  * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
-  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
+  * **engine** (<code>[aws_rds.IInstanceEngine](#aws-cdk-lib-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
+  * **instanceType** (<code>[aws_ec2.InstanceType](#aws-cdk-lib-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+  * **subnets** (<code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
 
 
 
@@ -251,9 +251,9 @@ static databaseInstance(props?: DatabaseInstanceProviderProps): DatabaseInstance
 ```
 
 * **props** (<code>[DatabaseInstanceProviderProps](#wheatstalk-cdk-ecs-keycloak-databaseinstanceproviderprops)</code>)  *No description*
-  * **engine** (<code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
-  * **instanceType** (<code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
-  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
+  * **engine** (<code>[aws_rds.IInstanceEngine](#aws-cdk-lib-aws-rds-iinstanceengine)</code>)  Instance database engine. __*Default*__: mysql 8.0
+  * **instanceType** (<code>[aws_ec2.InstanceType](#aws-cdk-lib-aws-ec2-instancetype)</code>)  Instance type. __*Default*__: t2.micro
+  * **subnets** (<code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code>)  Select subnets to register the database instance in. __*Optional*__
 
 __Returns__:
 * <code>[DatabaseInstanceProvider](#wheatstalk-cdk-ecs-keycloak-databaseinstanceprovider)</code>
@@ -267,9 +267,9 @@ static fromDatabaseInfo(props: DatabaseInfo): IDatabaseInfoProvider
 ```
 
 * **props** (<code>[DatabaseInfo](#wheatstalk-cdk-ecs-keycloak-databaseinfo)</code>)  *No description*
-  * **credentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
+  * **credentials** (<code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
   * **vendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  Database vendor. 
-  * **connectable** (<code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
+  * **connectable** (<code>[aws_ec2.IConnectable](#aws-cdk-lib-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
 
 __Returns__:
 * <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>
@@ -283,9 +283,9 @@ static serverlessAuroraCluster(props?: ServerlessAuroraDatabaseProviderProps): I
 ```
 
 * **props** (<code>[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)</code>)  *No description*
-  * **engine** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
-  * **scaling** (<code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
-  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
+  * **engine** (<code>[aws_rds.IClusterEngine](#aws-cdk-lib-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+  * **scaling** (<code>[aws_rds.ServerlessScalingOptions](#aws-cdk-lib-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+  * **subnets** (<code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
 
 __Returns__:
 * <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>
@@ -318,7 +318,7 @@ Ensures a MySQL database exists by adding an init container.
 Makes the default container
 depend on the successful completion of this container.
 
-__Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
+__Implements__: [aws_ecs.ITaskDefinitionExtension](#aws-cdk-lib-aws-ecs-itaskdefinitionextension)
 
 ### Initializer
 
@@ -330,10 +330,10 @@ new EnsureMysqlDatabaseExtension(props: EnsureMysqlDatabaseExtensionProps)
 ```
 
 * **props** (<code>[EnsureMysqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensuremysqldatabaseextensionprops)</code>)  *No description*
-  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  RDS credentials. 
+  * **databaseCredentials** (<code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code>)  RDS credentials. 
   * **databaseName** (<code>string</code>)  Name of the database to create. 
   * **containerName** (<code>string</code>)  Name of the container to add to do this work. __*Default*__: 'ensure-mysql-database'
-  * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Logging driver. __*Optional*__
+  * **logging** (<code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code>)  Logging driver. __*Optional*__
 
 
 ### Methods
@@ -347,7 +347,7 @@ Apply the extension to the given TaskDefinition.
 extend(taskDefinition: TaskDefinition): void
 ```
 
-* **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
+* **taskDefinition** (<code>[aws_ecs.TaskDefinition](#aws-cdk-lib-aws-ecs-taskdefinition)</code>)  *No description*
 
 
 
@@ -361,7 +361,7 @@ Ensures a Postgresql database exists by adding an init container.
 Makes the
 default container depend on the successful completion of this container.
 
-__Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
+__Implements__: [aws_ecs.ITaskDefinitionExtension](#aws-cdk-lib-aws-ecs-itaskdefinitionextension)
 
 ### Initializer
 
@@ -373,10 +373,10 @@ new EnsurePostgresqlDatabaseExtension(props: EnsurePostgresqlDatabaseExtensionPr
 ```
 
 * **props** (<code>[EnsurePostgresqlDatabaseExtensionProps](#wheatstalk-cdk-ecs-keycloak-ensurepostgresqldatabaseextensionprops)</code>)  *No description*
-  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  RDS credentials. 
+  * **databaseCredentials** (<code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code>)  RDS credentials. 
   * **databaseName** (<code>string</code>)  Name of the database to create. 
   * **containerName** (<code>string</code>)  Name of the container to add to do this work. __*Default*__: 'ensure-postgresql-database'
-  * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Logging driver. __*Optional*__
+  * **logging** (<code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code>)  Logging driver. __*Optional*__
 
 
 ### Methods
@@ -390,7 +390,7 @@ Apply the extension to the given TaskDefinition.
 extend(taskDefinition: TaskDefinition): void
 ```
 
-* **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
+* **taskDefinition** (<code>[aws_ecs.TaskDefinition](#aws-cdk-lib-aws-ecs-taskdefinition)</code>)  *No description*
 
 
 
@@ -432,7 +432,7 @@ new FromClusterInfoProvider(props: FromClusterInfoProviderProps)
 ```
 
 * **props** (<code>[FromClusterInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromclusterinfoproviderprops)</code>)  *No description*
-  * **cluster** (<code>[ICluster](#aws-cdk-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
+  * **cluster** (<code>[aws_ecs.ICluster](#aws-cdk-lib-aws-ecs-icluster)</code>)  The ECS cluster for adding a service. 
 
 
 
@@ -453,9 +453,9 @@ new FromDatabaseInfoProvider(props: FromDatabaseInfoProviderProps)
 ```
 
 * **props** (<code>[FromDatabaseInfoProviderProps](#wheatstalk-cdk-ecs-keycloak-fromdatabaseinfoproviderprops)</code>)  *No description*
-  * **credentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
+  * **credentials** (<code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code>)  Database credentials in standard RDS json format. 
   * **vendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  Database vendor. 
-  * **connectable** (<code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
+  * **connectable** (<code>[aws_ec2.IConnectable](#aws-cdk-lib-aws-ec2-iconnectable)</code>)  A connectable so that the cluster can allow itself to connect to the database. __*Optional*__
 
 
 
@@ -476,7 +476,7 @@ new FromVpcProvider(props: FromVpcProviderProps)
 ```
 
 * **props** (<code>[FromVpcProviderProps](#wheatstalk-cdk-ecs-keycloak-fromvpcproviderprops)</code>)  *No description*
-  * **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  The VPC. 
+  * **vpc** (<code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code>)  The VPC. 
 
 
 
@@ -544,7 +544,7 @@ new HttpsAlbPortPublisher(props: HttpsAlbPortPublisherProps)
 * **props** (<code>[HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)</code>)  *No description*
   * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
   * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
-  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **certificates** (<code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
   * **upgradeHttp** (<code>boolean</code>)  Upgrade HTTP connection to HTTPS. __*Default*__: false
   * **upgradeHttpHost** (<code>string</code>)  A host name to redirect to when upgrading to HTTPS. __*Default*__: same as the request
 
@@ -568,7 +568,7 @@ new HttpsListenerProvider(props: HttpsListenerProviderProps)
 ```
 
 * **props** (<code>[HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)</code>)  *No description*
-  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **certificates** (<code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
 
 
 
@@ -596,8 +596,8 @@ new IngressAndPrivateVpcProvider()
 
 A complete Keycloak cluster in a box.
 
-__Implements__: [IConstruct](#constructs-iconstruct), [IConstruct](#aws-cdk-core-iconstruct), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable)
-__Extends__: [Construct](#aws-cdk-core-construct)
+__Implements__: [IConstruct](#constructs-iconstruct), [IDependable](#constructs-idependable)
+__Extends__: [Construct](#constructs-construct)
 
 ### Initializer
 
@@ -608,19 +608,19 @@ __Extends__: [Construct](#aws-cdk-core-construct)
 new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
 ```
 
-* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[KeycloakClusterProps](#wheatstalk-cdk-ecs-keycloak-keycloakclusterprops)</code>)  *No description*
   * **adminConsoleListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
   * **adminConsolePortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Add the service's WildFly admin console port to a load balancer. __*Default*__: not exposed
-  * **capacityProviderStrategy** (<code>Array<[CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code>)  Add capacity provider strategy by CDK escape hatch. __*Optional*__
+  * **capacityProviderStrategy** (<code>Array<[aws_ecs.CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-lib-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code>)  Add capacity provider strategy by CDK escape hatch. __*Optional*__
   * **circuitBreaker** (<code>boolean</code>)  Enable/disable the deployment circuit breaker. __*Default*__: true
   * **cloudMapNamespaceProvider** (<code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code>)  CloudMap namespace to use for service discovery. __*Default*__: creates one named 'keycloak-service-discovery'
   * **cpu** (<code>number</code>)  Fargate task cpu spec. __*Default*__: 1024
   * **databaseProvider** (<code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code>)  Database server. __*Default*__: creates a new one
   * **desiredCount** (<code>number</code>)  How many keycloak cluster members to spin up. __*Default*__: 1
   * **ecsClusterProvider** (<code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code>)  Provide an ECS cluster. __*Default*__: a cluster is automatically created.
-  * **healthCheckGracePeriod** (<code>[Duration](#aws-cdk-core-duration)</code>)  Initial grace period for Keycloak to spin up. __*Default*__: 10 minutes
+  * **healthCheckGracePeriod** (<code>[Duration](#aws-cdk-lib-duration)</code>)  Initial grace period for Keycloak to spin up. __*Default*__: 10 minutes
   * **httpPortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Publish the service's HTTP port. __*Default*__: a new load balancer is automatically created unless `httpsPort` is given.
   * **httpsListenerProvider** (<code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>)  Add the service's https port to a load balancer. __*Default*__: not exposed
   * **httpsPortPublisher** (<code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code>)  Publish the service's HTTPS port. __*Default*__: not published
@@ -631,7 +631,7 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
   * **minHealthyPercent** (<code>number</code>)  The minimum percentage of healthy tasks during deployments. __*Optional*__
   * **vpcProvider** (<code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code>)  VPC to use. __*Default*__: creates one
   * **vpcTaskAssignPublicIp** (<code>boolean</code>)  Assign public IPs to the Fargate tasks. __*Default*__: false
-  * **vpcTaskSubnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Where to place the instances within the VPC. __*Optional*__
+  * **vpcTaskSubnets** (<code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code>)  Where to place the instances within the VPC. __*Optional*__
 
 
 
@@ -640,7 +640,7 @@ new KeycloakCluster(scope: Construct, id: string, props?: KeycloakClusterProps)
 
 Name | Type | Description 
 -----|------|-------------
-**service** | <code>[BaseService](#aws-cdk-aws-ecs-baseservice)</code> | The ECS service controlling the cluster tasks.
+**service** | <code>[aws_ecs.BaseService](#aws-cdk-lib-aws-ecs-baseservice)</code> | The ECS service controlling the cluster tasks.
 
 
 
@@ -652,7 +652,7 @@ To use ECS service discovery
 to locate cluster members, you need to call `useCloudMapService` with the
 CloudMap service so that we can configure the correct DNS query.
 
-__Implements__: [ITaskDefinitionExtension](#aws-cdk-aws-ecs-itaskdefinitionextension)
+__Implements__: [aws_ecs.ITaskDefinitionExtension](#aws-cdk-lib-aws-ecs-itaskdefinitionextension)
 
 ### Initializer
 
@@ -667,15 +667,15 @@ new KeycloakContainerExtension(props?: KeycloakContainerExtensionProps)
   * **cacheOwnersAuthSessionsCount** (<code>number</code>)  The number of distributed cache owners for authentication sessions. __*Default*__: same as `cacheOwnersCount`
   * **cacheOwnersCount** (<code>number</code>)  The default number of distributed cache owners for each key. __*Default*__: 1
   * **containerName** (<code>string</code>)  A name for the container added to the task definition. __*Default*__: 'keycloak'
-  * **databaseCredentials** (<code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code>)  Secrets manager secret containing the RDS database credentials and connection information in JSON format. __*Default*__: none
+  * **databaseCredentials** (<code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code>)  Secrets manager secret containing the RDS database credentials and connection information in JSON format. __*Default*__: none
   * **databaseName** (<code>string</code>)  Database name. __*Default*__: 'keycloak'
   * **databaseSchema** (<code>string</code>)  Database schema. __*Default*__: for Postgresql, the default is 'public'
   * **databaseVendor** (<code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code>)  The database vendor. __*Default*__: KeycloakDatabaseVendor.H2
   * **defaultAdminPassword** (<code>string</code>)  Default admin user's password. __*Default*__: 'admin'
   * **defaultAdminUser** (<code>string</code>)  Default admin user. __*Default*__: 'admin'
-  * **image** (<code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code>)  Keycloak container image to use. __*Default*__: use jboss/keycloak from docker hub.
+  * **image** (<code>[aws_ecs.ContainerImage](#aws-cdk-lib-aws-ecs-containerimage)</code>)  Keycloak container image to use. __*Default*__: use jboss/keycloak from docker hub.
   * **infinicacheClustering** (<code>boolean</code>)  Enable infinicache clustering. __*Default*__: true if any cache owner count is greater than 1
-  * **logging** (<code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code>)  Log driver for the task. __*Default*__: cloudwatch with one month retention
+  * **logging** (<code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code>)  Log driver for the task. __*Default*__: cloudwatch with one month retention
   * **memoryLimitMiB** (<code>number</code>)  Memory limit of the keycloak task. __*Default*__: 1024
   * **memoryReservationMiB** (<code>number</code>)  Memory reservation size for the keycloak task. __*Default*__: 80% of memoryLimitMiB
 
@@ -709,7 +709,7 @@ Configure health checks on the target group.
 configureHealthCheck(targetGroup: ApplicationTargetGroup): void
 ```
 
-* **targetGroup** (<code>[ApplicationTargetGroup](#aws-cdk-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
+* **targetGroup** (<code>[aws_elasticloadbalancingv2.ApplicationTargetGroup](#aws-cdk-lib-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
 
 
 
@@ -722,7 +722,7 @@ Apply the extension to the given TaskDefinition.
 extend(taskDefinition: TaskDefinition): void
 ```
 
-* **taskDefinition** (<code>[TaskDefinition](#aws-cdk-aws-ecs-taskdefinition)</code>)  *No description*
+* **taskDefinition** (<code>[aws_ecs.TaskDefinition](#aws-cdk-lib-aws-ecs-taskdefinition)</code>)  *No description*
 
 
 
@@ -735,7 +735,7 @@ Inform Keycloak of a CloudMap service discovery mechanism.
 useCloudMapService(serviceDiscovery: IService): void
 ```
 
-* **serviceDiscovery** (<code>[IService](#aws-cdk-aws-servicediscovery-iservice)</code>)  *No description*
+* **serviceDiscovery** (<code>[aws_servicediscovery.IService](#aws-cdk-lib-aws-servicediscovery-iservice)</code>)  *No description*
 
 
 
@@ -746,8 +746,8 @@ useCloudMapService(serviceDiscovery: IService): void
 
 The details of a Keycloak task definition running on EC2.
 
-__Implements__: [IConstruct](#constructs-iconstruct), [IConstruct](#aws-cdk-core-iconstruct), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IResource](#aws-cdk-core-iresource), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [ITaskDefinition](#aws-cdk-aws-ecs-itaskdefinition), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [IResource](#aws-cdk-core-iresource), [IEc2TaskDefinition](#aws-cdk-aws-ecs-iec2taskdefinition), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [IResource](#aws-cdk-core-iresource), [ITaskDefinition](#aws-cdk-aws-ecs-itaskdefinition), [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)
-__Extends__: [Ec2TaskDefinition](#aws-cdk-aws-ecs-ec2taskdefinition)
+__Implements__: [IConstruct](#constructs-iconstruct), [IDependable](#constructs-idependable), [IResource](#aws-cdk-lib-iresource), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [aws_ecs.ITaskDefinition](#aws-cdk-lib-aws-ecs-itaskdefinition), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [IResource](#aws-cdk-lib-iresource), [aws_ecs.IEc2TaskDefinition](#aws-cdk-lib-aws-ecs-iec2taskdefinition), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [IResource](#aws-cdk-lib-iresource), [aws_ecs.ITaskDefinition](#aws-cdk-lib-aws-ecs-itaskdefinition), [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)
+__Extends__: [aws_ecs.Ec2TaskDefinition](#aws-cdk-lib-aws-ecs-ec2taskdefinition)
 
 ### Initializer
 
@@ -758,19 +758,19 @@ __Extends__: [Ec2TaskDefinition](#aws-cdk-aws-ecs-ec2taskdefinition)
 new KeycloakEc2TaskDefinition(scope: Construct, id: string, props?: KeycloakEc2TaskDefinitionProps)
 ```
 
-* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[KeycloakEc2TaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakec2taskdefinitionprops)</code>)  *No description*
-  * **executionRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf. __*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
+  * **executionRole** (<code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code>)  The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf. __*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
   * **family** (<code>string</code>)  The name of a family that this task definition is registered to. __*Default*__: Automatically generated name.
-  * **proxyConfiguration** (<code>[ProxyConfiguration](#aws-cdk-aws-ecs-proxyconfiguration)</code>)  The configuration details for the App Mesh proxy. __*Default*__: No proxy configuration.
-  * **taskRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
-  * **volumes** (<code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
-  * **inferenceAccelerators** (<code>Array<[InferenceAccelerator](#aws-cdk-aws-ecs-inferenceaccelerator)></code>)  The inference accelerators to use for the containers in the task. __*Default*__: No inference accelerators.
-  * **ipcMode** (<code>[IpcMode](#aws-cdk-aws-ecs-ipcmode)</code>)  The IPC resource namespace to use for the containers in the task. __*Default*__: IpcMode used by the task is not specified
-  * **networkMode** (<code>[NetworkMode](#aws-cdk-aws-ecs-networkmode)</code>)  The Docker networking mode to use for the containers in the task. __*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
-  * **pidMode** (<code>[PidMode](#aws-cdk-aws-ecs-pidmode)</code>)  The process namespace to use for the containers in the task. __*Default*__: PidMode used by the task is not specified
-  * **placementConstraints** (<code>Array<[PlacementConstraint](#aws-cdk-aws-ecs-placementconstraint)></code>)  An array of placement constraint objects to use for the task. __*Default*__: No placement constraints.
+  * **proxyConfiguration** (<code>[aws_ecs.ProxyConfiguration](#aws-cdk-lib-aws-ecs-proxyconfiguration)</code>)  The configuration details for the App Mesh proxy. __*Default*__: No proxy configuration.
+  * **taskRole** (<code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
+  * **volumes** (<code>Array<[aws_ecs.Volume](#aws-cdk-lib-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
+  * **inferenceAccelerators** (<code>Array<[aws_ecs.InferenceAccelerator](#aws-cdk-lib-aws-ecs-inferenceaccelerator)></code>)  The inference accelerators to use for the containers in the task. __*Default*__: No inference accelerators.
+  * **ipcMode** (<code>[aws_ecs.IpcMode](#aws-cdk-lib-aws-ecs-ipcmode)</code>)  The IPC resource namespace to use for the containers in the task. __*Default*__: IpcMode used by the task is not specified
+  * **networkMode** (<code>[aws_ecs.NetworkMode](#aws-cdk-lib-aws-ecs-networkmode)</code>)  The Docker networking mode to use for the containers in the task. __*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
+  * **pidMode** (<code>[aws_ecs.PidMode](#aws-cdk-lib-aws-ecs-pidmode)</code>)  The process namespace to use for the containers in the task. __*Default*__: PidMode used by the task is not specified
+  * **placementConstraints** (<code>Array<[aws_ecs.PlacementConstraint](#aws-cdk-lib-aws-ecs-placementconstraint)></code>)  An array of placement constraint objects to use for the task. __*Default*__: No placement constraints.
   * **keycloak** (<code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code>)  Keycloak configuration. __*Optional*__
 
 
@@ -793,7 +793,7 @@ Configures the health check of the application target group.
 configureHealthCheck(targetGroup: ApplicationTargetGroup): void
 ```
 
-* **targetGroup** (<code>[ApplicationTargetGroup](#aws-cdk-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
+* **targetGroup** (<code>[aws_elasticloadbalancingv2.ApplicationTargetGroup](#aws-cdk-lib-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
 
 
 
@@ -806,7 +806,7 @@ Register the task definition with a cloudmap service.
 useCloudMapService(cloudMapService: IService): void
 ```
 
-* **cloudMapService** (<code>[IService](#aws-cdk-aws-servicediscovery-iservice)</code>)  *No description*
+* **cloudMapService** (<code>[aws_servicediscovery.IService](#aws-cdk-lib-aws-servicediscovery-iservice)</code>)  *No description*
 
 
 
@@ -817,8 +817,8 @@ useCloudMapService(cloudMapService: IService): void
 
 The details of a Keycloak task definition running on Fargate.
 
-__Implements__: [IConstruct](#constructs-iconstruct), [IConstruct](#aws-cdk-core-iconstruct), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IResource](#aws-cdk-core-iresource), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [ITaskDefinition](#aws-cdk-aws-ecs-itaskdefinition), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [IResource](#aws-cdk-core-iresource), [IFargateTaskDefinition](#aws-cdk-aws-ecs-ifargatetaskdefinition), [IConstruct](#constructs-iconstruct), [IDependable](#aws-cdk-core-idependable), [IConstruct](#aws-cdk-core-iconstruct), [IResource](#aws-cdk-core-iresource), [ITaskDefinition](#aws-cdk-aws-ecs-itaskdefinition), [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)
-__Extends__: [FargateTaskDefinition](#aws-cdk-aws-ecs-fargatetaskdefinition)
+__Implements__: [IConstruct](#constructs-iconstruct), [IDependable](#constructs-idependable), [IResource](#aws-cdk-lib-iresource), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [aws_ecs.ITaskDefinition](#aws-cdk-lib-aws-ecs-itaskdefinition), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [IResource](#aws-cdk-lib-iresource), [aws_ecs.IFargateTaskDefinition](#aws-cdk-lib-aws-ecs-ifargatetaskdefinition), [IDependable](#constructs-idependable), [IConstruct](#constructs-iconstruct), [IResource](#aws-cdk-lib-iresource), [aws_ecs.ITaskDefinition](#aws-cdk-lib-aws-ecs-itaskdefinition), [IKeycloakTaskDefinition](#wheatstalk-cdk-ecs-keycloak-ikeycloaktaskdefinition)
+__Extends__: [aws_ecs.FargateTaskDefinition](#aws-cdk-lib-aws-ecs-fargatetaskdefinition)
 
 ### Initializer
 
@@ -829,14 +829,14 @@ __Extends__: [FargateTaskDefinition](#aws-cdk-aws-ecs-fargatetaskdefinition)
 new KeycloakFargateTaskDefinition(scope: Construct, id: string, props?: KeycloakFargateTaskDefinitionProps)
 ```
 
-* **scope** (<code>[Construct](#aws-cdk-core-construct)</code>)  *No description*
+* **scope** (<code>[Construct](#constructs-construct)</code>)  *No description*
 * **id** (<code>string</code>)  *No description*
 * **props** (<code>[KeycloakFargateTaskDefinitionProps](#wheatstalk-cdk-ecs-keycloak-keycloakfargatetaskdefinitionprops)</code>)  *No description*
-  * **executionRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf. __*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
+  * **executionRole** (<code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code>)  The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf. __*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
   * **family** (<code>string</code>)  The name of a family that this task definition is registered to. __*Default*__: Automatically generated name.
-  * **proxyConfiguration** (<code>[ProxyConfiguration](#aws-cdk-aws-ecs-proxyconfiguration)</code>)  The configuration details for the App Mesh proxy. __*Default*__: No proxy configuration.
-  * **taskRole** (<code>[IRole](#aws-cdk-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
-  * **volumes** (<code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
+  * **proxyConfiguration** (<code>[aws_ecs.ProxyConfiguration](#aws-cdk-lib-aws-ecs-proxyconfiguration)</code>)  The configuration details for the App Mesh proxy. __*Default*__: No proxy configuration.
+  * **taskRole** (<code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code>)  The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf. __*Default*__: A task role is automatically created for you.
+  * **volumes** (<code>Array<[aws_ecs.Volume](#aws-cdk-lib-aws-ecs-volume)></code>)  The list of volume definitions for the task. __*Default*__: No volumes are passed to the Docker daemon on a container instance.
   * **cpu** (<code>number</code>)  The number of cpu units used by the task. __*Default*__: 256
   * **ephemeralStorageGiB** (<code>number</code>)  The amount (in GiB) of ephemeral storage to be allocated to the task. __*Default*__: 20
   * **memoryLimitMiB** (<code>number</code>)  The amount (in MiB) of memory used by the task. __*Default*__: 512
@@ -862,7 +862,7 @@ Configures the health check of the application target group.
 configureHealthCheck(targetGroup: ApplicationTargetGroup): void
 ```
 
-* **targetGroup** (<code>[ApplicationTargetGroup](#aws-cdk-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
+* **targetGroup** (<code>[aws_elasticloadbalancingv2.ApplicationTargetGroup](#aws-cdk-lib-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
 
 
 
@@ -875,7 +875,7 @@ Register the task definition with a cloudmap service.
 useCloudMapService(cloudMapService: IService): void
 ```
 
-* **cloudMapService** (<code>[IService](#aws-cdk-aws-servicediscovery-iservice)</code>)  *No description*
+* **cloudMapService** (<code>[aws_servicediscovery.IService](#aws-cdk-lib-aws-servicediscovery-iservice)</code>)  *No description*
 
 
 
@@ -910,8 +910,8 @@ static fromListenerInfo(listenerInfo: ListenerInfo): IListenerInfoProvider
 ```
 
 * **listenerInfo** (<code>[ListenerInfo](#wheatstalk-cdk-ecs-keycloak-listenerinfo)</code>)  *No description*
-  * **listener** (<code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
-  * **conditions** (<code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
+  * **listener** (<code>[aws_elasticloadbalancingv2.IApplicationListener](#aws-cdk-lib-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
+  * **conditions** (<code>Array<[aws_elasticloadbalancingv2.ListenerCondition](#aws-cdk-lib-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
   * **priority** (<code>number</code>)  *No description* __*Optional*__
 
 __Returns__:
@@ -938,7 +938,7 @@ static https(props: HttpsListenerProviderProps): IListenerInfoProvider
 ```
 
 * **props** (<code>[HttpsListenerProviderProps](#wheatstalk-cdk-ecs-keycloak-httpslistenerproviderprops)</code>)  *No description*
-  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **certificates** (<code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
 
 __Returns__:
 * <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code>
@@ -1048,8 +1048,8 @@ static addTarget(props: AddTargetPortPublisherProps): IPortPublisher
 ```
 
 * **props** (<code>[AddTargetPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-addtargetportpublisherprops)</code>)  *No description*
-  * **listener** (<code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
-  * **conditions** (<code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
+  * **listener** (<code>[aws_elasticloadbalancingv2.IApplicationListener](#aws-cdk-lib-aws-elasticloadbalancingv2-iapplicationlistener)</code>)  *No description* 
+  * **conditions** (<code>Array<[aws_elasticloadbalancingv2.ListenerCondition](#aws-cdk-lib-aws-elasticloadbalancingv2-listenercondition)></code>)  *No description* __*Optional*__
   * **priority** (<code>number</code>)  *No description* __*Optional*__
 
 __Returns__:
@@ -1081,7 +1081,7 @@ static httpsAlb(props: HttpsAlbPortPublisherProps): IPortPublisher
 * **props** (<code>[HttpsAlbPortPublisherProps](#wheatstalk-cdk-ecs-keycloak-httpsalbportpublisherprops)</code>)  *No description*
   * **healthCheck** (<code>boolean</code>)  Enable health checking on this endpoint. __*Default*__: true
   * **id** (<code>string</code>)  Scope ID of the load balancer. __*Default*__: 'LoadBalancer'
-  * **certificates** (<code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
+  * **certificates** (<code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code>)  Certificates to use for the ALB listener. 
   * **upgradeHttp** (<code>boolean</code>)  Upgrade HTTP connection to HTTPS. __*Default*__: false
   * **upgradeHttpHost** (<code>string</code>)  A host name to redirect to when upgrading to HTTPS. __*Default*__: same as the request
 
@@ -1134,9 +1134,9 @@ new ServerlessAuroraDatabaseProvider(props?: ServerlessAuroraDatabaseProviderPro
 ```
 
 * **props** (<code>[ServerlessAuroraDatabaseProviderProps](#wheatstalk-cdk-ecs-keycloak-serverlessauroradatabaseproviderprops)</code>)  *No description*
-  * **engine** (<code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
-  * **scaling** (<code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
-  * **subnets** (<code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
+  * **engine** (<code>[aws_rds.IClusterEngine](#aws-cdk-lib-aws-rds-iclusterengine)</code>)  Cluster engine. __*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+  * **scaling** (<code>[aws_rds.ServerlessScalingOptions](#aws-cdk-lib-aws-rds-serverlessscalingoptions)</code>)  Scaling options. __*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+  * **subnets** (<code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code>)  Select subnets to register the database cluster in. __*Optional*__
 
 
 
@@ -1168,7 +1168,7 @@ Provides an already-existing vpc.
 static fromExistingVpc(vpc: IVpc): IVpcInfoProvider
 ```
 
-* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+* **vpc** (<code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code>)  *No description*
 
 __Returns__:
 * <code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code>
@@ -1181,7 +1181,7 @@ Provides an already-existing vpc.
 static fromVpc(vpc: IVpc): IVpcInfoProvider
 ```
 
-* **vpc** (<code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code>)  *No description*
+* **vpc** (<code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code>)  *No description*
 
 __Returns__:
 * <code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code>
@@ -1209,8 +1209,8 @@ Information about how to register with a load balancer.
 
 Name | Type | Description 
 -----|------|-------------
-**listener** | <code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
-**conditions**? | <code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
+**listener** | <code>[aws_elasticloadbalancingv2.IApplicationListener](#aws-cdk-lib-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
+**conditions**? | <code>Array<[aws_elasticloadbalancingv2.ListenerCondition](#aws-cdk-lib-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
 **priority**? | <code>number</code> | __*Optional*__
 
 
@@ -1238,7 +1238,7 @@ Information about the ecs cluster.
 
 Name | Type | Description 
 -----|------|-------------
-**cluster** | <code>[ICluster](#aws-cdk-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
+**cluster** | <code>[aws_ecs.ICluster](#aws-cdk-lib-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
 
 
 
@@ -1251,9 +1251,9 @@ Information about needed to connect to the database.
 
 Name | Type | Description 
 -----|------|-------------
-**credentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
+**credentials** | <code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
 **vendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | Database vendor.
-**connectable**? | <code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
+**connectable**? | <code>[aws_ec2.IConnectable](#aws-cdk-lib-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
 
 
 
@@ -1266,9 +1266,9 @@ Basic props for creating a database instance.
 
 Name | Type | Description 
 -----|------|-------------
-**engine**? | <code>[IInstanceEngine](#aws-cdk-aws-rds-iinstanceengine)</code> | Instance database engine.<br/>__*Default*__: mysql 8.0
-**instanceType**? | <code>[InstanceType](#aws-cdk-aws-ec2-instancetype)</code> | Instance type.<br/>__*Default*__: t2.micro
-**subnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | Select subnets to register the database instance in.<br/>__*Optional*__
+**engine**? | <code>[aws_rds.IInstanceEngine](#aws-cdk-lib-aws-rds-iinstanceengine)</code> | Instance database engine.<br/>__*Default*__: mysql 8.0
+**instanceType**? | <code>[aws_ec2.InstanceType](#aws-cdk-lib-aws-ec2-instancetype)</code> | Instance type.<br/>__*Default*__: t2.micro
+**subnets**? | <code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code> | Select subnets to register the database instance in.<br/>__*Optional*__
 
 
 
@@ -1281,10 +1281,10 @@ Props for EnsureMysqlDatabaseExtension.
 
 Name | Type | Description 
 -----|------|-------------
-**databaseCredentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | RDS credentials.
+**databaseCredentials** | <code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code> | RDS credentials.
 **databaseName** | <code>string</code> | Name of the database to create.
 **containerName**? | <code>string</code> | Name of the container to add to do this work.<br/>__*Default*__: 'ensure-mysql-database'
-**logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Logging driver.<br/>__*Optional*__
+**logging**? | <code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code> | Logging driver.<br/>__*Optional*__
 
 
 
@@ -1297,10 +1297,10 @@ Props for EnsurePostgresqlDatabaseExtension.
 
 Name | Type | Description 
 -----|------|-------------
-**databaseCredentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | RDS credentials.
+**databaseCredentials** | <code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code> | RDS credentials.
 **databaseName** | <code>string</code> | Name of the database to create.
 **containerName**? | <code>string</code> | Name of the container to add to do this work.<br/>__*Default*__: 'ensure-postgresql-database'
-**logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Logging driver.<br/>__*Optional*__
+**logging**? | <code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code> | Logging driver.<br/>__*Optional*__
 
 
 
@@ -1313,7 +1313,7 @@ Props for `FromClusterInfoProvider`.
 
 Name | Type | Description 
 -----|------|-------------
-**cluster** | <code>[ICluster](#aws-cdk-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
+**cluster** | <code>[aws_ecs.ICluster](#aws-cdk-lib-aws-ecs-icluster)</code> | The ECS cluster for adding a service.
 
 
 
@@ -1326,9 +1326,9 @@ Props for `FromDatabaseInfoProvider`.
 
 Name | Type | Description 
 -----|------|-------------
-**credentials** | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
+**credentials** | <code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code> | Database credentials in standard RDS json format.
 **vendor** | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | Database vendor.
-**connectable**? | <code>[IConnectable](#aws-cdk-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
+**connectable**? | <code>[aws_ec2.IConnectable](#aws-cdk-lib-aws-ec2-iconnectable)</code> | A connectable so that the cluster can allow itself to connect to the database.<br/>__*Optional*__
 
 
 
@@ -1341,7 +1341,7 @@ Props for `FromVpcProvider`.
 
 Name | Type | Description 
 -----|------|-------------
-**vpc** | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | The VPC.
+**vpc** | <code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code> | The VPC.
 
 
 
@@ -1368,7 +1368,7 @@ Properties for a new HTTPS-listening load balancer.
 
 Name | Type | Description 
 -----|------|-------------
-**certificates** | <code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
+**certificates** | <code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
 **healthCheck**? | <code>boolean</code> | Enable health checking on this endpoint.<br/>__*Default*__: true
 **id**? | <code>string</code> | Scope ID of the load balancer.<br/>__*Default*__: 'LoadBalancer'
 **upgradeHttp**? | <code>boolean</code> | Upgrade HTTP connection to HTTPS.<br/>__*Default*__: false
@@ -1385,7 +1385,7 @@ Properties for a new HTTPS-listening load balancer.
 
 Name | Type | Description 
 -----|------|-------------
-**certificates**⚠️ | <code>Array<[ICertificate](#aws-cdk-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
+**certificates**⚠️ | <code>Array<[aws_certificatemanager.ICertificate](#aws-cdk-lib-aws-certificatemanager-icertificate)></code> | Certificates to use for the ALB listener.
 
 
 
@@ -1436,7 +1436,7 @@ Configures the health check of the application target group.
 configureHealthCheck(targetGroup: ApplicationTargetGroup): void
 ```
 
-* **targetGroup** (<code>[ApplicationTargetGroup](#aws-cdk-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
+* **targetGroup** (<code>[aws_elasticloadbalancingv2.ApplicationTargetGroup](#aws-cdk-lib-aws-elasticloadbalancingv2-applicationtargetgroup)</code>)  *No description*
 
 
 
@@ -1449,7 +1449,7 @@ Register the task definition with a cloudmap service.
 useCloudMapService(cloudMapService: IService): void
 ```
 
-* **cloudMapService** (<code>[IService](#aws-cdk-aws-servicediscovery-iservice)</code>)  *No description*
+* **cloudMapService** (<code>[aws_servicediscovery.IService](#aws-cdk-lib-aws-servicediscovery-iservice)</code>)  *No description*
 
 
 
@@ -1491,14 +1491,14 @@ Name | Type | Description
 -----|------|-------------
 **adminConsoleListenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
 **adminConsolePortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Add the service's WildFly admin console port to a load balancer.<br/>__*Default*__: not exposed
-**capacityProviderStrategy**?🔹 | <code>Array<[CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code> | Add capacity provider strategy by CDK escape hatch.<br/>__*Optional*__
+**capacityProviderStrategy**?🔹 | <code>Array<[aws_ecs.CfnCluster.CapacityProviderStrategyItemProperty](#aws-cdk-lib-aws-ecs-cfncluster-capacityproviderstrategyitemproperty)></code> | Add capacity provider strategy by CDK escape hatch.<br/>__*Optional*__
 **circuitBreaker**? | <code>boolean</code> | Enable/disable the deployment circuit breaker.<br/>__*Default*__: true
 **cloudMapNamespaceProvider**? | <code>[ICloudMapNamespaceInfoProvider](#wheatstalk-cdk-ecs-keycloak-icloudmapnamespaceinfoprovider)</code> | CloudMap namespace to use for service discovery.<br/>__*Default*__: creates one named 'keycloak-service-discovery'
 **cpu**? | <code>number</code> | Fargate task cpu spec.<br/>__*Default*__: 1024
 **databaseProvider**? | <code>[IDatabaseInfoProvider](#wheatstalk-cdk-ecs-keycloak-idatabaseinfoprovider)</code> | Database server.<br/>__*Default*__: creates a new one
 **desiredCount**? | <code>number</code> | How many keycloak cluster members to spin up.<br/>__*Default*__: 1
 **ecsClusterProvider**? | <code>[IClusterInfoProvider](#wheatstalk-cdk-ecs-keycloak-iclusterinfoprovider)</code> | Provide an ECS cluster.<br/>__*Default*__: a cluster is automatically created.
-**healthCheckGracePeriod**? | <code>[Duration](#aws-cdk-core-duration)</code> | Initial grace period for Keycloak to spin up.<br/>__*Default*__: 10 minutes
+**healthCheckGracePeriod**? | <code>[Duration](#aws-cdk-lib-duration)</code> | Initial grace period for Keycloak to spin up.<br/>__*Default*__: 10 minutes
 **httpPortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Publish the service's HTTP port.<br/>__*Default*__: a new load balancer is automatically created unless `httpsPort` is given.
 **httpsListenerProvider**?⚠️ | <code>[IListenerInfoProvider](#wheatstalk-cdk-ecs-keycloak-ilistenerinfoprovider)</code> | Add the service's https port to a load balancer.<br/>__*Default*__: not exposed
 **httpsPortPublisher**? | <code>[IPortPublisher](#wheatstalk-cdk-ecs-keycloak-iportpublisher)</code> | Publish the service's HTTPS port.<br/>__*Default*__: not published
@@ -1509,7 +1509,7 @@ Name | Type | Description
 **minHealthyPercent**? | <code>number</code> | The minimum percentage of healthy tasks during deployments.<br/>__*Optional*__
 **vpcProvider**? | <code>[IVpcInfoProvider](#wheatstalk-cdk-ecs-keycloak-ivpcinfoprovider)</code> | VPC to use.<br/>__*Default*__: creates one
 **vpcTaskAssignPublicIp**? | <code>boolean</code> | Assign public IPs to the Fargate tasks.<br/>__*Default*__: false
-**vpcTaskSubnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | Where to place the instances within the VPC.<br/>__*Optional*__
+**vpcTaskSubnets**? | <code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code> | Where to place the instances within the VPC.<br/>__*Optional*__
 
 
 
@@ -1525,15 +1525,15 @@ Name | Type | Description
 **cacheOwnersAuthSessionsCount**? | <code>number</code> | The number of distributed cache owners for authentication sessions.<br/>__*Default*__: same as `cacheOwnersCount`
 **cacheOwnersCount**? | <code>number</code> | The default number of distributed cache owners for each key.<br/>__*Default*__: 1
 **containerName**? | <code>string</code> | A name for the container added to the task definition.<br/>__*Default*__: 'keycloak'
-**databaseCredentials**? | <code>[ISecret](#aws-cdk-aws-secretsmanager-isecret)</code> | Secrets manager secret containing the RDS database credentials and connection information in JSON format.<br/>__*Default*__: none
+**databaseCredentials**? | <code>[aws_secretsmanager.ISecret](#aws-cdk-lib-aws-secretsmanager-isecret)</code> | Secrets manager secret containing the RDS database credentials and connection information in JSON format.<br/>__*Default*__: none
 **databaseName**? | <code>string</code> | Database name.<br/>__*Default*__: 'keycloak'
 **databaseSchema**? | <code>string</code> | Database schema.<br/>__*Default*__: for Postgresql, the default is 'public'
 **databaseVendor**? | <code>[KeycloakDatabaseVendor](#wheatstalk-cdk-ecs-keycloak-keycloakdatabasevendor)</code> | The database vendor.<br/>__*Default*__: KeycloakDatabaseVendor.H2
 **defaultAdminPassword**? | <code>string</code> | Default admin user's password.<br/>__*Default*__: 'admin'
 **defaultAdminUser**? | <code>string</code> | Default admin user.<br/>__*Default*__: 'admin'
-**image**? | <code>[ContainerImage](#aws-cdk-aws-ecs-containerimage)</code> | Keycloak container image to use.<br/>__*Default*__: use jboss/keycloak from docker hub.
+**image**? | <code>[aws_ecs.ContainerImage](#aws-cdk-lib-aws-ecs-containerimage)</code> | Keycloak container image to use.<br/>__*Default*__: use jboss/keycloak from docker hub.
 **infinicacheClustering**? | <code>boolean</code> | Enable infinicache clustering.<br/>__*Default*__: true if any cache owner count is greater than 1
-**logging**? | <code>[LogDriver](#aws-cdk-aws-ecs-logdriver)</code> | Log driver for the task.<br/>__*Default*__: cloudwatch with one month retention
+**logging**? | <code>[aws_ecs.LogDriver](#aws-cdk-lib-aws-ecs-logdriver)</code> | Log driver for the task.<br/>__*Default*__: cloudwatch with one month retention
 **memoryLimitMiB**? | <code>number</code> | Memory limit of the keycloak task.<br/>__*Default*__: 1024
 **memoryReservationMiB**? | <code>number</code> | Memory reservation size for the keycloak task.<br/>__*Default*__: 80% of memoryLimitMiB
 
@@ -1548,17 +1548,17 @@ Props for `KeycloakEc2TaskDefinition`.
 
 Name | Type | Description 
 -----|------|-------------
-**executionRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
+**executionRole**? | <code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
 **family**? | <code>string</code> | The name of a family that this task definition is registered to.<br/>__*Default*__: Automatically generated name.
-**inferenceAccelerators**? | <code>Array<[InferenceAccelerator](#aws-cdk-aws-ecs-inferenceaccelerator)></code> | The inference accelerators to use for the containers in the task.<br/>__*Default*__: No inference accelerators.
-**ipcMode**? | <code>[IpcMode](#aws-cdk-aws-ecs-ipcmode)</code> | The IPC resource namespace to use for the containers in the task.<br/>__*Default*__: IpcMode used by the task is not specified
+**inferenceAccelerators**? | <code>Array<[aws_ecs.InferenceAccelerator](#aws-cdk-lib-aws-ecs-inferenceaccelerator)></code> | The inference accelerators to use for the containers in the task.<br/>__*Default*__: No inference accelerators.
+**ipcMode**? | <code>[aws_ecs.IpcMode](#aws-cdk-lib-aws-ecs-ipcmode)</code> | The IPC resource namespace to use for the containers in the task.<br/>__*Default*__: IpcMode used by the task is not specified
 **keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration.<br/>__*Optional*__
-**networkMode**? | <code>[NetworkMode](#aws-cdk-aws-ecs-networkmode)</code> | The Docker networking mode to use for the containers in the task.<br/>__*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
-**pidMode**? | <code>[PidMode](#aws-cdk-aws-ecs-pidmode)</code> | The process namespace to use for the containers in the task.<br/>__*Default*__: PidMode used by the task is not specified
-**placementConstraints**? | <code>Array<[PlacementConstraint](#aws-cdk-aws-ecs-placementconstraint)></code> | An array of placement constraint objects to use for the task.<br/>__*Default*__: No placement constraints.
-**proxyConfiguration**? | <code>[ProxyConfiguration](#aws-cdk-aws-ecs-proxyconfiguration)</code> | The configuration details for the App Mesh proxy.<br/>__*Default*__: No proxy configuration.
-**taskRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf.<br/>__*Default*__: A task role is automatically created for you.
-**volumes**? | <code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code> | The list of volume definitions for the task.<br/>__*Default*__: No volumes are passed to the Docker daemon on a container instance.
+**networkMode**? | <code>[aws_ecs.NetworkMode](#aws-cdk-lib-aws-ecs-networkmode)</code> | The Docker networking mode to use for the containers in the task.<br/>__*Default*__: NetworkMode.Bridge for EC2 tasks, AwsVpc for Fargate tasks.
+**pidMode**? | <code>[aws_ecs.PidMode](#aws-cdk-lib-aws-ecs-pidmode)</code> | The process namespace to use for the containers in the task.<br/>__*Default*__: PidMode used by the task is not specified
+**placementConstraints**? | <code>Array<[aws_ecs.PlacementConstraint](#aws-cdk-lib-aws-ecs-placementconstraint)></code> | An array of placement constraint objects to use for the task.<br/>__*Default*__: No placement constraints.
+**proxyConfiguration**? | <code>[aws_ecs.ProxyConfiguration](#aws-cdk-lib-aws-ecs-proxyconfiguration)</code> | The configuration details for the App Mesh proxy.<br/>__*Default*__: No proxy configuration.
+**taskRole**? | <code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code> | The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf.<br/>__*Default*__: A task role is automatically created for you.
+**volumes**? | <code>Array<[aws_ecs.Volume](#aws-cdk-lib-aws-ecs-volume)></code> | The list of volume definitions for the task.<br/>__*Default*__: No volumes are passed to the Docker daemon on a container instance.
 
 
 
@@ -1573,13 +1573,13 @@ Name | Type | Description
 -----|------|-------------
 **cpu**? | <code>number</code> | The number of cpu units used by the task.<br/>__*Default*__: 256
 **ephemeralStorageGiB**? | <code>number</code> | The amount (in GiB) of ephemeral storage to be allocated to the task.<br/>__*Default*__: 20
-**executionRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
+**executionRole**? | <code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code> | The name of the IAM task execution role that grants the ECS agent permission to call AWS APIs on your behalf.<br/>__*Default*__: An execution role will be automatically created if you use ECR images in your task definition.
 **family**? | <code>string</code> | The name of a family that this task definition is registered to.<br/>__*Default*__: Automatically generated name.
 **keycloak**? | <code>[KeycloakContainerExtensionProps](#wheatstalk-cdk-ecs-keycloak-keycloakcontainerextensionprops)</code> | Keycloak configuration.<br/>__*Optional*__
 **memoryLimitMiB**? | <code>number</code> | The amount (in MiB) of memory used by the task.<br/>__*Default*__: 512
-**proxyConfiguration**? | <code>[ProxyConfiguration](#aws-cdk-aws-ecs-proxyconfiguration)</code> | The configuration details for the App Mesh proxy.<br/>__*Default*__: No proxy configuration.
-**taskRole**? | <code>[IRole](#aws-cdk-aws-iam-irole)</code> | The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf.<br/>__*Default*__: A task role is automatically created for you.
-**volumes**? | <code>Array<[Volume](#aws-cdk-aws-ecs-volume)></code> | The list of volume definitions for the task.<br/>__*Default*__: No volumes are passed to the Docker daemon on a container instance.
+**proxyConfiguration**? | <code>[aws_ecs.ProxyConfiguration](#aws-cdk-lib-aws-ecs-proxyconfiguration)</code> | The configuration details for the App Mesh proxy.<br/>__*Default*__: No proxy configuration.
+**taskRole**? | <code>[aws_iam.IRole](#aws-cdk-lib-aws-iam-irole)</code> | The name of the IAM role that grants containers in the task permission to call AWS APIs on your behalf.<br/>__*Default*__: A task role is automatically created for you.
+**volumes**? | <code>Array<[aws_ecs.Volume](#aws-cdk-lib-aws-ecs-volume)></code> | The list of volume definitions for the task.<br/>__*Default*__: No volumes are passed to the Docker daemon on a container instance.
 
 
 
@@ -1592,8 +1592,8 @@ Information about how to register with a load balancer.
 
 Name | Type | Description 
 -----|------|-------------
-**listener**⚠️ | <code>[IApplicationListener](#aws-cdk-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
-**conditions**?⚠️ | <code>Array<[ListenerCondition](#aws-cdk-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
+**listener**⚠️ | <code>[aws_elasticloadbalancingv2.IApplicationListener](#aws-cdk-lib-aws-elasticloadbalancingv2-iapplicationlistener)</code> | <span></span>
+**conditions**?⚠️ | <code>Array<[aws_elasticloadbalancingv2.ListenerCondition](#aws-cdk-lib-aws-elasticloadbalancingv2-listenercondition)></code> | __*Optional*__
 **priority**?⚠️ | <code>number</code> | __*Optional*__
 
 
@@ -1650,9 +1650,9 @@ Basic props for creating a serverless Aurora database cluster.
 
 Name | Type | Description 
 -----|------|-------------
-**engine**? | <code>[IClusterEngine](#aws-cdk-aws-rds-iclusterengine)</code> | Cluster engine.<br/>__*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
-**scaling**? | <code>[ServerlessScalingOptions](#aws-cdk-aws-rds-serverlessscalingoptions)</code> | Scaling options.<br/>__*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
-**subnets**? | <code>[SubnetSelection](#aws-cdk-aws-ec2-subnetselection)</code> | Select subnets to register the database cluster in.<br/>__*Optional*__
+**engine**? | <code>[aws_rds.IClusterEngine](#aws-cdk-lib-aws-rds-iclusterengine)</code> | Cluster engine.<br/>__*Default*__: rds.DatabaseClusterEngine.AURORA_MYSQL
+**scaling**? | <code>[aws_rds.ServerlessScalingOptions](#aws-cdk-lib-aws-rds-serverlessscalingoptions)</code> | Scaling options.<br/>__*Default*__: 5 minute auto pause, min and max capacity of 1 acu.
+**subnets**? | <code>[aws_ec2.SubnetSelection](#aws-cdk-lib-aws-ec2-subnetselection)</code> | Select subnets to register the database cluster in.<br/>__*Optional*__
 
 
 
@@ -1665,7 +1665,7 @@ Information about the VPC other providers may opt to use to host their resources
 
 Name | Type | Description 
 -----|------|-------------
-**vpc** | <code>[IVpc](#aws-cdk-aws-ec2-ivpc)</code> | The VPC.
+**vpc** | <code>[aws_ec2.IVpc](#aws-cdk-lib-aws-ec2-ivpc)</code> | The VPC.
 
 
 

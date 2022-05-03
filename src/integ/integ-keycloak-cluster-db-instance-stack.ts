@@ -1,10 +1,11 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as rds from '@aws-cdk/aws-rds';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as cdk from 'aws-cdk-lib/core';
+import { Construct } from 'constructs';
 import * as keycloak from '../index';
 
 export class IntegKeycloakClusterDbInstanceStack extends cdk.Stack {
-  constructor(scope: cdk.Construct) {
+  constructor(scope: Construct) {
     super(scope, 'integ-keycloak-cluster-db-instance');
 
     new keycloak.KeycloakCluster(this, 'Keycloak', {

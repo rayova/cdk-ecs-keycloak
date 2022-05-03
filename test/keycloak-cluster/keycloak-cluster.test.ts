@@ -1,5 +1,5 @@
-import { expect as expectCDK, haveResourceLike } from '@aws-cdk/assert';
-import * as cdk from '@aws-cdk/core';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as cdk from 'aws-cdk-lib/core';
 import {
   HttpAlbPortPublisher, HttpListenerProvider,
   KeycloakCluster,
@@ -56,9 +56,9 @@ describe('keycloak cluster', () => {
       expect(cluster._httpsPortPublisher instanceof NonePortPublisher).toBeTruthy();
       expect(cluster._adminConsolePortPublisher instanceof NonePortPublisher).toBeTruthy();
 
-      expectCDK(stack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(stack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
+      });
     });
 
     test('publishes https publisher and not http publisher when https specified', () => {
@@ -72,9 +72,9 @@ describe('keycloak cluster', () => {
       expect(cluster._httpsPortPublisher instanceof HttpAlbPortPublisher).toBeTruthy();
       expect(cluster._adminConsolePortPublisher instanceof NonePortPublisher).toBeTruthy();
 
-      expectCDK(stack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(stack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
+      });
     });
 
     test('allows all ports to be published', () => {
@@ -90,9 +90,9 @@ describe('keycloak cluster', () => {
       expect(cluster._httpsPortPublisher instanceof NlbPortPublisher).toBeTruthy();
       expect(cluster._adminConsolePortPublisher instanceof NlbPortPublisher).toBeTruthy();
 
-      expectCDK(stack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(stack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'network',
-      }));
+      });
     });
   });
 });
