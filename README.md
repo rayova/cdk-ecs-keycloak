@@ -24,7 +24,7 @@ The simplest example shows all defaults below.
 
 ```ts
 import * as keycloak from '@wheatstalk/cdk-ecs-keycloak';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
 
 // Create a CDK app and a stack
 const app = new cdk.App();
