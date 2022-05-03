@@ -1,11 +1,12 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as ecs_patterns from '@aws-cdk/aws-ecs-patterns';
-import * as iam from '@aws-cdk/aws-iam';
-import * as rds from '@aws-cdk/aws-rds';
-import * as discovery from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as ecs_patterns from 'aws-cdk-lib/aws-ecs-patterns';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as discovery from 'aws-cdk-lib/aws-servicediscovery';
 
+import { Construct } from 'constructs';
 import { KeycloakDatabaseVendor, KeycloakEc2TaskDefinition } from '../index';
 
 export interface IntegEc2StackProps {
@@ -17,7 +18,7 @@ export interface IntegEc2StackProps {
  * @internal
  */
 export class IntegEc2Stack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props: IntegEc2StackProps) {
+  constructor(scope: Construct, id: string, props: IntegEc2StackProps) {
     super(scope, id);
 
     const databaseEngine = props.databaseInstanceEngine;

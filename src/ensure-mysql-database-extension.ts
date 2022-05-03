@@ -1,6 +1,6 @@
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as logs from '@aws-cdk/aws-logs';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as logs from 'aws-cdk-lib/aws-logs';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
 
 /**
  * Props for EnsureMysqlDatabaseExtension

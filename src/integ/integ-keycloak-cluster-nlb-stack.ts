@@ -1,8 +1,9 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
 import * as keycloak from '..';
 
 export class IntegKeycloakClusterNlbStack extends cdk.Stack {
-  constructor(scope: cdk.Construct) {
+  constructor(scope: Construct) {
     super(scope, 'integ-keycloak-cluster-nlb');
 
     new keycloak.KeycloakCluster(this, 'Keycloak', {

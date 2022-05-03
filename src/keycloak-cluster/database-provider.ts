@@ -1,7 +1,8 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as rds from '@aws-cdk/aws-rds';
-import * as secretsmanager from '@aws-cdk/aws-secretsmanager';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as rds from 'aws-cdk-lib/aws-rds';
+import * as secretsmanager from 'aws-cdk-lib/aws-secretsmanager';
+import { Construct } from 'constructs';
 import { KeycloakDatabaseVendor } from '../keycloak-container-extension';
 
 /**
@@ -12,7 +13,7 @@ export interface IDatabaseInfoProvider {
    * Bind any new resources to the parent scope with access to the vpc.
    * @internal
    */
-  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo;
+  _provideDatabaseInfo(scope: Construct, props: ProvideDatabaseInfoProps): DatabaseInfo;
 }
 
 /**
@@ -84,7 +85,7 @@ export class FromDatabaseInfoProvider implements IDatabaseInfoProvider {
   /**
    * @internal
    */
-  _provideDatabaseInfo(_scope: cdk.Construct, _props: ProvideDatabaseInfoProps): DatabaseInfo {
+  _provideDatabaseInfo(_scope: Construct, _props: ProvideDatabaseInfoProps): DatabaseInfo {
     return this.props;
   }
 }
@@ -134,7 +135,7 @@ export class DatabaseInstanceProvider implements IDatabaseInfoProvider {
   /**
    * @internal
    */
-  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
+  _provideDatabaseInfo(scope: Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
     const db = new rds.DatabaseInstance(scope, 'Database', {
       engine: this.engine,
       instanceType: this.instanceType,
@@ -193,7 +194,7 @@ export class ServerlessAuroraDatabaseProvider implements IDatabaseInfoProvider {
   /**
    * @internal
    */
-  _provideDatabaseInfo(scope: cdk.Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
+  _provideDatabaseInfo(scope: Construct, props: ProvideDatabaseInfoProps): DatabaseInfo {
     const db = new rds.ServerlessCluster(scope, 'Database', {
       engine: this.engine,
       vpc: props.vpc,

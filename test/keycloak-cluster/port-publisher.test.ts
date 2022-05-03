@@ -1,9 +1,10 @@
-import { expect as expectCDK, haveResourceLike } from '@aws-cdk/assert';
-import * as acm from '@aws-cdk/aws-certificatemanager';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import { Template } from 'aws-cdk-lib/assertions';
+import * as acm from 'aws-cdk-lib/aws-certificatemanager';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import { Construct } from 'constructs';
 import { PortPublisher } from '../../src';
 
 describe('port publisher', () => {
@@ -19,7 +20,7 @@ describe('port publisher', () => {
       vpc: testStack.service.cluster.vpc,
     });
 
-    expectCDK(testStack).notTo(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup'));
+    expect(() => Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {})).toThrow();
   });
 
   describe('addTarget', () => {
@@ -46,9 +47,9 @@ describe('port publisher', () => {
       });
 
       // THEN
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTP',
-      }));
+      });
     });
 
     test('adds a target to an imported load balancer', () => {
@@ -73,9 +74,9 @@ describe('port publisher', () => {
       });
 
       // THEN
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTP',
-      }));
+      });
     });
   });
 
@@ -92,15 +93,15 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTP',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTP',
-      }));
+      });
     });
 
     test('httpAlb publishes internal HTTPS as HTTP', () => {
@@ -115,15 +116,15 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTP',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTPS',
-      }));
+      });
     });
   });
 
@@ -142,15 +143,15 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTPS',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTP',
-      }));
+      });
     });
 
     test('httpsAlb publishes internal HTTPS', () => {
@@ -167,18 +168,19 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
-      expectCDK(testStack).notTo(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
-        Protocol: 'HTTP',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      expect(() =>
+        Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
+          Protocol: 'HTTP',
+        })).toThrow();
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTPS',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'HTTPS',
-      }));
+      });
     });
 
     test('upgrades http to https', () => {
@@ -196,15 +198,15 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'application',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTP',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'HTTPS',
-      }));
+      });
     });
   });
 
@@ -225,12 +227,12 @@ describe('port publisher', () => {
       certificates: [testStack.certificate],
     })._publishContainerPort(testStack, props);
 
-    expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
       Protocol: 'HTTP',
-    }));
-    expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+    });
+    Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
       Protocol: 'HTTPS',
-    }));
+    });
   });
 
   describe('nlb', () => {
@@ -246,16 +248,16 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::LoadBalancer', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::LoadBalancer', {
         Type: 'network',
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'TCP',
         Port: 81,
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::TargetGroup', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::TargetGroup', {
         Protocol: 'TCP',
-      }));
+      });
     });
 
     test('reuses the load balancer for multiple publishes', () => {
@@ -277,14 +279,14 @@ describe('port publisher', () => {
         vpc: testStack.service.cluster.vpc,
       });
 
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'TCP',
         Port: 81,
-      }));
-      expectCDK(testStack).to(haveResourceLike('AWS::ElasticLoadBalancingV2::Listener', {
+      });
+      Template.fromStack(testStack).hasResourceProperties('AWS::ElasticLoadBalancingV2::Listener', {
         Protocol: 'TCP',
         Port: 82,
-      }));
+      });
     });
   });
 });
@@ -293,7 +295,7 @@ class TestStack extends cdk.Stack {
   public readonly service: ecs.FargateService;
   public readonly certificate: acm.Certificate;
 
-  constructor(scope?: cdk.Construct, id?: string) {
+  constructor(scope?: Construct, id?: string) {
     super(scope, id);
 
     this.certificate = new acm.Certificate(this, 'Certificate', {

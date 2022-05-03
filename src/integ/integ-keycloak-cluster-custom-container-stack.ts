@@ -1,10 +1,11 @@
 import * as path from 'path';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import { Construct } from 'constructs';
 import * as keycloak from '../index';
 
 export class IntegKeycloakClusterCustomContainerStack extends cdk.Stack {
-  constructor(scope: cdk.Construct) {
+  constructor(scope: Construct) {
     super(scope, 'integ-keycloak-cluster-custom-container');
 
     const pathToDockerBuildContext = path.join(__dirname, 'custom-container');

@@ -1,5 +1,5 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import { Construct } from 'constructs';
 
 /**
  * Provides VpcInfo
@@ -9,7 +9,7 @@ export interface IVpcInfoProvider {
    * Binds resources to the parent scope and provides VpcInfo.
    * @internal
    */
-  _provideVpcInfo(scope: cdk.Construct): VpcInfo;
+  _provideVpcInfo(scope: Construct): VpcInfo;
 }
 
 /**
@@ -66,7 +66,7 @@ export class FromVpcProvider implements IVpcInfoProvider {
   /**
    * @internal
    */
-  _provideVpcInfo(_scope: cdk.Construct): VpcInfo {
+  _provideVpcInfo(_scope: Construct): VpcInfo {
     return {
       vpc: this.props.vpc,
     };
@@ -80,7 +80,7 @@ export class IngressAndPrivateVpcProvider implements IVpcInfoProvider {
   /**
    * @internal
    */
-  _provideVpcInfo(scope: cdk.Construct): VpcInfo {
+  _provideVpcInfo(scope: Construct): VpcInfo {
     const vpc = new ec2.Vpc(scope, 'Vpc', {
       subnetConfiguration: [
         {

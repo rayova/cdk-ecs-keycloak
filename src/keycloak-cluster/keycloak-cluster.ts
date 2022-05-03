@@ -1,8 +1,9 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as ecs from '@aws-cdk/aws-ecs';
-import * as elbv2 from '@aws-cdk/aws-elasticloadbalancingv2';
-import * as servicediscovery from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as cdk from 'aws-cdk-lib';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as ecs from 'aws-cdk-lib/aws-ecs';
+import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
+import * as servicediscovery from 'aws-cdk-lib/aws-servicediscovery';
+import { Construct } from 'constructs';
 import { KeycloakContainerExtensionProps } from '../keycloak-container-extension';
 import { KeycloakFargateTaskDefinition } from '../keycloak-task-definition';
 import { CloudMapNamespaceProvider, ICloudMapNamespaceInfoProvider } from './cloudmap-namespace-provider';
@@ -151,7 +152,7 @@ export interface KeycloakClusterProps {
 /**
  * A complete Keycloak cluster in a box.
  */
-export class KeycloakCluster extends cdk.Construct {
+export class KeycloakCluster extends Construct {
   /**
    * The ECS service controlling the cluster tasks.
    */
@@ -164,7 +165,7 @@ export class KeycloakCluster extends cdk.Construct {
   /** @internal */
   public readonly _adminConsolePortPublisher: IPortPublisher;
 
-  constructor(scope: cdk.Construct, id: string, props?: KeycloakClusterProps) {
+  constructor(scope: Construct, id: string, props?: KeycloakClusterProps) {
     super(scope, id);
 
     // Defaults

@@ -1,6 +1,6 @@
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as servicediscovery from '@aws-cdk/aws-servicediscovery';
-import * as cdk from '@aws-cdk/core';
+import * as ec2 from 'aws-cdk-lib/aws-ec2';
+import * as servicediscovery from 'aws-cdk-lib/aws-servicediscovery';
+import { Construct } from 'constructs';
 
 /**
  * Provides CloudMapNamespaceInfo once the VPC is available.
@@ -11,7 +11,7 @@ export interface ICloudMapNamespaceInfoProvider {
    * CloudMapNamespaceInfo
    * @internal
    */
-  _provideCloudMapNamespaceInfo(scope: cdk.Construct, props: ProvideCloudMapNamespaceInfoProps): CloudMapNamespaceInfo;
+  _provideCloudMapNamespaceInfo(scope: Construct, props: ProvideCloudMapNamespaceInfoProps): CloudMapNamespaceInfo;
 }
 
 /**
@@ -52,7 +52,7 @@ export abstract class CloudMapNamespaceProvider {
    */
   static privateDns(props?: PrivateDnsNamespaceProviderProps): ICloudMapNamespaceInfoProvider {
     return {
-      _provideCloudMapNamespaceInfo(scope: cdk.Construct, provideInfoProps: ProvideCloudMapNamespaceInfoProps): CloudMapNamespaceInfo {
+      _provideCloudMapNamespaceInfo(scope: Construct, provideInfoProps: ProvideCloudMapNamespaceInfoProps): CloudMapNamespaceInfo {
         return {
           cloudMapNamespace: new servicediscovery.PrivateDnsNamespace(scope, 'ServiceDiscoveryNS', {
             name: props?.name ?? 'keycloak-service-discovery',
