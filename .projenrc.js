@@ -1,4 +1,4 @@
-const { awscdk } = require('projen');
+const { awscdk, release } = require('projen');
 
 const project = new awscdk.AwsCdkConstructLibrary({
   author: 'Josh Kellendonk',
@@ -18,7 +18,8 @@ const project = new awscdk.AwsCdkConstructLibrary({
     'ts-node',
   ],
 
-  defaultReleaseBranch: 'master',
+  defaultReleaseBranch: 'main',
+  releaseTrigger: release.ReleaseTrigger.manual(),
 
   autoApproveUpgrades: true,
   autoApproveOptions: {
