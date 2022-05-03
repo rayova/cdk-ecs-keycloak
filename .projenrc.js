@@ -19,7 +19,10 @@ const project = new awscdk.AwsCdkConstructLibrary({
   ],
 
   defaultReleaseBranch: 'main',
-  releaseTrigger: release.ReleaseTrigger.manual(),
+  releaseTrigger: release.ReleaseTrigger.scheduled({
+    // First of every month
+    schedule: '0 0 1 * *',
+  }),
 
   autoApproveUpgrades: true,
   autoApproveOptions: {
