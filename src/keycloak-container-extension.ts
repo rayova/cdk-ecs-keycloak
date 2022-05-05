@@ -19,7 +19,7 @@ export enum KeycloakDatabaseVendor {
   MSSQL = 'mssql',
   /** Oracle database (not yet supported, please submit a PR) */
   ORACLE = 'oracle',
-  /** Postgres (not yet supported, please submit a PR) */
+  /** Postgres */
   POSTGRES = 'postgres',
 }
 
@@ -265,7 +265,7 @@ export class KeycloakContainerExtension implements ecs.ITaskDefinitionExtension 
         KEYCLOAK_USER: this.defaultAdminUser,
         KEYCLOAK_PASSWORD: this.defaultAdminPassword,
         DB_VENDOR: this.databaseVendor,
-        DB_NAME: databaseNameForVendor,
+        DB_DATABASE: databaseNameForVendor,
         DB_SCHEMA: this._databaseSchema ?? '',
         JGROUPS_DISCOVERY_PROTOCOL: cdk.Lazy.string({
           produce: () => this._getJGroupsDiscoveryProtocol(),
