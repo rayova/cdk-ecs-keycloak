@@ -34,7 +34,7 @@ describe('KeycloakContainerExtension', () => {
       environment: expect.objectContaining({
         KEYCLOAK_USER: 'admin',
         KEYCLOAK_PASSWORD: 'admin',
-        DB_NAME: '',
+        DB_DATABASE: '',
         DB_VENDOR: 'h2',
         CACHE_OWNERS_COUNT: '1',
         CACHE_OWNERS_AUTH_SESSIONS_COUNT: '1',
@@ -256,7 +256,7 @@ describe('KeycloakContainerExtension', () => {
 
     expect(addContainerSpy).toBeCalledWith('keycloak', expect.objectContaining({
       environment: expect.objectContaining({
-        DB_NAME: 'custom',
+        DB_DATABASE: 'custom',
       }),
     }));
   });

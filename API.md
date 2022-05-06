@@ -1680,6 +1680,6 @@ Name | Description
 **MARIADB** |MariaDB.
 **MSSQL** |MSSQL (not yet supported, please submit a PR).
 **ORACLE** |Oracle database (not yet supported, please submit a PR).
-**POSTGRES** |Postgres (not yet supported, please submit a PR).
+**POSTGRES** |Postgres.
 
 

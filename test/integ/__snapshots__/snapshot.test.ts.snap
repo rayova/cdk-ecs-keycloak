@@ -584,7 +584,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -1865,7 +1865,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -3121,7 +3121,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -4411,7 +4411,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -6261,7 +6261,7 @@ systemctl start amazon-ssm-agent",
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -7342,7 +7342,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -8611,7 +8611,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -9759,7 +9759,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -11011,7 +11011,7 @@ Object {
                 "Value": "postgres",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
@@ -12267,7 +12267,7 @@ Object {
                 "Value": "mysql",
               },
               Object {
-                "Name": "DB_NAME",
+                "Name": "DB_DATABASE",
                 "Value": "keycloak",
               },
               Object {
