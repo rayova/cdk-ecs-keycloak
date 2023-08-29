@@ -4,14 +4,14 @@ import * as ecs from 'aws-cdk-lib/aws-ecs';
 import * as elbv2 from 'aws-cdk-lib/aws-elasticloadbalancingv2';
 import * as servicediscovery from 'aws-cdk-lib/aws-servicediscovery';
 import { Construct } from 'constructs';
-import { KeycloakContainerExtensionProps } from '../keycloak-container-extension';
-import { KeycloakFargateTaskDefinition } from '../keycloak-task-definition';
 import { CloudMapNamespaceProvider, ICloudMapNamespaceInfoProvider } from './cloudmap-namespace-provider';
 import { ClusterProvider, IClusterInfoProvider } from './cluster-provider';
 import { DatabaseProvider, IDatabaseInfoProvider } from './database-provider';
 import { IListenerInfoProvider, ListenerProvider } from './listener-provider';
 import { IPortPublisher, PortPublisher } from './port-publisher';
 import { IVpcInfoProvider, VpcProvider } from './vpc-provider';
+import { KeycloakContainerExtensionProps } from '../keycloak-container-extension';
+import { KeycloakFargateTaskDefinition } from '../keycloak-task-definition';
 
 /**
  * Props for `KeycloakCluster`
